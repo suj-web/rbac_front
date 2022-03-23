@@ -1,0 +1,237 @@
+<template>
+  <div>
+    <el-container :style="`height:${height-0.1}px`">
+      <el-aside :width="isCollapse ? '66px': '200px'">
+        <el-menu
+            router
+            unique-opened
+            :collapse-transition="false"
+            :default-active="active"
+            :default-openeds="opened"
+            :collapse="isCollapse"
+            background-color="#001529"
+            text-color="hsla(0,0%,100%,.7)">
+          <h4 class="title">
+            <span v-if="isCollapse">E</span>
+            <span v-else>EIMS</span>
+          </h4>
+          <el-menu-item index="/home" @click="goHome">
+            <i class="fa fa-home" style="margin-right: 5px"></i>
+            <span slot="title">首页</span>
+          </el-menu-item>
+          <el-submenu :index="index+''" v-for="(item,index) in routes" :key="index">
+            <template slot="title">
+              <i :class="item.iconCls" style="margin-right: 5px"></i>
+              <span>{{item.name}}</span>
+            </template>
+            <el-menu-item :index="children.path" v-for="(children, indexj) in item.children" :key="indexj">{{children.name}}</el-menu-item>
+          </el-submenu>
+        </el-menu>
+      </el-aside>
+      <el-container>
+        <el-header class="homeHeader">
+          <div style="display: flex;align-items: center;">
+            <span @click="changeCollapse" style="margin-right: 30px">
+              <i class="el el-icon-s-fold" v-if="!isCollapse"></i>
+              <i class="el el-icon-s-unfold" v-else></i>
+            </span>
+            <el-breadcrumb separator="/">
+              <el-breadcrumb-item :to="{ path: '/home' }" @click.native="goHome"><i class="el el-icon-s-home" style="margin-right: 10px"></i>首页</el-breadcrumb-item>
+              <el-breadcrumb-item v-if="this.$route.path!=='/home'">{{this.$route.matched[0].name}}</el-breadcrumb-item>
+              <el-breadcrumb-item v-if="this.$route.path!=='/home'">{{this.$route.name}}</el-breadcrumb-item>
+            </el-breadcrumb>
+          </div>
+          <div style="display: flex;align-items: center">
+            <div class="full" @click="full" style="margin-right: 20px">
+              <!-- 全屏 -->
+              <el-tooltip class="item" effect="dark" content="全屏" placement="bottom">
+                <span class="el el-icon-full-screen" v-show="!isFull"></span>
+              </el-tooltip>
+              <!-- 不是全屏 -->
+              <el-tooltip class="item" effect="dark" content="退出全屏" placement="bottom">
+                <span class="el el-icon-aim" v-show="isFull"></span>
+              </el-tooltip>
+            </div>
+            <el-tooltip class="item" effect="dark" content="聊天框" placement="bottom">
+              <el-button icon="el-icon-bell" type="text" size="normal"
+                         style="color: black;margin-right: 20px">
+              </el-button>
+            </el-tooltip>
+            <el-dropdown trigger="hover" @command="commandHandler">
+              <span class="el-dropdown-link">
+                <span style="display: flex;align-items: center">
+                  <i style="margin-right: 5px"><img :src="user.userFace"></i>
+                  {{ user.name }}
+                  <i class="fa fa-caret-down" style="margin-left: 10px;margin-right: 20px"></i>
+                </span>
+              </span>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item command="userinfo">个人中心</el-dropdown-item>
+                <el-dropdown-item command="setting">设置</el-dropdown-item>
+                <el-dropdown-item command="logout">注销登录</el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </div>
+        </el-header>
+        <el-main>
+          <router-view/>
+        </el-main>
+      </el-container>
+    </el-container>
+  </div>
+</template>
+
+<script>
+import screenfull from "screenfull";
+import {getRequest} from "@/network/api";
+  export default {
+    name: "Home",
+    data() {
+      return {
+        height: document.documentElement.clientHeight,
+        active: this.$route.path,
+        opened: [],
+        isFull: false, //是否全屏
+        isCollapse: false,//是否折叠菜单
+        user: ''
+      }
+    },
+    computed: {
+      routes() {
+        return this.$store.state.routes;
+      }
+    },
+    mounted() {
+      this.getUserInfo();
+      this.initHeight();
+    },
+    methods: {
+      commandHandler(command) {
+        if (command == 'logout') {
+          this.$confirm('此操作将注销登录, 是否继续?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            //注销登录
+            this.$postRequest('/logout');
+            //清空用户信息
+            window.sessionStorage.removeItem('tokenStr');
+            window.sessionStorage.removeItem('user');
+            //清空菜单
+            this.$store.commit('initRoutes', []);
+            //跳转登录页面
+            this.$router.replace('/');
+          }).catch(() => {
+            this.$message({
+              type: 'info',
+              message: '已取消删除'
+            });
+          });
+        }
+        if (command == 'userinfo') {
+          this.$router.push('/userinfo');
+        }
+      },
+      goHome() {
+        this.active = '';
+        this.opened = [];
+      },
+      full() {
+        screenfull.toggle();
+        if (!screenfull.isEnabled) {
+          this.$message({
+            message: "该浏览器不支持全屏功能",
+            type: "warning",
+          });
+        }
+        this.isFull = !this.isFull;
+      },
+      changeCollapse() {
+        this.isCollapse = !this.isCollapse;
+      },
+      getUserInfo() {
+        getRequest("/admin/info").then(res=> {
+          if (res) {
+            //存入用户信息
+            this.user = res;
+            window.sessionStorage.setItem('user', JSON.stringify(res));
+          }
+        })
+      },
+      initHeight() {
+        window.onresize = () => {    //写在mounted中,onresize事件会在页面大小被调整时触发
+          return (() => {
+            window.screenHeight = document.documentElement.clientHeight;
+            this.height = window.screenHeight;
+          })();
+        };
+      }
+    },
+    watch: {
+      height(val) {        //在watch中监听height,浏览器窗口大小变动时自适应高度。
+        this.height = val;
+      }
+    }
+  }
+</script>
+
+<style scoped>
+  .el-aside {
+    display: block;
+    position: relative;
+    overflow-y: hidden;
+    background-color: #001529;
+  }
+  .homeHeader {
+    display: flex;
+    align-items: center;
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    justify-content: space-between;
+    box-sizing: border-box;
+    padding: 0 15px;
+  }
+  .title {
+    font-size: 30px;
+    font-family: 华文行楷;
+    color: #1B63AD;
+    height: 50px;
+    margin: 5px 20px 0;
+    display: flex;
+    align-items: center;
+  }
+
+  .el-menu-item:hover {
+    color: #fff!important;
+  }
+
+  ::v-deep .el-menu-item:hover > i{
+    color: #fff!important;
+
+  }
+
+  ::v-deep .el-submenu:hover > .el-submenu__title i {
+    color: #fff!important;
+  }
+
+  ::v-deep .el-submenu:hover > .el-submenu__title{
+    color: #fff!important;
+  }
+
+  .el-menu-item.is-active {
+    background: #2d8cf0!important;
+    color: #fff!important;
+  }
+
+  ::v-deep .el-submenu.is-active > .el-submenu__title i {
+    color: #fff !important;
+  }
+
+  .el-dropdown-link img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+  }
+
+</style>
