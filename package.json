@@ -12,6 +12,7 @@
     "element-ui": "^2.15.3",
     "font-awesome": "^4.7.0",
     "js-file-download": "^0.4.12",
+    "screenfull": "^5.2.0",
     "sockjs-client": "^1.4.0",
     "stompjs": "^2.3.3",
     "vue": "^2.6.11",
