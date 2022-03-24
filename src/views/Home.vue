@@ -183,6 +183,9 @@ import {getRequest} from "@/network/api";
     overflow-y: hidden;
     background-color: #001529;
   }
+  .el-menu {
+    border-right: #001529;
+  }
   .homeHeader {
     display: flex;
     align-items: center;
