@@ -28,7 +28,7 @@ export function request(config)
     // loadingInstance.close();
     return success.data;
   }, error => {
-    if(error.response.code != null){
+    if(error.response && error.response.code != null){
       if(error.response.code==504 || error.response.code==404){
         Message.error({message: '服务器被吃了≡(▔﹏▔)≡'});
       }else if(error.response.code==403){

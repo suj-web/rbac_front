@@ -23,8 +23,8 @@
                        show-checkbox
                        :check-strictly="true"
                        :default-checked-keys="selectedMenus"
-
                        default-expand-all
+                       @check-change="select"
                        node-key="id"
                        ref="tree"
                        :key="index"></el-tree>
@@ -59,17 +59,40 @@
         selectedMenus: [],
         expandAll: true,
         checked: false,
-        allMenuIds: []
+        allMenuIds: [],
+        parentMenus: [],
+        currentIndex: -1,
+        tempSelected: []
       }
     },
     mounted() {
       this.initRoles();
       this.initAllMenuIds();
+      this.initParentMenus();
     },
     methods: {
-      // checkChange(node, checked, children) {
-      //   console.log(node, checked, children);
-      // },
+      select(data, check, child){//选中子节点时,父结点全选,最顶层父结点不选时,子节点全都不选
+        if(check) {
+          if(this.tempSelected.length === 0) {
+            Object.assign(this.tempSelected, this.selectedMenus);
+          }
+          this.parentMenus.forEach(item=>{
+            if(item.id === data.id) {
+              while (item) {
+                this.tempSelected.push(item.id);
+                item = item.parent;
+              }
+            }
+          })
+          this.$refs.tree[this.currentIndex].setCheckedKeys(Array.from(new Set(this.tempSelected)));
+        } else {
+          if(data.parentId === -1) {
+            this.tempSelected = [];
+            this.selectedMenus = [];
+            this.$refs.tree[this.currentIndex].setCheckedKeys([]);
+          }
+        }
+      },
       onSelectedAll(index){
         this.checked = !this.checked;
         if(this.checked) {
@@ -137,11 +160,20 @@
       },
       change(rid){
         this.selectedMenus = [];
+        this.tempSelected = [];
         this.checked = false;
         this.expandAll = true;
         if(rid) {
           this.initAllMenus();
           this.initSelectedMenus(rid);
+          //获取当前展开面板的index
+          for(let i = 0; i < this.roles.length; i++) {
+            if(rid === this.roles[i].id) {
+              this.currentIndex = i;
+            }
+          }
+        } else {
+          this.currentIndex = -1;
         }
       },
       initAllMenus() {
@@ -162,6 +194,13 @@
         this.$getRequest('/system/basic/permission/resId').then(res=>{
           if(res) {
             this.allMenuIds = res;
+          }
+        })
+      },
+      initParentMenus() {
+        this.$getRequest('/system/basic/permission/parent/').then(res=>{
+          if(res) {
+            this.parentMenus = res;
           }
         })
       }
