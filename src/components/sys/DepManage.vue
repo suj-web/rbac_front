@@ -6,7 +6,18 @@
 
 <script>
   export default {
-    name: "DepManage"
+    name: "DepManage",
+    data() {
+      return {
+
+      }
+    },
+    mounted() {
+
+    },
+    methods: {
+
+    }
   }
 </script>
 

@@ -38,7 +38,7 @@
     },
     data() {
       return {
-        activeName: 'PermissManage'
+        activeName: 'DepManage'
       }
     }
   }
