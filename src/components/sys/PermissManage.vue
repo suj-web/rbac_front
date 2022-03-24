@@ -57,12 +57,12 @@
           label: 'name'
         },
         selectedMenus: [],
-        expandAll: true,
-        checked: false,
-        allMenuIds: [],
-        parentMenus: [],
-        currentIndex: -1,
-        tempSelected: []
+        expandAll: true,//是否展开
+        checked: false,//是否全选
+        allMenuIds: [],//用于设置全选
+        parentMenus: [],//父级资源
+        currentIndex: -1,//当前展开面板的index
+        tempSelected: []//中间变量
       }
     },
     mounted() {

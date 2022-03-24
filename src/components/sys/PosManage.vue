@@ -100,7 +100,7 @@ export default {
         name: '',
         enabled: false
       },
-      multipleSelection: []
+      multipleSelection: []//存放批量删除的id
     }
   },
   mounted() {
