@@ -13,13 +13,14 @@
           :props="defaultProps"
           :expand-on-click-node="false"
           :filter-node-method="filterNode"
+          class="depTree"
           ref="tree">
         <span class="custom-tree-node" slot-scope="{ node, data }" style="display: flex;justify-content: space-between;width: 100%">
           <span>{{data.name}}</span>
           <span>
             <el-button
                 type="primary"
-                size="mini"
+                size="small"
                 class="depBtn"
                 @click="() => showAddDep(data)">
               添加部门
@@ -182,5 +183,9 @@
 <style scoped>
   .depBtn{
     padding: 2px;
+  }
+
+  .depTree {
+    margin-top: 10px;
   }
 </style>

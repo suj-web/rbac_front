@@ -73,9 +73,8 @@
     methods: {
       select(data, check, child){//选中子节点时,父结点全选,最顶层父结点不选时,子节点全都不选
         if(check) {
-          if(this.tempSelected.length === 0) {
-            Object.assign(this.tempSelected, this.selectedMenus);
-          }
+          this.tempSelected = [];
+          Object.assign(this.tempSelected, this.selectedMenus);
           this.parentMenus.forEach(item=>{
             if(item.id === data.id) {
               while (item) {
@@ -85,11 +84,15 @@
             }
           })
           this.$refs.tree[this.currentIndex].setCheckedKeys(Array.from(new Set(this.tempSelected)));
+          this.selectedMenus = [];
+          Object.assign(this.selectedMenus, Array.from(new Set(this.tempSelected)));
         } else {
           if(data.parentId === -1) {
             this.tempSelected = [];
             this.selectedMenus = [];
             this.$refs.tree[this.currentIndex].setCheckedKeys([]);
+          } else {
+            this.selectedMenus.splice(this.selectedMenus.indexOf(data.id),1);
           }
         }
       },
