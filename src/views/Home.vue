@@ -28,7 +28,7 @@
           </el-submenu>
         </el-menu>
       </el-aside>
-      <el-container>
+      <el-container class="page-component__scroll">
         <el-header class="homeHeader">
           <div style="display: flex;align-items: center;">
             <span @click="changeCollapse" style="margin-right: 30px">
@@ -73,9 +73,15 @@
             </el-dropdown>
           </div>
         </el-header>
-        <el-main>
-          <router-view/>
-        </el-main>
+        <el-scrollbar class="scrollbar">
+          <el-main>
+            <router-view/>
+          </el-main>
+        </el-scrollbar>
+        <el-backtop
+            target=".page-component__scroll .el-scrollbar__wrap"
+            :bottom="100"
+            :visibility-height="50"></el-backtop>
       </el-container>
     </el-container>
   </div>
@@ -177,6 +183,16 @@ import {getRequest} from "@/network/api";
 </script>
 
 <style scoped>
+  .page-component__scroll {
+    overflow-y: hidden;
+  }
+  .scrollbar {
+    height: calc(100vh - 60px);
+    width: 100%;
+  }
+  ::v-deep .el-scrollbar__wrap {
+    overflow-x: hidden;
+  }
   .el-aside {
     display: block;
     position: relative;

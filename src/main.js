@@ -13,7 +13,7 @@ import {initMenu} from "@/network/menu";
 
 Vue.config.productionTip = false
 
-Vue.use(ElementUI)
+Vue.use(ElementUI,{size:'small'})
 
 Vue.prototype.$postRequest = postRequest;
 Vue.prototype.$getRequest = getRequest;
