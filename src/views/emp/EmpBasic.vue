@@ -3,7 +3,7 @@
     <div>
       <div style="display: flex;justify-content: space-between">
         <div>
-          <el-input style="width: 300px;margin-right: 6px"
+          <el-input style="width: 300px;margin-right: 10px"
                     prefix-icon="el-icon-search"
                     clearable
                     v-model="empName"
@@ -69,7 +69,8 @@
                   v-for="item in positions"
                   :key="item.id"
                   :label="item.name"
-                  :value="item.id"></el-option>
+                  :value="item.id">
+              </el-option>
             </el-select>
           </el-col>
           <el-col :span="4">
@@ -124,7 +125,7 @@
             </el-date-picker>
           </el-col>
           <el-col :span="5" :offset="4">
-            <el-button size="mini">取消</el-button>
+            <el-button size="mini" @click="cancelAdvanceSearch">取消</el-button>
             <el-button @click="initEmps" type="primary" icon="el-icon-search" size="mini">搜索</el-button>
           </el-col>
         </el-row>
@@ -185,7 +186,7 @@
         <el-table-column
             prop="nativePlace"
             label="籍贯"
-            width="100">
+            width="200">
         </el-table-column>
         <el-table-column
             prop="politicsStatus.name"
@@ -223,7 +224,7 @@
         <el-table-column
             prop="position.name"
             label="职位"
-            width="100">
+            width="150">
         </el-table-column>
         <el-table-column
             prop="engageForm"
@@ -298,12 +299,12 @@
           </template>
         </el-table-column>
       </el-table>
-      <div style="display: flex;justify-content: flex-end">
+      <div style="display: flex;justify-content: flex-end;margin-top: 10px">
         <el-pagination
             background
             @current-change="currentChange"
             @size-change="sizeChange"
-            layout="sizes,prev, pager, next, jumper, ->, total"
+            layout="sizes, prev, pager, next, jumper, ->, total"
             :total="total">
         </el-pagination>
       </div>
@@ -355,6 +356,11 @@
           </el-row>
           <el-row>
             <el-col :span="6">
+              <el-form-item label="籍贯:" prop="nativePlace">
+                <el-input v-model="emp.nativePlace" placeholder="请输入籍贯" prefix-icon="el-icon-edit" size="mini" style="width:150px"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="5">
               <el-form-item label="民族:" prop="nationId">
                 <el-select v-model="emp.nationId" size="mini" style="width: 150px" placeholder="民族">
                   <el-option
@@ -364,11 +370,6 @@
                       :value="item.id">
                   </el-option>
                 </el-select>
-              </el-form-item>
-            </el-col>
-            <el-col :span="5">
-              <el-form-item label="籍贯:" prop="nativePlace">
-                <el-input v-model="emp.nativePlace" placeholder="请输入籍贯" prefix-icon="el-icon-edit" size="mini" style="width:120px"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="6">
@@ -395,8 +396,8 @@
               </el-form-item>
             </el-col>
             <el-col :span="5">
-              <el-form-item label="职称:" prop="jobLebelId">
-                <el-select v-model="emp.jobLevelId" size="mini" style="width: 150px" placeholder="职位">
+              <el-form-item label="职称:" prop="jobLevelId">
+                <el-select v-model="emp.jobLevelId" size="mini" style="width: 150px" placeholder="职称">
                   <el-option
                       v-for="item in joblevels"
                       :key="item.id"
@@ -568,6 +569,7 @@
         title: '',
         visible: false,
         visible2: false,
+
         emps: [],
         loading: false,
         total: 0,
@@ -657,7 +659,17 @@
       this.initPositions();
     },
     methods:{
-
+      cancelAdvanceSearch() {
+        this.searchValue = {
+          nationId: null,
+          politicId: null,
+          departmentId: null,
+          jobLevelId: null,
+          positionId: null,
+          engageForm: '',
+          beginDateScope: null
+        };
+      },
       onSuccess(){
         this.importDataBtnIcon = 'el-icon-upload2';
         this.importDataBtnText = '导入数据';
@@ -879,7 +891,6 @@
         } else {
           url += '&name='+this.empName;
         }
-
 
         this.$getRequest(url).then(res=>{
           if(res){

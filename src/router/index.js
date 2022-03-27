@@ -15,6 +15,23 @@ const routes = [
     name: 'Error',
     component: () => import('../views/Error'),
     hidden: true
+  },
+  {
+    path: '/home',
+    name: 'Home',
+    component: () => import('../views/Home'),
+    children: [
+      {
+        path: '/chat',
+        name: '在线聊天',
+        component: () => import('../views/chat/FriendChat')
+      },
+      {
+        path: '/userinfo',
+        name: '个人中心',
+        component: () => import('../views/AdminInfo')
+      }
+    ]
   }
 ]
 

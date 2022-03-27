@@ -10,13 +10,13 @@
              element-loading-background="rgba(0, 0, 0, 0.8)">
       <h3 class="loginTitle">系统登录</h3>
       <el-form-item prop="username">
-        <el-input type="text" auto-complete="false" v-model="loginForm.username" placeholder="请输入用户名" prefix-icon="el-icon-user-solid"></el-input>
+        <el-input type="text" size="primary" auto-complete="false" v-model="loginForm.username" placeholder="请输入用户名" prefix-icon="el-icon-user-solid"></el-input>
       </el-form-item>
       <el-form-item prop="password">
-        <el-input type="password" auto-complete="false" v-model="loginForm.password" placeholder="请输入密码" prefix-icon="el-icon-lock"></el-input>
+        <el-input type="password" size="primary" auto-complete="false" v-model="loginForm.password" placeholder="请输入密码" prefix-icon="el-icon-lock"></el-input>
       </el-form-item>
       <el-form-item prop="code">
-        <el-input type="text" auto-complete="false" v-model="loginForm.code" placeholder="点击图片更换验证码" prefix-icon="el-icon-circle-check" style="width: 250px;margin-right: 5px"></el-input>
+        <el-input type="text" size="primary" auto-complete="false" v-model="loginForm.code" placeholder="点击图片更换验证码" prefix-icon="el-icon-circle-check" style="width: 250px;margin-right: 5px"></el-input>
         <img :src="captchaUrl" @click="updateCaptcha"/>
       </el-form-item>
       <el-checkbox v-model="checked" class="loginRemember">记住我</el-checkbox>

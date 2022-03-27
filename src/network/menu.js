@@ -14,6 +14,8 @@ export const initMenu = (router, store) =>{
       router.addRoutes(fmtRoutes);
       //将数据存入vuex
       store.commit('initRoutes', fmtRoutes);
+      //连接webSocket
+      store.dispatch('connect');
     }
   })
 }
