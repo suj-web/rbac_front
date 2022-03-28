@@ -30,6 +30,21 @@ const routes = [
         path: '/userinfo',
         name: '个人中心',
         component: () => import('../views/AdminInfo')
+      },
+      {
+        path: '/online',
+        name: '在线用户',
+        component: () => import('../views/home/OnlineUser')
+      },
+      {
+        path: '/contract',
+        name: '合同到期',
+        component: () => import('../views/home/ContractExpired')
+      },
+      {
+        path: '/birthday',
+        name: '员工生日',
+        component: () => import('../views/home/EmpBirthday')
       }
     ]
   }

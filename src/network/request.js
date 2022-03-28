@@ -18,12 +18,10 @@ export function request(config)
   instance.interceptors.response.use(success => {//调用后端接口成功,返回响应码200
     //业务逻辑错误
     if(success.status && success.status === 200){
-      if(success.data.code===500 || success.data.code===401 || success.data.code===403 || success.data.code===402){
+      if(success.data.code===500 || success.data.code===401 || success.data.code===403 || success.data.code===402 || success.data.code===406){
         Message.error({message: success.data.message});
         // loadingInstance.close();
-        if(success.data.code === 402) { //该账户第二次登录,会强制退出
-          //注销登录
-          postRequest('/logout');
+        if(success.data.code === 402 || success.data.code===406) { //该账户第二次登录,会强制退出
           //清空用户信息
           window.sessionStorage.removeItem('tokenStr');
           window.sessionStorage.removeItem('user');

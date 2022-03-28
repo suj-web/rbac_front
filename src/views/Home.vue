@@ -82,9 +82,9 @@
                         style="background-color: #00c0ef !important; color: white;">
 						            <i class="fa fa-child" ></i>
                   </span>
-                  <div class="info-box-content">
-                    <span class="info-box-text">在线人数</span>
-                    <span class="info-box-number" id="s1">{{this.onlineUserCount}}</span>
+                  <div class="info-box-content" @click="goOnline">
+                    <span class="info-box-text"><el-link :underline="false" style="font-weight: bolder;font-size: 16px">在线人数</el-link></span>
+                    <span class="info-box-number">{{this.onlineUserCount}}</span>
                   </div>
                 </el-card>
                 <el-card class="homeCard" shadow="always">
@@ -92,27 +92,26 @@
                         style="background-color: #00a65a !important; color: white;">
                     <i class="fa fa-users" aria-hidden="true"></i>
                   </span>
-                  <div class="info-box-content">
-                    <span class="info-box-text">员工人数</span>
-                    <span class="info-box-number" id="s2">{{this.employeeCount}}</span>
+                  <div class="info-box-content" @click="goEmp">
+                    <span class="info-box-text"><el-link :underline="false" style="font-weight: bolder;font-size: 16px">员工人数</el-link></span>
+                    <span class="info-box-number">{{this.employeeCount}}</span>
                   </div>
                 </el-card>
                 <el-card class="homeCard" shadow="always">
-                  <span class="info-box-icon"
-                        style="background-color: #f39c12 !important; color: white;"><i
-                      class="fa fa-users" aria-hidden="true"></i></span>
-                  <div class="info-box-content">
-                    <span class="info-box-text">合同到期</span>
-                    <span class="info-box-number" id="s3">{{this.contractExpireCount}}</span>
+                  <span class="info-box-icon" style="background-color: #f39c12 !important; color: white;">
+                    <i class="fa fa-users" aria-hidden="true"></i></span>
+                  <div class="info-box-content" @click="goContract">
+                    <span class="info-box-text"><el-link :underline="false" style="font-weight: bolder;font-size: 16px">合同到期</el-link></span>
+                    <span class="info-box-number">{{this.contractExpireCount}}</span>
                   </div>
                 </el-card>
                 <el-card class="homeCard" shadow="always">
-                  <span class="info-box-icon"
-                        style="background-color: #dd4b39 !important; color: white;"><i
-                      class="fa fa-birthday-cake" aria-hidden="true"></i></span>
-                  <div class="info-box-content">
-                    <span class="info-box-text">生日提醒</span>
-                    <span class="info-box-number" id="s4">{{this.birthdayCount}}</span>
+                  <span class="info-box-icon" style="background-color: #dd4b39 !important; color: white;">
+                    <i class="fa fa-birthday-cake" aria-hidden="true"></i>
+                  </span>
+                  <div class="info-box-content" @click="goBirthday">
+                    <span class="info-box-text"><el-link :underline="false" style="font-weight: bolder;font-size: 16px">生日提醒</el-link></span>
+                    <span class="info-box-number">{{this.birthdayCount}}</span>
                   </div>
                 </el-card>
               </div>
@@ -235,6 +234,18 @@ import {getRequest} from "@/network/api";
       this.initBirthdayCount();
     },
     methods: {
+      goOnline() {
+        this.$router.push('/online');
+      },
+      goEmp() {
+        this.$router.push('/emp/basic');
+      },
+      goContract() {
+        this.$router.push('/contract');
+      },
+      goBirthday() {
+        this.$router.push('/birthday');
+      },
       initBirthdayCount() {
         this.$getRequest('/home/remind/birthday/remind/count').then(res=>{
           if(res) {
