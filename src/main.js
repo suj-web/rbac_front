@@ -12,12 +12,16 @@ import {deleteRequest} from "./network/api";
 import {initMenu} from "@/network/menu";
 import {downloadRequest} from "@/network/download";
 import moment from 'vue-moment';
-
-Vue.use(moment);
+import mavonEditor from 'mavon-editor'
+import 'mavon-editor/dist/css/index.css'
+import iconPicker from 'vue-fontawesome-elementui-icon-picker';
 
 Vue.config.productionTip = false
 
 Vue.use(ElementUI,{size: 'small'})
+Vue.use(moment);//格式化时间
+Vue.use(mavonEditor);//注册富文本框
+Vue.use(iconPicker);//注册图标选择器
 
 Vue.prototype.$postRequest = postRequest;
 Vue.prototype.$getRequest = getRequest;

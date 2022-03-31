@@ -30,7 +30,7 @@
               {{importDataBtnText}}
             </el-button>
           </el-upload>
-          <el-button type="success" @click="exportData" icon="el-icon-download">
+          <el-button type="success" @click="exportData" icon="fa fa-download">
             导出数据
           </el-button>
           <el-button type="primary" icon="el-icon-plus" @click="showAddEmpView">添加员工</el-button>
@@ -92,24 +92,9 @@
           </el-col>
         </el-row>
         <el-row style="margin-top: 10px;">
-          <el-col :span="5" style="display: inline-flex">
+          <el-col :span="7" style="display: inline-flex;align-items: center;">
             所属部门:
-            <el-popover
-                placement="right"
-                title="请选择部门"
-                width="200"
-                trigger="manual"
-                style="margin-left: 4px"
-                v-model="visible2">
-              <el-tree
-                  default-expand-all
-                  :expand-on-click-node="false"
-                  :data="allDeps"
-                  :props="defaultProps"
-                  @node-click="searchHandleNodeClick"></el-tree>
-              <div slot="reference" style="width: 130px;display:inline-flex;border:1px solid #dedede;height: 28px;border-radius: 5px
-;cursor: pointer;align-items: center;font-size: 11px;padding-left: 10px;box-sizing: border-box" @click="showDepView2">{{inputDepName2}}</div>
-            </el-popover>
+            <treeselect v-model="searchValue.departmentId" placeholder="所属部门" :normalizer="normalizer" style="width: 240px;margin-left: 5px;" :show-count="true" :options="allDeps" />
           </el-col>
           <el-col :span="10">
             入职日期:
@@ -124,7 +109,7 @@
                 end-placeholder="结束日期">
             </el-date-picker>
           </el-col>
-          <el-col :span="5" :offset="4">
+          <el-col :span="5" :offset="2">
             <el-button size="mini" @click="cancelAdvanceSearch">取消</el-button>
             <el-button @click="initEmps" type="primary" icon="el-icon-search" size="mini">搜索</el-button>
           </el-col>
@@ -407,28 +392,13 @@
               </el-form-item>
             </el-col>
             <el-col :span="6">
-              <el-form-item label="所属部门:" prop="departmentId">
-                <!--                <el-input @fous="showDepView" v-model="emp.departmentId" placeholder="请输入部门" size="mini" style="width: 150px"></el-input>-->
-                <el-popover
-                    placement="right"
-                    title="请选择部门"
-                    width="200"
-                    trigger="manual"
-                    v-model="visible">
-                  <el-tree
-                      default-expand-all
-                      :expand-on-click-node="false"
-                      :data="allDeps"
-                      :props="defaultProps"
-                      @node-click="handleNodeClick"></el-tree>
-                  <div slot="reference" style="width: 150px;display: inline-flex;border:1px solid #dedede;height: 28px;border-radius: 5px
-;cursor: pointer;align-items: center;font-size: 11px;padding-left: 10px;box-sizing: border-box" @click="showDepView">{{inputDepName}}</div>
-                </el-popover>
+              <el-form-item label="电话号码:" prop="phone">
+                <el-input v-model="emp.phone" placeholder="请输入电话号码" size="mini" style="width: 150px" prefix-icon="el-icon-phone"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="7">
-              <el-form-item label="电话号码:" prop="phone">
-                <el-input v-model="emp.phone" placeholder="请输入电话号码" size="mini" style="width: 200px" prefix-icon="el-icon-phone"></el-input>
+              <el-form-item label="身份证号码:" prop="idCard">
+                <el-input v-model="emp.idCard" placeholder="请输入身份证号码" size="mini" prefix-icon="el-icon-edit" style="width: 200px"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -512,8 +482,8 @@
           </el-row>
           <el-row>
             <el-col :span="8">
-              <el-form-item label="身份证号码:" prop="idCard">
-                <el-input v-model="emp.idCard" placeholder="请输入身份证号码" size="mini" prefix-icon="el-icon-edit" style="width: 180px"></el-input>
+              <el-form-item label="所属部门:" prop="departmentId">
+                <treeselect v-model="emp.departmentId" placeholder="所属部门" :normalizer="normalizer" style="width: 240px" :show-count="true" :options="allDeps" />
               </el-form-item>
             </el-col>
             <el-col :span="8">
@@ -545,8 +515,11 @@
 </template>
 
 <script>
+import Treeselect from '@riophae/vue-treeselect'
+import '@riophae/vue-treeselect/dist/vue-treeselect.css'
   export default {
     name: "EmpBasic",
+    components: { Treeselect },
     data(){
       return {
         advanceSearch: false,
@@ -565,10 +538,8 @@
         },
         importDataDisabled: false,
         importDataBtnText: '导入数据',
-        importDataBtnIcon: 'el-icon-upload2',
+        importDataBtnIcon: 'fa fa-upload',
         title: '',
-        visible: false,
-        visible2: false,
 
         emps: [],
         loading: false,
@@ -613,13 +584,7 @@
         politicsstatus:[],
         positions:[],
         tiptopDegrees:['博士','硕士','本科','大专','高中','初中','小学','其他'],
-        defaultProps: {
-          children: 'children',
-          label: 'name'
-        },
         allDeps:[],
-        inputDepName:'',
-        inputDepName2: '',
         empRules: {
           name: [{required: true, message:'请输入员工姓名', trigger: 'blur'}],
           gender: [{required: true, message:'请选择员工性别', trigger: 'blur'}],
@@ -659,6 +624,11 @@
       this.initPositions();
     },
     methods:{
+      normalizer(node) {
+        return {
+          label: node.name
+        }
+      },
       cancelAdvanceSearch() {
         this.searchValue = {
           nationId: null,
@@ -671,13 +641,13 @@
         };
       },
       onSuccess(){
-        this.importDataBtnIcon = 'el-icon-upload2';
+        this.importDataBtnIcon = 'fa fa-upload';
         this.importDataBtnText = '导入数据';
         this.importDataDisabled = false;
         this.initEmps();
       },
       onError(){
-        this.importDataBtnIcon = 'el-icon-upload2';
+        this.importDataBtnIcon = 'fa fa-upload';
         this.importDataBtnText = '导入数据';
         this.importDataDisabled = false;
       },
@@ -693,7 +663,6 @@
       showEditEmpView(data){
         this.title = '编辑员工信息';
         this.emp = data;
-        this.inputDepName = data.department.name;
         this.initPositions();
         this.dialogVisible = true;
       },
@@ -746,22 +715,6 @@
         this.dialogVisible = false;
         this.visible = false;
       },
-      searchHandleNodeClick(data){
-        this.inputDepName2 = data.name;
-        this.searchValue.departmentId = data.id;
-        this.visible2 = !this.visible2;
-      },
-      handleNodeClick(data){
-        this.inputDepName = data.name;
-        this.emp.departmentId = data.id;
-        this.visible = !this.visible;
-      },
-      showDepView2(){
-        this.visible2 = !this.visible2;
-      },
-      showDepView(){
-        this.visible = !this.visible;
-      },
       getMaxWorkId(){
         this.$getRequest('/employee/basic/maxWorkId').then(res=>{
           if(res){
@@ -774,6 +727,17 @@
           if(res){
             this.positions = res;
           }
+        })
+      },
+      // 处理树形结构
+      treeChange (arr) {
+        return arr.map(item => {
+          if (item.children && item.children.length > 0) {
+            this.treeChange(item.children);
+          } else {
+            delete item.children;
+          }
+          return item;
         })
       },
       initData(){
@@ -811,7 +775,7 @@
         if(!window.sessionStorage.getItem('allDeps')){
           this.$getRequest('/employee/basic/deps').then(res=>{
             if(res){
-              this.allDeps = res;
+              this.allDeps = this.treeChange(res);
               window.sessionStorage.setItem('allDeps',JSON.stringify(res));
             }
           })
@@ -904,7 +868,25 @@
   }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+::v-deep .vue-treeselect {
+  display: flex;
+  width: 204px;
+  .vue-treeselect__control {
+    line-height: 28px;
+    height: 28px;
+    .vue-treeselect__value-container {
+      font-size: 12px;
+      .vue-treeselect__placeholder {
+        line-height: 28px;
+      }
+      .vue-treeselect__single-value {
+        line-height: 28px;
+      }
+    }
+  }
+}
+
   /* 可以设置不同的进入和离开动画 */
   /* 设置持续时间和动画函数 */
   .slide-fade-enter-active {

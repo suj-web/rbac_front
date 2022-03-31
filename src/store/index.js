@@ -16,9 +16,13 @@ const store = new Vuex.Store({
     currentSession: null,
     filterKey:'',
     stomp: null,
-    isDot: {}
+    isDot: {},
+    message: "暂无公告"
   },
   mutations: {
+    initCircleSysMsgs(state, data) {
+      state.message = data;
+    },
     initRoutes(state, data){
       state.routes = data;
     },

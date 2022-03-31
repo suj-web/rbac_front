@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="font-size: 14px!important;">
     <el-container :style="`height:${height-0.1}px`">
       <el-aside :width="isCollapse ? '66px': '200px'">
         <el-menu
@@ -31,7 +31,7 @@
       <el-container class="page-component__scroll">
         <el-header class="homeHeader">
           <div style="display: flex;align-items: center;">
-            <span @click="changeCollapse" style="margin-right: 30px">
+            <span @click="changeCollapse" style="margin-right: 30px;font-size: 14px">
               <i class="el el-icon-s-fold" v-if="!isCollapse"></i>
               <i class="el el-icon-s-unfold" v-else></i>
             </span>
@@ -42,7 +42,7 @@
             </el-breadcrumb>
           </div>
           <div style="display: flex;align-items: center">
-            <div class="full" @click="full" style="margin-right: 20px">
+            <div class="full" @click="full" style="margin-right: 20px;font-size: 14px">
               <!-- 全屏 -->
               <el-tooltip class="item" effect="dark" content="全屏" placement="bottom">
                 <span class="el el-icon-full-screen" v-show="!isFull"></span>
@@ -75,6 +75,7 @@
         </el-header>
         <el-scrollbar class="scrollbar">
           <el-main>
+            <notice :message="message" style="margin-bottom: 10px"></notice>
             <div v-if="this.$route.path==='/home'">
               <div style="display: flex;justify-content: space-around">
                 <el-card class="homeCard" shadow="always">
@@ -197,8 +198,12 @@
 <script>
 import screenfull from "screenfull";
 import {getRequest} from "@/network/api";
+import notice from "@/components/notice";
   export default {
     name: "Home",
+    components: {
+      notice
+    },
     data() {
       return {
         height: document.documentElement.clientHeight,
@@ -222,6 +227,9 @@ import {getRequest} from "@/network/api";
       },
       user() {
         return this.$store.state.currentAdmin;
+      },
+      message() {
+        return this.$store.state.message;
       }
     },
     mounted() {
@@ -232,6 +240,7 @@ import {getRequest} from "@/network/api";
       this.initEmployeeCount();
       this.initContractExpireCount();
       this.initBirthdayCount();
+      this.initCircleSysMsg();
     },
     methods: {
       goOnline() {
@@ -355,6 +364,21 @@ import {getRequest} from "@/network/api";
           if(res) {
             this.loginLogs = res.data;
             this.total = res.total;
+          }
+        })
+      },
+      initCircleSysMsg() {
+        this.$getRequest('/system/cfg/system/message').then(res=>{
+          if(res) {
+            let message = "";
+            res.forEach(item=>{
+              if(!item.type) {
+                message += "&nbsp;&nbsp;&nbsp;<span style='color: red'>系统公告:</span>" + "&nbsp;&nbsp;" + item.title + "&nbsp;&nbsp;" + item.content + "&nbsp;&nbsp;&nbsp;";
+              } else {
+                message += "&nbsp;&nbsp;&nbsp;<span style='color: #E6A23C'>系统通知:</span>" + "&nbsp;&nbsp;" + item.title + "&nbsp;&nbsp;" + item.content + "&nbsp;&nbsp;&nbsp;";
+              }
+            })
+            this.$store.commit('initCircleSysMsgs', message === "" ? "<span style='color:black'>暂无公告</span>": message);
           }
         })
       }
