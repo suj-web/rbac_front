@@ -67,11 +67,11 @@
             </template>
           </el-table-column>
           <el-table-column
-              prop="enable"
+              prop="enabled"
               label="状态"
               width="100">
             <template slot-scope="scope">
-              <el-tag size="mini" type="success" style="border-radius: 4px" v-if="!scope.row.enable">正常</el-tag>
+              <el-tag size="mini" type="success" style="border-radius: 4px" v-if="scope.row.enabled">正常</el-tag>
               <el-tag size="mini" type="danger" style="border-radius: 4px" v-else>关闭</el-tag>
             </template>
           </el-table-column>
@@ -124,10 +124,10 @@
           <el-form-item label="公告内容" prop="content">
             <mavon-editor v-model="sysMsgForm.content"/>
           </el-form-item>
-          <el-form-item label="公告状态" prop="enable">
-            <el-radio-group v-model="sysMsgForm.enable">
-              <el-radio :label="false">正常</el-radio>
-              <el-radio :label="true">关闭</el-radio>
+          <el-form-item label="公告状态" prop="enabled">
+            <el-radio-group v-model="sysMsgForm.enabled">
+              <el-radio :label="true">正常</el-radio>
+              <el-radio :label="false">关闭</el-radio>
             </el-radio-group>
           </el-form-item>
         </el-form>
@@ -169,7 +169,7 @@
           title: '',
           content: '',
           type: false,
-          enable: false
+          enabled: true
         },
         formTitle: '',
         dialogVisible: false,
@@ -220,7 +220,7 @@
           title: '',
           content: '',
           type: false,
-          enable: false
+          enabled: true
         };
         this.dialogVisible = true;
       },

@@ -610,7 +610,7 @@ import '@riophae/vue-treeselect/dist/vue-treeselect.css'
           workState: [{required: true, message:'请输入工作状态', trigger: 'blur'}],
           workId: [{required: true, message:'请输入工号', trigger: 'blur'}],
           contractTerm: [{required: true, message:'请输入合同期限', trigger: 'blur'}],
-          conversionTime: [{required: true, message:'请输入转正日期', trigger: 'blur'}],
+          // conversionTime: [{required: true, message:'请输入转正日期', trigger: 'blur'}],
           notWorkDate: [{required: true, message:'请输入离职日期', trigger: 'blur'}],
           beginContract: [{required: true, message:'请输入合同起始日期', trigger: 'blur'}],
           endContract: [{required: true, message:'请输入合同截至日期', trigger: 'blur'}],

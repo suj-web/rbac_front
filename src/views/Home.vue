@@ -107,6 +107,16 @@
                   </div>
                 </el-card>
                 <el-card class="homeCard" shadow="always">
+                  <span class="info-box-icon"
+                        style="background-color: darkmagenta !important; color: white;">
+						            <i class="fa fa-volume-control-phone" ></i>
+                  </span>
+                  <div class="info-box-content" @click="goConversion()">
+                    <span class="info-box-text"><el-link :underline="false" style="font-weight: bolder;font-size: 16px">转正提醒</el-link></span>
+                    <span class="info-box-number">{{this.conversionCount}}</span>
+                  </div>
+                </el-card>
+                <el-card class="homeCard" shadow="always">
                   <span class="info-box-icon" style="background-color: #dd4b39 !important; color: white;">
                     <i class="fa fa-birthday-cake" aria-hidden="true"></i>
                   </span>
@@ -218,7 +228,8 @@ import notice from "@/components/notice";
         onlineUserCount: 0,
         employeeCount: 0,
         contractExpireCount: 0,
-        birthdayCount: 0
+        birthdayCount: 0,
+        conversionCount: 0
       }
     },
     computed: {
@@ -240,9 +251,13 @@ import notice from "@/components/notice";
       this.initEmployeeCount();
       this.initContractExpireCount();
       this.initBirthdayCount();
+      this.initConversionCount();
       this.initCircleSysMsg();
     },
     methods: {
+      goConversion() {
+        this.$router.push('/conversion');
+      },
       goOnline() {
         this.$router.push('/online');
       },
@@ -280,6 +295,13 @@ import notice from "@/components/notice";
         this.$getRequest('/home/remind/online/count').then(res=>{
           if(res) {
             this.onlineUserCount = res;
+          }
+        })
+      },
+      initConversionCount() {
+        this.$getRequest('/home/remind/conversion/remind/count').then(res=>{
+          if(res) {
+            this.conversionCount = res;
           }
         })
       },
@@ -415,6 +437,10 @@ import notice from "@/components/notice";
     display: flex;
     align-items: center;
     padding: 0!important;
+  }
+  ::v-deep .homeCard {
+    margin-left: 10px;
+    margin-right: 10px;
   }
   .info-box-icon {
     display: block;

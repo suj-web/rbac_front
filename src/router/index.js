@@ -45,6 +45,11 @@ const routes = [
         path: '/birthday',
         name: '员工生日',
         component: () => import('../views/home/EmpBirthday')
+      },
+      {
+        path: '/conversion',
+        name: '员工转正',
+        component: () => import('../views/home/Conversion')
       }
     ]
   }
