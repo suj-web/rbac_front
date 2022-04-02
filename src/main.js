@@ -15,6 +15,7 @@ import moment from 'vue-moment';
 import mavonEditor from 'mavon-editor'
 import 'mavon-editor/dist/css/index.css'
 import iconPicker from 'vue-fontawesome-elementui-icon-picker';
+import * as echarts from "echarts";
 
 Vue.config.productionTip = false
 
@@ -28,6 +29,7 @@ Vue.prototype.$getRequest = getRequest;
 Vue.prototype.$putRequest = putRequest;
 Vue.prototype.$deleteRequest = deleteRequest;
 Vue.prototype.$downloadRequest = downloadRequest;
+Vue.prototype.$echarts = echarts;
 
 router.beforeEach((to, from, next) => {
   if(window.sessionStorage.getItem('tokenStr')) {
