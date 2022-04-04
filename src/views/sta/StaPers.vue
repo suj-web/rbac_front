@@ -116,7 +116,7 @@
       <div slot="header">
         <div>部门员工平均年龄统计</div>
       </div>
-      <bar :data="departmentAverageAges" :width="averageAgeWidth" :name="averageAgeName" :change="true" :key="11"></bar>
+      <bar :data="departmentAverageAges" :width="'1300'" :name="'部门平均年龄'" :key="11"></bar>
     </el-card>
 
     <h4>工龄分析</h4>
@@ -124,7 +124,7 @@
       <div slot="header">
         <div>部门员工平均工龄统计</div>
       </div>
-      <bar :data="departmentAverageWorkAges" :width="averageWorkAgeWidth" :name="averageWorkAgeName" :change="true" :key="12"></bar>
+      <bar :data="departmentAverageWorkAges" :width="'1300'" :name="'部门平均工龄'" :key="12"></bar>
     </el-card>
   </div>
 </template>
@@ -156,11 +156,7 @@ export default {
       averageAge: 0,
       averageWorkAge: 0,
       departmentAverageAges: [],
-      averageAgeName: '部门平均年龄',
-      averageAgeWidth: 1300,
       departmentAverageWorkAges: [],
-      averageWorkAgeName: '部门平均工龄',
-      averageWorkAgeWidth: 1300,
     }
   },
   mounted() {

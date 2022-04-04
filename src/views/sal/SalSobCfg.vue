@@ -43,7 +43,7 @@
             width="120">
         </el-table-column>
         <el-table-column
-            label="所属部门"
+            label="工资账套"
             align="center">
           <template slot-scope="scope">
             <el-tooltip placement="right" v-if="scope.row.salary">

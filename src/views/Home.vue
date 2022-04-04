@@ -1,5 +1,5 @@
 <template>
-  <div style="font-size: 14px!important;">
+  <div>
     <el-container :style="`height:${height-0.1}px`">
       <el-aside :width="isCollapse ? '66px': '200px'">
         <el-menu
@@ -413,7 +413,7 @@ import notice from "@/components/notice";
   }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
   .loginLog {
     display: flex;
     justify-content: center;

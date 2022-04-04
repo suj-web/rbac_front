@@ -28,7 +28,7 @@
           <span>积分占比</span>
           <el-button style="float: right; padding: 3px 0" type="text" icon="el-icon-more"></el-button>
         </div>
-        <pie :data="empScore" :key="1" :name="name" :radius="radius" :width="500" :height="300"></pie>
+        <pie :data="empScore" :key="1" :name="'积分'" :radius="radius" :width="'500'" :height="'300'"></pie>
       </el-card>
       <el-card style="width: 700px">
         <div slot="header">
@@ -93,7 +93,6 @@ export default {
   data() {
     return {
       empScore: [],
-      name: '积分',
       radius: ['44%','60%'],
       empScoreRank: [],
       total: 0,

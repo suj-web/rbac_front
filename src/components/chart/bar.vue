@@ -9,9 +9,9 @@ export default {
   name: "bar",
   props: {
     data: {
-      type: Object,
+      type: Array,
       default() {
-        return '';
+        return [];
       }
     },
     name: {
@@ -25,31 +25,24 @@ export default {
     height: {
       type: String,
       default: '300'
-    },
-    change: {
-      type: Boolean,
-      default: false
     }
   },
   data() {
     return {
-      chart: ''
+      chart: '',
+      barData: []
     }
   },
   watch: {
     data(val) {
       if(val) {
-        if(this.change) {
-          this.changeData();
-        }
+        this.changeData();
         this.initBar();
       }
     }
   },
   mounted() {
-    if(this.change) {
-      this.changeData();
-    }
+    this.changeData();
     this.initBar();
   },
   methods: {
@@ -58,9 +51,14 @@ export default {
       let value = [];
       this.data.forEach(item=>{
         name.push(item.name);
-        value.push(item.average);
+        if(item.value) {
+          value.push(item.value);
+        }
+        if(item.average) {
+          value.push(item.average);
+        }
       })
-      this.data = {
+      this.barData = {
         "name":name,
         "value":value
       };
@@ -97,7 +95,7 @@ export default {
         },
         xAxis: {
           type:"category",//value数据轴, category类目轴
-          data: this.data.name,
+          data: this.barData.name,
           axisLabel: {
             rotate: 60,
           }
@@ -109,7 +107,7 @@ export default {
           name: this.name,
           barWidth: 30,
           type: "bar",
-          data: this.data.value,
+          data: this.barData.value,
           markPoint: {
             data: [
               {
