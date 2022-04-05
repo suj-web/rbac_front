@@ -15,6 +15,7 @@
           </el-button>
         </el-upload>
         <el-button type="primary" @click="exportAttendanceRecord" icon="fa fa-download">&nbsp;导出数据</el-button>
+        <el-button size="small" type="danger" :disabled="this.multipleSelection.length===0" icon="fa fa-trash" @click="deleteMany">&nbsp;批量删除</el-button>
       </div>
       <div>
         <el-select @change="initAttendanceRecords" v-model="searchValue.depId" clearable placeholder="选择部门">
@@ -28,15 +29,16 @@
             style="margin-left: 10px;"
             v-model="searchValue.beginDateScope"
             type="daterange"
+            value-format="yyyy-MM-dd"
             @change="initAttendanceRecords"
             range-separator="至"
             start-placeholder="开始日期"
             end-placeholder="结束日期">
         </el-date-picker>
-        <el-button style="margin-left: 10px;" icon="fa fa-plus" type="primary">&nbsp;新增</el-button>
+        <el-button style="margin-left: 10px;" icon="fa fa-plus" type="primary" @click="showAddView">&nbsp;新增</el-button>
       </div>
     </div>
-    <div>
+    <div style="margin-top: 10px;">
       <el-table
           :data="attendanceRecords"
           border
@@ -54,12 +56,12 @@
         <el-table-column
             property="employee.name"
             label="姓名"
-            width="120">
+            width="100">
         </el-table-column>
         <el-table-column
             property="employee.department.name"
             label="所属部门"
-            width="120">
+            width="100">
         </el-table-column>
         <el-table-column
             property="employee.position.name"
@@ -69,22 +71,30 @@
         <el-table-column
             property="punchInTime"
             label="上班打卡时间"
-            width="180">
+            width="150">
         </el-table-column>
         <el-table-column
             property="punchOutTime"
             label="下班打卡时间"
-            width="180">
+            width="150">
         </el-table-column>
         <el-table-column
             property="personalLeave"
-            label="事假(天)"
+            label="事假"
             width="100">
+          <template slot-scope="scope">
+            <el-tag type="success" size="mini" v-if="!scope.row.personalLeave">未请假</el-tag>
+            <el-tag type="danger" size="mini" v-else>请假</el-tag>
+          </template>
         </el-table-column>
         <el-table-column
             property="sickLeave"
-            label="病假(天)"
+            label="病假"
             width="100">
+          <template slot-scope="scope">
+            <el-tag type="success" size="mini" v-if="!scope.row.sickLeave">未请假</el-tag>
+            <el-tag type="danger" size="mini" v-else>请假</el-tag>
+          </template>
         </el-table-column>
         <el-table-column
             property="absenteeism"
@@ -95,7 +105,105 @@
             <el-tag type="danger" size="mini" v-else>缺勤</el-tag>
           </template>
         </el-table-column>
+        <el-table-column
+            label="操作">
+          <template slot-scope="scope">
+            <el-button size="mini" icon="el-icon-edit" type="primary" @click="showEditView(scope.row)">编辑</el-button>
+            <el-button size="mini" icon="el-icon-delete" type="danger" @click="deleteAttendance(scope.row)">删除</el-button>
+          </template>
+        </el-table-column>
       </el-table>
+      <div style="display: flex;justify-content: flex-end;margin-top: 10px">
+        <el-pagination
+            background
+            @current-change="currentChange"
+            @size-change="sizeChange"
+            layout="sizes, prev, pager, next, jumper, ->, total"
+            :total="total">
+        </el-pagination>
+      </div>
+    </div>
+    <div>
+      <el-dialog
+          :title="title"
+          :visible.sync="dialogVisible"
+          width="40%">
+        <div>
+          <el-form ref="attendanceForm" :model="attendance">
+            <el-row>
+              <el-col :span="12">
+                <el-form-item label="姓名:">
+                  <el-input v-model="attendance.name" prefix-icon="el-icon-edit" placeholder="请输入员工姓名" style="width: 200px"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="工号:">
+                  <el-input v-model="attendance.workId" prefix-icon="el-icon-edit" placeholder="请输入工号" style="width: 200px"></el-input>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="12">
+                <el-form-item label="签到打卡时间">
+                  <el-date-picker
+                      v-model="attendance.punchInTime"
+                      value-format="yyyy-MM-dd HH:mm:ss"
+                      type="datetime"
+                      size="mini"
+                      style="width: 150px"
+                      placeholder="签到打卡时间">
+                  </el-date-picker>
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="签退打卡时间:">
+                  <el-date-picker
+                      v-model="attendance.punchOutTime"
+                      value-format="yyyy-MM-dd HH:mm:ss"
+                      type="datetime"
+                      size="mini"
+                      style="width: 150px"
+                      placeholder="签退打卡时间">
+                  </el-date-picker>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="8">
+                <el-form-item label="事假:">
+                  <el-switch
+                      v-model="attendance.personalLeave"
+                      active-text="是"
+                      inactive-text="否">
+                  </el-switch>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item label="病假:">
+                  <el-switch
+                      v-model="attendance.sickLeave"
+                      active-text="是"
+                      inactive-text="否">
+                  </el-switch>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item label="状态:">
+                  <el-switch
+                      v-model="attendance.absenteeism"
+                      active-text="缺勤"
+                      inactive-text="正常">
+                  </el-switch>
+                </el-form-item>
+              </el-col>
+            </el-row>
+          </el-form>
+        </div>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="dialogVisible = false">取 消</el-button>
+          <el-button type="primary" @click="addAttendance">确 定</el-button>
+        </span>
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -120,7 +228,19 @@ export default {
       importDataDisabled: false,
       importDataBtnText: '导入数据',
       importDataBtnIcon: 'fa fa-upload',
-      multipleSelection: []
+      multipleSelection: [],
+      dialogVisible: false,
+      title: '',
+      attendance: {
+        id: null,
+        workId: '',
+        name: '',
+        punchInTime: null,
+        punchOutTime: null,
+        personalLeave: false,
+        sickLeave: false,
+        absenteeism: false
+      }
     }
   },
   mounted() {
@@ -128,6 +248,100 @@ export default {
     this.initAttendanceRecords();
   },
   methods: {
+    showEditView(data) {
+      this.title = '编辑打卡信息';
+      Object.assign(this.attendance, data);
+      this.attendance.workId = data.employee.workId;
+      this.attendance.name = data.employee.name;
+      this.dialogVisible = !this.dialogVisible;
+    },
+    addAttendance() {
+      if(this.attendance.id) {
+        if (this.attendance.workId && this.attendance.name) {
+          this.$putRequest('/salary/attendance/', this.attendance).then(res => {
+            if (res) {
+              this.initAttendanceRecords();
+              this.dialogVisible = !this.dialogVisible;
+            }
+          })
+        } else {
+          this.$message.error("姓名和工号不能为空");
+        }
+      } else {
+        if (this.attendance.workId && this.attendance.name) {
+          this.$postRequest('/salary/attendance/', this.attendance).then(res => {
+            if (res) {
+              this.initAttendanceRecords();
+              this.dialogVisible = !this.dialogVisible;
+            }
+          })
+        } else {
+          this.$message.error("姓名和工号不能为空");
+        }
+      }
+    },
+    showAddView() {
+      this.title = "添加打卡信息";
+      this.attendance = {
+        id: null,
+        workId: '',
+        name: '',
+        punchInTime: null,
+        punchOutTime: null,
+        personalLeave: false,
+        sickLeave: false,
+        absenteeism: false
+      };
+      this.dialogVisible = !this.dialogVisible;
+    },
+    deleteAttendance(data) {
+      this.$confirm('此操作将彻底删除该条打卡记录, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$deleteRequest('/salary/attendance/' + data.id).then(res => {
+          if (res) {
+            this.initAttendanceRecords();
+          }
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });
+      });
+    },
+    deleteMany() {
+      this.$confirm('此操作将永久删除[' + this.multipleSelection.length + ']条打卡记录, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        let ids = '?';
+        this.multipleSelection.forEach(item=>{
+          ids += 'ids=' + item.id + '&';
+        });
+        this.$deleteRequest('/salary/attendance/' + ids).then(res => {
+          if (res) {
+            this.initAttendanceRecords();
+          }
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });
+      });
+    },
+    sizeChange(size){
+      this.size = size;
+      this.initAttendanceRecords();
+    },
+    currentChange(currentPage){
+      this.currentPage = currentPage;
+      this.initAttendanceRecords();
+    },
     handleSelectionChange(val) {
       this.multipleSelection = val;
     },
@@ -161,13 +375,9 @@ export default {
       }
       if(this.searchValue.beginDateScope) {
         let dateScope = this.searchValue.beginDateScope;
-        let day = (dateScope[1].getTime() - dateScope[0].getTime()) / 24 / 60 / 60 /1000;
+        let day = (new Date(dateScope[1]).getTime() - new Date(dateScope[0]).getTime()) / 24 / 60 / 60 /1000;
         if(day > 31) {
           this.$message.error("请搜索31天内的数据");
-          return;
-        }
-        if(dateScope[1].getTime() > new Date().getTime()){
-          this.$message.error("结束日期不能超过今天");
           return;
         }
         url += '&beginDateScope=' + this.searchValue.beginDateScope;

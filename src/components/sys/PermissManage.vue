@@ -23,7 +23,6 @@
                        show-checkbox
                        :check-strictly="true"
                        :default-checked-keys="selectedMenus"
-                       default-expand-all
                        @check-change="select"
                        node-key="id"
                        ref="tree"
@@ -57,7 +56,7 @@
           label: 'name'
         },
         selectedMenus: [],
-        expandAll: true,//是否展开
+        expandAll: false,//是否展开
         checked: false,//是否全选
         allMenuIds: [],//用于设置全选
         parentMenus: [],//父级资源
@@ -165,7 +164,7 @@
         this.selectedMenus = [];
         this.tempSelected = [];
         this.checked = false;
-        this.expandAll = true;
+        this.expandAll = false;
         if(rid) {
           this.initAllMenus();
           this.initSelectedMenus(rid);
