@@ -133,12 +133,12 @@
             <el-row>
               <el-col :span="12">
                 <el-form-item label="姓名:">
-                  <el-input v-model="attendance.name" prefix-icon="el-icon-edit" placeholder="请输入员工姓名" style="width: 200px"></el-input>
+                  <el-input v-model="attendance.employee.name" prefix-icon="el-icon-edit" placeholder="请输入员工姓名" style="width: 200px"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="12">
                 <el-form-item label="工号:">
-                  <el-input v-model="attendance.workId" prefix-icon="el-icon-edit" placeholder="请输入工号" style="width: 200px"></el-input>
+                  <el-input v-model="attendance.employee.workId" prefix-icon="el-icon-edit" placeholder="请输入工号" style="width: 200px"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -233,8 +233,10 @@ export default {
       title: '',
       attendance: {
         id: null,
-        workId: '',
-        name: '',
+        employee: {
+          workId: '',
+          name: '',
+        },
         punchInTime: null,
         punchOutTime: null,
         personalLeave: false,
@@ -251,13 +253,13 @@ export default {
     showEditView(data) {
       this.title = '编辑打卡信息';
       Object.assign(this.attendance, data);
-      this.attendance.workId = data.employee.workId;
-      this.attendance.name = data.employee.name;
+      this.attendance.employee.workId = data.employee.workId;
+      this.attendance.employee.name = data.employee.name;
       this.dialogVisible = !this.dialogVisible;
     },
     addAttendance() {
       if(this.attendance.id) {
-        if (this.attendance.workId && this.attendance.name) {
+        if (this.attendance.employee.workId && this.attendance.employee.name) {
           this.$putRequest('/salary/attendance/', this.attendance).then(res => {
             if (res) {
               this.initAttendanceRecords();
@@ -268,7 +270,7 @@ export default {
           this.$message.error("姓名和工号不能为空");
         }
       } else {
-        if (this.attendance.workId && this.attendance.name) {
+        if (this.attendance.employee.workId && this.attendance.employee.name) {
           this.$postRequest('/salary/attendance/', this.attendance).then(res => {
             if (res) {
               this.initAttendanceRecords();
@@ -284,8 +286,10 @@ export default {
       this.title = "添加打卡信息";
       this.attendance = {
         id: null,
-        workId: '',
-        name: '',
+        employee: {
+          workId: '',
+          name: '',
+        },
         punchInTime: null,
         punchOutTime: null,
         personalLeave: false,

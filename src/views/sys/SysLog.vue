@@ -61,21 +61,22 @@
       <el-card style="margin-top: 10px">
         <div style="display: flex;justify-content: space-between;">
           <div>
-            <el-button style="padding-right: 8px;padding-left: 8px" type="danger" icon="el-icon-delete" :disabled="this.multipleSelection.length===0" @click="deleteMany">删除</el-button>
-            <el-button style="padding-left: 8px;padding-right: 8px" type="warning" @click="exportData" icon="fa fa-download">导出</el-button>
+            <el-button style="padding:6px 8px" type="danger" icon="el-icon-delete" :disabled="this.multipleSelection.length===0" @click="deleteMany">删除</el-button>
+            <el-button style="padding:6px 8px" type="warning" @click="exportData" icon="fa fa-download">&nbsp;导出</el-button>
           </div>
           <el-button-group>
             <el-tooltip effect="dark" content="隐藏/显示搜索" placement="top">
-              <el-button size="default" icon="fa fa-search" @click="showSearchView = !showSearchView"></el-button>
+              <el-button class="group_button" icon="fa fa-search" @click="showSearchView = !showSearchView"></el-button>
             </el-tooltip>
             <el-tooltip effect="dark" content="刷新" placement="top">
-              <el-button size="default" icon="el-icon-refresh" @click="initOperLogs"></el-button>
+              <el-button class="group_button" icon="el-icon-refresh" @click="initOperLogs"></el-button>
             </el-tooltip>
             <el-tooltip effect="dark" content="列" placement="top">
               <el-popover
                 placement="bottom"
                 trigger="click"
-                width="150">
+                popper-class="my-popover"
+                width="120">
                 <div>
                   <el-checkbox v-model="showField.showModel">系统模块</el-checkbox>
                   <el-checkbox v-model="showField.showType">操作类型</el-checkbox>
@@ -85,7 +86,7 @@
                   <el-checkbox v-model="showField.showGmtCreate">操作时间</el-checkbox>
                   <el-checkbox v-model="showField.showOperation">操作</el-checkbox>
                 </div>
-                <el-button slot="reference" style="border-top-left-radius: 0;border-bottom-left-radius: 0;" size="default" icon="fa fa-th">
+                <el-button class="group_button" slot="reference" style="border-top-left-radius: 0;border-bottom-left-radius: 0;" icon="fa fa-th">
                   <i class="fa fa-caret-down" aria-hidden="true" style="margin-left: 5px"></i>
                 </el-button>
               </el-popover>
@@ -314,7 +315,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
   .el-col .el-input,.el-select{
     margin-left: 10px;
   }
@@ -333,5 +334,18 @@ export default {
     /* .slide-fade-leave-active for below version 2.1.8 */ {
     transform: translateX(10px);
     opacity: 0;
+  }
+  ::v-deep .el-button-group .el-button {
+    padding: 6px 12px;
+    height: 30px;
+    width: 46px;
+  }
+  .group_button {
+    padding: 6px 12px;
+    height: 34px;
+    width: 46px;
+  }
+  .el-popover.my-popover{
+    min-width: 120px;
   }
 </style>

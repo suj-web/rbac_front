@@ -39,11 +39,6 @@
           width="70">
       </el-table-column>
       <el-table-column
-          prop="nation.name"
-          label="民族"
-          width="70">
-      </el-table-column>
-      <el-table-column
           prop="nativePlace"
           label="籍贯"
           width="200">

@@ -511,12 +511,16 @@ import notice from "@/components/notice";
     color: #fff!important;
   }
 
-  .el-menu-item.is-active {
+  ::v-deep .el-menu-item.is-active {
     background: #2d8cf0!important;
     color: #fff!important;
   }
 
   ::v-deep .el-submenu.is-active > .el-submenu__title i {
+    color: #fff !important;
+  }
+
+  ::v-deep .el-submenu.is-active > .el-submenu__title {
     color: #fff !important;
   }
 
