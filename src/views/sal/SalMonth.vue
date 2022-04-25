@@ -2,8 +2,8 @@
   <div>
     <div style="display: flex;justify-content: space-between;align-items: center">
       <div>
-        <el-button type="success" icon="fa fa-lock" :disabled="multipleSelection.length===0"  @click="doLock">&nbsp;锁定账单</el-button>
-        <el-button type="warning" icon="fa fa-unlock" :disabled="multipleSelection.length===0" @click="doUnLock">&nbsp;解锁账单</el-button>
+        <el-button type="success" icon="fa fa-lock" :icon="lockIcon" :disabled="multipleSelection.length===0"  @click="doLock">&nbsp;锁定账单</el-button>
+        <el-button type="warning" icon="fa fa-unlock" :icon="unLockIcon" :disabled="multipleSelection.length===0" @click="doUnLock">&nbsp;解锁账单</el-button>
         <el-button type="primary" @click="exportSalaryTable" icon="fa fa-download">&nbsp;导出账单</el-button>
       </div>
       <div>
@@ -118,7 +118,7 @@
             label="状态"
             width="120">
           <template slot-scope="scope">
-            <el-tag size="mini" type="success" v-if="!scope.row.enabled">未锁定</el-tag>
+            <el-tag size="mini" type="success" v-if="scope.row.enabled">未锁定</el-tag>
             <el-tag size="mini" type="danger" v-else>已锁定</el-tag>
           </template>
         </el-table-column>
@@ -139,11 +139,16 @@
           </template>
         </el-table-column>
         <el-table-column
-            prop="allSalary"
-            label="实发工资">
+            label="是否发放">
           <template slot-scope="scope">
-            <span v-if="settleAccount">{{scope.row.allSalary | toFixed}}</span>
-            <span v-else>暂未发放</span>
+            <div v-if="!scope.row.status">
+              <el-button type="text" size="mini" @click="updateSalTable(scope.row)">
+                <i class="el-icon-edit">发放工资</i>
+              </el-button>
+            </div>
+            <span v-else>
+              <el-tag type="warning" size="mini">已发放</el-tag>
+            </span>
           </template>
         </el-table-column>
       </el-table>
@@ -174,7 +179,9 @@ export default {
       size: 10,
       total: 0,
       settleAccount: false,
-      multipleSelection: []
+      multipleSelection: [],
+      lockIcon: '',
+      unLockIcon: ''
     }
   },
   mounted() {
@@ -182,26 +189,44 @@ export default {
     this.initSalaryTables();
   },
   methods: {
+    updateSalTable(data) {
+      if(!data.enabled) {
+        let salTab = {};
+        Object.assign(salTab, data);
+        salTab.date = null;
+        this.$putRequest('/salary/month/',salTab).then(res=>{
+          if(res) {
+            this.initSalaryTables();
+          }
+        })
+      } else {
+        this.$message.warning('账单未锁定');
+      }
+    },
     exportSalaryTable(){
       this.$downloadRequest('/salary/month/export');
     },
     doUnLock() {
+      this.unLockIcon = 'el-icon-loading';
       let ids = '?';
       this.multipleSelection.forEach(item=>{
         ids += 'ids=' + item.id + '&';
       });
       this.$putRequest('/salary/month/unlock' + ids).then(res => {
+        this.unLockIcon = '';
         if (res) {
           this.initSalaryTables();
         }
       })
     },
     doLock() {
+      this.lockIcon = 'el-icon-loading';
       let ids = '?';
       this.multipleSelection.forEach(item=>{
         ids += 'ids=' + item.id + '&';
       });
       this.$putRequest('/salary/month/lock' + ids).then(res => {
+        this.lockIcon = '';
         if (res) {
           this.initSalaryTables();
         }

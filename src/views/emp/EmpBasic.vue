@@ -93,8 +93,15 @@
         </el-row>
         <el-row style="margin-top: 10px;">
           <el-col :span="7" style="display: inline-flex;align-items: center;">
-            所属部门:
-            <treeselect v-model="searchValue.departmentId" placeholder="所属部门" :normalizer="normalizer" style="width: 240px;margin-left: 5px;" :show-count="true" :options="allDeps" />
+            所属部门:&nbsp;
+<!--            <treeselect v-model="searchValue.departmentId" placeholder="所属部门" :normalizer="normalizer" style="width: 240px;margin-left: 5px;" :show-count="true" :options="allDeps" />-->
+            <el-select clearable size="mini" style="width: 240px" v-model="emp.departmentId" placeholder="所属部门">
+              <el-option v-for="item in allDeps"
+                         :key="item.id"
+                         :label="item.name"
+                         :value="item.id">
+              </el-option>
+            </el-select>
           </el-col>
           <el-col :span="10">
             入职日期:
@@ -483,7 +490,14 @@
           <el-row>
             <el-col :span="8">
               <el-form-item label="所属部门:" prop="departmentId">
-                <treeselect v-model="emp.departmentId" placeholder="所属部门" :normalizer="normalizer" style="width: 240px" :show-count="true" :options="allDeps" />
+                <el-select clearable size="mini" style="width: 240px" v-model="emp.departmentId" placeholder="所属部门">
+                  <el-option v-for="item in allDeps"
+                      :key="item.id"
+                      :label="item.name"
+                      :value="item.id">
+                  </el-option>
+                </el-select>
+<!--                <treeselect v-model="emp.departmentId" placeholder="所属部门" :normalizer="normalizer" style="width: 240px" :show-count="true" :options="allDeps" />-->
               </el-form-item>
             </el-col>
             <el-col :span="8">
@@ -515,11 +529,8 @@
 </template>
 
 <script>
-import Treeselect from '@riophae/vue-treeselect'
-import '@riophae/vue-treeselect/dist/vue-treeselect.css'
   export default {
     name: "EmpBasic",
-    components: { Treeselect },
     data(){
       return {
         advanceSearch: false,
@@ -729,17 +740,17 @@ import '@riophae/vue-treeselect/dist/vue-treeselect.css'
           }
         })
       },
-      // 处理树形结构
-      treeChange (arr) {
-        return arr.map(item => {
-          if (item.children && item.children.length > 0) {
-            this.treeChange(item.children);
-          } else {
-            delete item.children;
-          }
-          return item;
-        })
-      },
+      // // 处理树形结构
+      // treeChange (arr) {
+      //   return arr.map(item => {
+      //     if (item.children && item.children.length > 0) {
+      //       this.treeChange(item.children);
+      //     } else {
+      //       delete item.children;
+      //     }
+      //     return item;
+      //   })
+      // },
       initData(){
         if(!window.sessionStorage.getItem('nations')){
           this.$getRequest('/employee/basic/nations').then(res=>{
@@ -775,7 +786,7 @@ import '@riophae/vue-treeselect/dist/vue-treeselect.css'
         if(!window.sessionStorage.getItem('allDeps')){
           this.$getRequest('/employee/basic/deps').then(res=>{
             if(res){
-              this.allDeps = this.treeChange(res);
+              this.allDeps = res;
               window.sessionStorage.setItem('allDeps',JSON.stringify(res));
             }
           })
@@ -869,23 +880,6 @@ import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 </script>
 
 <style lang="scss" scoped>
-::v-deep .vue-treeselect {
-  display: flex;
-  width: 204px;
-  .vue-treeselect__control {
-    line-height: 28px;
-    height: 28px;
-    .vue-treeselect__value-container {
-      font-size: 12px;
-      .vue-treeselect__placeholder {
-        line-height: 28px;
-      }
-      .vue-treeselect__single-value {
-        line-height: 28px;
-      }
-    }
-  }
-}
 
   /* 可以设置不同的进入和离开动画 */
   /* 设置持续时间和动画函数 */

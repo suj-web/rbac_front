@@ -16,7 +16,7 @@
         <el-input type="password" size="primary" auto-complete="false" v-model="loginForm.password" placeholder="请输入密码" prefix-icon="el-icon-lock"></el-input>
       </el-form-item>
       <el-form-item prop="code">
-        <el-input type="text" size="primary" auto-complete="false" v-model="loginForm.code" placeholder="点击图片更换验证码" prefix-icon="el-icon-circle-check" style="width: 250px;margin-right: 5px"></el-input>
+        <el-input type="text" @keydown.native.enter="submitLogin" size="primary" auto-complete="false" v-model="loginForm.code" placeholder="点击图片更换验证码" prefix-icon="el-icon-circle-check" style="width: 250px;margin-right: 5px"></el-input>
         <img :src="captchaUrl" @click="updateCaptcha"/>
       </el-form-item>
       <el-checkbox v-model="checked" class="loginRemember">记住我</el-checkbox>
@@ -65,8 +65,7 @@ export default {
       this.$refs.form.validate((valid) => {
         if (valid) {
           this.loading = true;
-          this.$postRequest('/login',this.loginForm)
-              .then(res=>{
+          this.$postRequest('/login',this.loginForm).then(res=>{
                 this.loading = false;
                 if(res){
                   //存储用户token

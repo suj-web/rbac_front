@@ -16,7 +16,7 @@
             <span v-else>EIMS</span>
           </h4>
           <el-menu-item index="/home" @click="goHome">
-            <i class="fa fa-home" style="margin-right: 5px"></i>
+            <i class="el-icon-s-home" style="margin-right: 5px;"></i>
             <span slot="title">首页</span>
           </el-menu-item>
           <el-submenu :index="index+''" v-for="(item,index) in routes" :key="index">
@@ -67,7 +67,7 @@
               </span>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item command="userinfo">个人中心</el-dropdown-item>
-                <el-dropdown-item command="setting">设置</el-dropdown-item>
+                <el-dropdown-item><el-link :underline="false" href="http://localhost:8081/doc.html" style="font-size: 12px;" target="_blank">接口文档</el-link></el-dropdown-item>
                 <el-dropdown-item command="logout">注销登录</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>

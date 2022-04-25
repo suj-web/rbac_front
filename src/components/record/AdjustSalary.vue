@@ -39,37 +39,170 @@
           <el-table-column
               type="index"
               label="序号"
-              width="80">
+              width="55">
           </el-table-column>
           <el-table-column
               property="employee.workId"
               label="工号"
-              width="140">
+              width="100">
           </el-table-column>
           <el-table-column
               property="employee.name"
               label="姓名"
-              width="140">
+              width="80">
           </el-table-column>
           <el-table-column
               property="employee.department.name"
               label="部门"
-              width="140">
+              width="100">
           </el-table-column>
           <el-table-column
               property="beforeSalary"
-              label="调前薪资"
+              label="调前工资账套"
               width="140">
+            <template slot-scope="scope">
+              <el-tooltip placement="right">
+                <div slot="content">
+                  <table>
+                    <tr>
+                      <td>基本工资</td>
+                      <td>{{scope.row.beforeSalary.basicSalary}}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>交通补助</td>
+                      <td>{{scope.row.beforeSalary.trafficSalary}}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>午餐补助</td>
+                      <td>{{scope.row.beforeSalary.lunchSalary}}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>养老金比率</td>
+                      <td>{{scope.row.beforeSalary.pensionPer}}</td>
+                    </tr>
+                    <tr>
+                      <td>养老金基数</td>
+                      <td>{{scope.row.beforeSalary.pensionBase}}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>医疗保险比率</td>
+                      <td>{{scope.row.beforeSalary.medicalPer}}</td>
+                    </tr>
+                    <tr>
+                      <td>医疗保险基数</td>
+                      <td>{{scope.row.beforeSalary.medicalBase}}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>公积金比率</td>
+                      <td>
+                        {{scope.row.beforeSalary.accumulationFundPer}}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>公积金基数</td>
+                      <td>
+                        {{scope.row.beforeSalary.accumulationFundBase}}
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+                <el-tag>{{scope.row.beforeSalary.name}}</el-tag>
+              </el-tooltip>
+            </template>
+          </el-table-column>
+          <el-table-column
+              label="调前薪资"
+              width="100">
+            <template slot-scope="scope">
+              <span>{{scope.row.beforeSalary | computeSalary}}</span>
+            </template>
           </el-table-column>
           <el-table-column
               property="afterSalary"
-              label="调后薪资"
+              label="调后工资账套"
               width="140">
+            <template slot-scope="scope">
+              <el-tooltip placement="right">
+                <div slot="content">
+                  <table>
+                    <tr>
+                      <td>基本工资</td>
+                      <td>{{scope.row.afterSalary.basicSalary}}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>交通补助</td>
+                      <td>{{scope.row.afterSalary.trafficSalary}}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>午餐补助</td>
+                      <td>{{scope.row.afterSalary.lunchSalary}}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>养老金比率</td>
+                      <td>{{scope.row.afterSalary.pensionPer}}</td>
+                    </tr>
+                    <tr>
+                      <td>养老金基数</td>
+                      <td>{{scope.row.afterSalary.pensionBase}}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>医疗保险比率</td>
+                      <td>{{scope.row.afterSalary.medicalPer}}</td>
+                    </tr>
+                    <tr>
+                      <td>医疗保险基数</td>
+                      <td>{{scope.row.afterSalary.medicalBase}}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>公积金比率</td>
+                      <td>
+                        {{scope.row.afterSalary.accumulationFundPer}}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>公积金基数</td>
+                      <td>
+                        {{scope.row.afterSalary.accumulationFundBase}}
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+                <el-tag>{{scope.row.afterSalary.name}}</el-tag>
+              </el-tooltip>
+            </template>
+          </el-table-column>
+          <el-table-column
+              label="调后薪资"
+              width="100">
+            <template slot-scope="scope">
+              <span>{{scope.row.afterSalary | computeSalary}}</span>
+            </template>
           </el-table-column>
           <el-table-column
               property="reason"
               label="调薪原因"
-              width="250">
+              :show-overflow-tooltip="true"
+              width="150">
+          </el-table-column>
+          <el-table-column
+              property="remark"
+              label="备注"
+              :show-overflow-tooltip="true"
+              width="150">
+            <template slot-scope="scope">
+              <span v-if="''!==scope.row.remark && null !==scope.row.remark">{{scope.row.remark}}</span>
+              <span v-else>暂无</span>
+            </template>
           </el-table-column>
           <el-table-column
               property="asDate"
@@ -113,29 +246,147 @@
             <el-descriptions-item>
               <template slot="label">
                 <i class="fa fa-jpy"></i>
-                调前薪资
+                调前工资账套
               </template>
-              {{item.beforeSalary}}
+              <el-tooltip placement="right">
+                <div slot="content">
+                  <table>
+                    <tr>
+                      <td>基本工资</td>
+                      <td>{{item.beforeSalary.basicSalary}}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>交通补助</td>
+                      <td>{{item.beforeSalary.trafficSalary}}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>午餐补助</td>
+                      <td>{{item.beforeSalary.lunchSalary}}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>养老金比率</td>
+                      <td>{{item.beforeSalary.pensionPer}}</td>
+                    </tr>
+                    <tr>
+                      <td>养老金基数</td>
+                      <td>{{item.beforeSalary.pensionBase}}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>医疗保险比率</td>
+                      <td>{{item.beforeSalary.medicalPer}}</td>
+                    </tr>
+                    <tr>
+                      <td>医疗保险基数</td>
+                      <td>{{item.beforeSalary.medicalBase}}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>公积金比率</td>
+                      <td>
+                        {{item.beforeSalary.accumulationFundPer}}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>公积金基数</td>
+                      <td>
+                        {{item.beforeSalary.accumulationFundBase}}
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+                <el-tag>{{item.beforeSalary.name}}</el-tag>
+              </el-tooltip>
+            </el-descriptions-item>
+            <el-descriptions-item>
+              <template slot="label">
+                <i class="fa fa-money"></i>
+                调前工资
+              </template>
+              <span>{{item.beforeSalary | computeSalary}}</span>
             </el-descriptions-item>
             <el-descriptions-item>
               <template slot="label">
                 <i class="fa fa-jpy"></i>
-                调后薪资
+                调后工资账套
               </template>
-              {{item.afterSalary}}
+              <el-tooltip placement="right">
+                <div slot="content">
+                  <table>
+                    <tr>
+                      <td>基本工资</td>
+                      <td>{{item.afterSalary.basicSalary}}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>交通补助</td>
+                      <td>{{item.afterSalary.trafficSalary}}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>午餐补助</td>
+                      <td>{{item.afterSalary.lunchSalary}}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>养老金比率</td>
+                      <td>{{item.afterSalary.pensionPer}}</td>
+                    </tr>
+                    <tr>
+                      <td>养老金基数</td>
+                      <td>{{item.afterSalary.pensionBase}}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>医疗保险比率</td>
+                      <td>{{item.afterSalary.medicalPer}}</td>
+                    </tr>
+                    <tr>
+                      <td>医疗保险基数</td>
+                      <td>{{item.afterSalary.medicalBase}}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>公积金比率</td>
+                      <td>
+                        {{item.afterSalary.accumulationFundPer}}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>公积金基数</td>
+                      <td>
+                        {{item.afterSalary.accumulationFundBase}}
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+                <el-tag>{{item.afterSalary.name}}</el-tag>
+              </el-tooltip>
+            </el-descriptions-item>
+            <el-descriptions-item>
+              <template slot="label">
+                <i class="fa fa-money"></i>
+                调后工资
+              </template>
+              <span>{{item.afterSalary | computeSalary}}</span>
+            </el-descriptions-item>
+            <el-descriptions-item>
+              <template slot="label">
+                <i class="fa fa-calendar"></i>
+                调薪日期
+              </template>
+              {{item.asDate}}
             </el-descriptions-item>
             <el-descriptions-item>
               <template slot="label">
                 <i class="el-icon-tickets"></i>
                 备注
               </template>
-              {{item.remark}}
-            </el-descriptions-item>
-            <el-descriptions-item>
-              <template slot="label">
-                调薪日期
-              </template>
-              {{item.asDate}}
+              <span v-if="''!==item.remark && null!==item.remark">{{item.remark}}</span>
+              <span v-else>暂无</span>
             </el-descriptions-item>
             <el-descriptions-item>
               <template slot="label">
@@ -212,6 +463,15 @@ export default {
           this.total = res.total;
         }
       })
+    }
+  },
+  filters: {
+    computeSalary(data) {
+      let salary = data.basicSalary + data.lunchSalary + data.trafficSalary
+          + data.pensionBase * data.pensionPer
+          + data.medicalBase * data.medicalPer
+          + data.accumulationFundBase * data.accumulationFundPer;
+      return salary.toFixed(2);
     }
   }
 }

@@ -56,6 +56,7 @@
           label: 'name'
         },
         selectedMenus: [],
+        allRoleSelectedMenus: [],//所有角色对应的资源id
         expandAll: false,//是否展开
         checked: false,//是否全选
         allMenuIds: [],//用于设置全选
@@ -68,6 +69,7 @@
       this.initRoles();
       this.initAllMenuIds();
       this.initParentMenus();
+      this.initSelectedMenus();
     },
     methods: {
       select(data, check, child){//选中子节点时,父结点全选,最顶层父结点不选时,子节点全都不选
@@ -153,10 +155,10 @@
           }
         })
       },
-      initSelectedMenus(rid) {
-        this.$getRequest('/system/basic/permission/resId/'+rid).then(res=>{
+      initSelectedMenus() {
+        this.$getRequest('/system/basic/permission/role/resIds').then(res=>{
           if(res) {
-            this.selectedMenus = res;
+            this.allRoleSelectedMenus = res;
           }
         })
       },
@@ -167,7 +169,13 @@
         this.expandAll = false;
         if(rid) {
           this.initAllMenus();
-          this.initSelectedMenus(rid);
+          // this.initSelectedMenus(rid);
+          for(let i = 0; i < this.allRoleSelectedMenus.length; i++) {
+            if(rid === this.allRoleSelectedMenus[i].roleId) {
+              this.selectedMenus = this.allRoleSelectedMenus[i].resIds;
+              break;
+            }
+          }
           //获取当前展开面板的index
           for(let i = 0; i < this.roles.length; i++) {
             if(rid === this.roles[i].id) {
@@ -176,6 +184,8 @@
           }
         } else {
           this.currentIndex = -1;
+          this.checked = false;
+          this.expandAll = false;
         }
       },
       initAllMenus() {
@@ -193,7 +203,7 @@
         })
       },
       initAllMenuIds() {
-        this.$getRequest('/system/basic/permission/resId').then(res=>{
+        this.$getRequest('/system/basic/permission/resId/list').then(res=>{
           if(res) {
             this.allMenuIds = res;
           }

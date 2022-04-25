@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div>
+    <div style="width: 98%;margin: 1% 1%">
       <transition name="slide-fade">
         <el-card v-show="showSearchView">
           <el-row>
@@ -30,13 +30,9 @@
         </el-card>
       </transition>
     </div>
-    <div>
+    <div style="width: 98%;margin: 1% 1%;">
       <el-card style="margin-top: 10px">
-        <div style="display: flex;justify-content: space-between;">
-          <div>
-            <el-button style="padding: 6px 8px" type="primary" icon="el-icon-plus" @click="showAddView">申请调薪</el-button>
-            <el-button style="padding: 6px 8px" type="danger" icon="el-icon-delete" :disabled="this.multipleSelection.length===0" @click="deleteMany">批量删除</el-button>
-          </div>
+        <div style="display: flex;justify-content: flex-end;">
           <el-button-group>
             <el-tooltip effect="dark" content="隐藏/显示搜索" placement="top">
               <el-button class="group_button" icon="fa fa-search" @click="showSearchView = !showSearchView"></el-button>
@@ -56,11 +52,12 @@
                   <el-checkbox v-model="showField.depName">所属部门</el-checkbox>
                   <el-checkbox v-model="showField.beforeSalary">调前工资账套</el-checkbox>
                   <el-checkbox v-model="showField.beforeComputeSalary">调前工资</el-checkbox>
-                  <el-checkbox v-model="showField.afterSalary">调后工资账套</el-checkbox>
-                  <el-checkbox v-model="showField.afterComputeSalary">调后工资</el-checkbox>
-                  <el-checkbox v-model="showField.applyDate">申请日期</el-checkbox>
+                  <el-checkbox v-model="showField.afterSalary">申请工资账套</el-checkbox>
+                  <el-checkbox v-model="showField.afterComputeSalary">申请工资</el-checkbox>
+                  <el-checkbox v-model="showField.asDate">调薪日期</el-checkbox>
                   <el-checkbox v-model="showField.reason">原因</el-checkbox>
                   <el-checkbox v-model="showField.remark">备注</el-checkbox>
+                  <el-checkbox v-model="showField.isAdjust">状态</el-checkbox>
                   <el-checkbox v-model="showField.showOperation">操作</el-checkbox>
                 </div>
                 <el-button slot="reference" class="group_button" style="border-top-left-radius: 0;border-bottom-left-radius: 0;" icon="fa fa-th">
@@ -168,7 +165,7 @@
           </el-table-column>
           <el-table-column
               property="afterSalary"
-              label="调后工资账套"
+              label="申请工资账套"
               v-if="showField.afterSalary"
               width="140">
             <template slot-scope="scope">
@@ -227,7 +224,7 @@
             </template>
           </el-table-column>
           <el-table-column
-              label="调后薪资"
+              label="申请薪资"
               v-if="showField.afterComputeSalary"
               width="100">
             <template slot-scope="scope">
@@ -235,21 +232,10 @@
             </template>
           </el-table-column>
           <el-table-column
-              property="gmtCreate"
+              property="asDate"
               width="100"
-              v-if="showField.applyDate"
-              :formatter="dateTimeFormat"
-              label="申请日期">
-          </el-table-column>
-          <el-table-column
-              property="status"
-              width="100"
-              label="审核状态">
-            <template slot-scope="scope">
-              <el-tag v-if="scope.row.status===0" type="primary" size="mini">待审核</el-tag>
-              <el-tag v-else-if="scope.row.status===1" type="success" size="mini">已通过</el-tag>
-              <el-tag v-else type="danger" size="mini">未通过</el-tag>
-            </template>
+              v-if="showField.asDate"
+              label="调薪日期">
           </el-table-column>
           <el-table-column
               property="reason"
@@ -270,15 +256,34 @@
             </template>
           </el-table-column>
           <el-table-column
+              prop="isAdjust"
+              label="状态"
+              width="100">
+            <template slot-scope="scope">
+              <el-tag v-if="!scope.row.isAdjust" size="mini" type="warning">待调薪</el-tag>
+              <el-tag v-else size="mini" type="primary">已调薪</el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column
               v-if="showField.showOperation"
               width="120"
+              fixed="right"
               label="操作">
             <template slot-scope="scope">
-<!--              <el-link :underline="false" type="danger" @click="deleteAdjustSalary(scope.row.id)" icon="fa fa-remove" style="padding: 4px 5px">&nbsp;删除</el-link>-->
-<!--              <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteAdjustSalary(scope.row.id)">删除</el-button>-->
-              <el-button type="text" size="mini" @click="deleteAdjustSalary(scope.row.id)">
-                <i class="el-icon-delete">删除</i>
-              </el-button>
+              <!--              <el-link :underline="false" type="danger" @click="deleteAdjustSalary(scope.row.id)" icon="fa fa-remove" style="padding: 4px 5px">&nbsp;删除</el-link>-->
+              <!--              <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteAdjustSalary(scope.row.id)">删除</el-button>-->
+              <div v-if="scope.row.status===0">
+                <el-button type="text" size="mini" @click="updateAdjustSal(scope.row, 1)">
+                  <i class="el-icon-edit">批准</i>
+                </el-button>
+                <el-button type="text" size="mini" @click="updateAdjustSal(scope.row, 2)">
+                  <i class="el-icon-delete">驳回</i>
+                </el-button>
+              </div>
+              <div v-else>
+                <el-tag size="mini" type="success" v-if="scope.row.status===1">已通过</el-tag>
+                <el-tag size="mini" type="danger" v-else-if="scope.row.status===2">未通过</el-tag>
+              </div>
             </template>
           </el-table-column>
         </el-table>
@@ -292,65 +297,13 @@
           </el-pagination>
         </div>
       </el-card>
-      <el-dialog
-          style="border-radius: 15%"
-          :title="title"
-          width="60%"
-          :visible.sync="dialogVisible">
-        <el-form :rules="rules" ref="adjustSalaryForm" :model="adjustSalaryForm" label-width="100px">
-          <el-row>
-            <el-col :span="12">
-              <el-form-item label="工号" prop="employee.workId">
-                <el-input @blur="getEmpByWorkId" @keydown.enter.native="getEmpByWorkId" placeholder="请输入员工工号" style="width: 240px;" v-model="adjustSalaryForm.employee.workId">
-                  <el-button slot="append" icon="el-icon-search" @click="getEmpByWorkId"></el-button>
-                </el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item label="员工姓名" prop="employee.name">
-                <el-input style="width: 240px;" v-model="adjustSalaryForm.employee.name" placeholder="请输入员工姓名"></el-input>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="12">
-              <el-form-item label="调整账套" prop="afterSalaryId">
-                <el-select style="width: 240px;margin-left: -1px" v-model="adjustSalaryForm.afterSalaryId" clearable placeholder="选择工资账套">
-                  <el-option v-for="item in allSals"
-                             :label="item.name"
-                             :value="item.id"
-                             :key="item.id">
-                  </el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item label="调薪原因">
-                <el-input style="width: 240px;" v-model="adjustSalaryForm.reason" placeholder="请输入调薪原因"></el-input>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="24">
-              <el-form-item label="备注">
-<!--                <mavon-editor v-if="trainForm.id" :key="trainForm.id" v-model="trainForm.remark"/>-->
-                <mavon-editor v-model="adjustSalaryForm.remark" />
-              </el-form-item>
-            </el-col>
-          </el-row>
-        </el-form>
-        <span slot="footer" class="dialog-footer">
-          <el-button @click="dialogVisible = false">取 消</el-button>
-          <el-button type="primary" @click="doAdd">确 定</el-button>
-        </span>
-      </el-dialog>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: "PerSalary",
+  name: "AdjustSalApply",
   data() {
     return {
       allDeps: [],
@@ -372,29 +325,12 @@ export default {
         beforeComputeSalary: true,
         afterSalary: true,
         afterComputeSalary: true,
-        applyDate: true,
+        asDate: true,
         reason: true,
         remark: true,
+        isAdjust: true,
         showOperation: true
-      },
-      multipleSelection: [],
-      title: '',
-      dialogVisible: false,
-      adjustSalaryForm: {
-        employee: {
-          name: '',
-          workId: ''
-        },
-        afterSalaryId: null,
-        reason: '',
-        remark: ''
-      },
-      rules: {
-        'employee.name': [{required: true, message: '请输入员工姓名', trigger: 'blur'}],
-        'employee.workId': [{required: true, message: '请输入工号', trigger: 'blur'}],
-        afterSalaryId: [{required: true, message: '请选择工资账套', trigger: 'blur'}]
-      },
-      adjustBeforeSalaryId: null
+      }
     }
   },
   mounted() {
@@ -403,97 +339,13 @@ export default {
     this.initAllSals();
   },
   methods: {
-    dateTimeFormat(row, column) {
-      var date = row[column.property];
-      if (date === undefined) {
-        return "";
-      }
-      return this.$moment(date).format("YYYY-MM-DD");
-    },
-    doAdd() {
-      this.$refs['adjustSalaryForm'].validate(valid=>{
-        if(valid) {
-          if(this.adjustBeforeSalaryId != this.adjustSalaryForm.afterSalaryId) {
-            this.adjustSalaryForm.beforeSalaryId = this.adjustBeforeSalaryId;
-            this.$postRequest('/personnel/salary/', this.adjustSalaryForm).then(res => {
-              if (res) {
-                this.initAdjustSalarys();
-                this.dialogVisible = false;
-                this.adjustBeforeSalaryId = null;
-              }
-            })
-          } else {
-            this.$message.warning('工资账套未修改');
-          }
+    updateAdjustSal(data, status) {
+      data.status = status;
+      this.$putRequest('/personnel/salary/',data).then(res=>{
+        if(res) {
+          this.initAdjustSalarys();
         }
       })
-    },
-    showAddView(data) {
-      this.title = '申请调薪';
-      this.adjustSalaryForm = {
-        employee: {
-          name: '',
-              workId: ''
-        },
-        afterSalaryId: null,
-        reason: '',
-        remark: ''
-      }
-      this.dialogVisible = true;
-    },
-    getEmpByWorkId() {
-      if(this.adjustSalaryForm.employee.workId) {
-        this.$getRequest('/personnel/salary/employee?workId='+this.adjustSalaryForm.employee.workId).then(res => {
-          if (res) {
-            this.adjustSalaryForm.employee.name = res.name;
-            this.adjustSalaryForm.afterSalaryId = res.salaryId;
-            this.adjustBeforeSalaryId = res.salaryId;
-          } else {
-            this.adjustSalaryForm.afterSalaryId = null;
-            this.adjustSalaryForm.employee.name = '';
-          }
-        })
-      }
-    },
-    deleteMany() {
-      this.$confirm('此操作将永久删除【' + this.multipleSelection.length + '】条调薪记录, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        let ids = '?';
-        this.multipleSelection.forEach(item=>{
-          ids += 'ids=' + item.id + '&';
-        });
-        this.$deleteRequest('/personnel/salary/' + ids).then(res => {
-          if (res) {
-            this.initAdjustSalarys();
-          }
-        })
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消删除'
-        });
-      });
-    },
-    deleteAdjustSalary(id) {
-      this.$confirm('此操作将永久删除【' + id + '】调薪记录, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        this.$deleteRequest('/personnel/salary/' + id).then(res => {
-          if (res) {
-            this.initAdjustSalarys();
-          }
-        })
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消删除'
-        });
-      });
     },
     currentChange(val) {
       this.currentPage = val;

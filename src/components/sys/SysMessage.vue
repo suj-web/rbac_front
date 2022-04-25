@@ -56,11 +56,11 @@
           <el-table-column
               prop="title"
               label="公告标题"
-              width="450">
+              width="350">
           </el-table-column>
           <el-table-column
               label="公告类型"
-              width="80">
+              width="120">
             <template slot-scope="scope">
               <el-tag size="mini" type="success" style="border-radius: 4px" v-if="!scope.row.type">公告</el-tag>
               <el-tag size="mini" type="warning" style="border-radius: 4px" v-else>通知</el-tag>
@@ -69,10 +69,16 @@
           <el-table-column
               prop="enabled"
               label="状态"
-              width="100">
+              width="150">
             <template slot-scope="scope">
-              <el-tag size="mini" type="success" style="border-radius: 4px" v-if="scope.row.enabled">正常</el-tag>
-              <el-tag size="mini" type="danger" style="border-radius: 4px" v-else>关闭</el-tag>
+              <el-switch
+                  v-model="scope.row.enabled"
+                  active-color="#13ce66"
+                  inactive-color="#ff4949"
+                  @change="enabledChange(scope.row)">
+              </el-switch>
+<!--              <el-tag size="mini" type="success" style="border-radius: 4px" v-if="scope.row.enabled">正常</el-tag>-->
+<!--              <el-tag size="mini" type="danger" style="border-radius: 4px" v-else>关闭</el-tag>-->
             </template>
           </el-table-column>
           <el-table-column
@@ -133,7 +139,7 @@
         </el-form>
         <span slot="footer" class="dialog-footer">
           <el-button @click="dialogVisible = false">取 消</el-button>
-          <el-button type="primary" @click="doAddSysMsg">确 定</el-button>
+          <el-button type="primary" @click="doAddOrUpdateSysMsg">确 定</el-button>
         </span>
       </el-dialog>
     </div>
@@ -166,6 +172,7 @@
         size: 10,
         multipleSelection: [],
         sysMsgForm: {
+          id: null,
           title: '',
           content: '',
           type: false,
@@ -183,7 +190,14 @@
       this.initSysMsg();
     },
     methods: {
-      doAddSysMsg() {
+      enabledChange(data) {
+        this.$putRequest('/system/cfg/system/message',data).then(res=>{
+          if(res) {
+            this.initSysMsg();
+          }
+        })
+      },
+      doAddOrUpdateSysMsg() {
         if(this.sysMsgForm.id) {
           this.$refs['sysMsg'].validate(valid=>{
             if(valid){

@@ -37,8 +37,7 @@ export const downloadRequest = (url, params) => {
   })
 }
 function uintToString(uintArray) {
-  let encodedString = String.fromCharCode.apply(null, new
-    Uint8Array(uintArray)),
+  let encodedString = String.fromCharCode.apply(null, new Uint8Array(uintArray)),
     decodedString = decodeURIComponent(escape(encodedString));
   return JSON.parse(decodedString);
 }

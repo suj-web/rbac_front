@@ -73,7 +73,6 @@
         </div>
         <el-table
             :data="empEcs"
-            border
             stripe
             style="width: 100%;margin-top: 10px"
             @selection-change="handleSelectionChange">
@@ -139,8 +138,14 @@
               v-if="showField.showOperation"
               label="操作">
             <template slot-scope="scope">
-              <el-button type="primary" icon="el-icon-edit" size="mini" @click="showEditView(scope.row)">编辑</el-button>
-              <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteEc(scope.row.id)">删除</el-button>
+              <el-button type="text" size="mini" @click="showEditView(scope.row)">
+                <i class="el-icon-edit">编辑</i>
+              </el-button>
+              <el-button type="text" size="mini" @click="deleteEc(scope.row.id)">
+                <i class="el-icon-delete">删除</i>
+              </el-button>
+<!--              <el-button type="primary" icon="el-icon-edit" size="mini" @click="showEditView(scope.row)">编辑</el-button>-->
+<!--              <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteEc(scope.row.id)">删除</el-button>-->
             </template>
           </el-table-column>
         </el-table>
@@ -455,5 +460,8 @@ export default {
 }
 .el-popover.my-popover{
   min-width: 120px;
+}
+.el-select {
+  margin-left: -1px;
 }
 </style>

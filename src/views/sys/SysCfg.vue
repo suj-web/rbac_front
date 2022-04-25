@@ -37,13 +37,13 @@
               prop="browser"
               label="浏览器"
               align="left"
-              width="160">
+              width="200">
           </el-table-column>
           <el-table-column
               prop="os"
               label="操作系统"
               align="left"
-              width="140">
+              width="120">
           </el-table-column>
           <el-table-column
               label="登录时间"

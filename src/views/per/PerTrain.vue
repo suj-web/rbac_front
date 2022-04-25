@@ -124,13 +124,23 @@
               v-if="showField.remark"
               :show-overflow-tooltip="true"
               width="200">
+            <template slot-scope="scope">
+              <span v-if="scope.row.remark">{{scope.row.remark}}</span>
+              <span v-else>暂无备注</span>
+            </template>
           </el-table-column>
           <el-table-column
               v-if="showField.showOperation"
               label="操作">
             <template slot-scope="scope">
-              <el-button type="primary" icon="el-icon-edit" size="mini" @click="showEditView(scope.row)">编辑</el-button>
-              <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteTrain(scope.row.id)">删除</el-button>
+<!--              <el-button type="primary" icon="el-icon-edit" size="mini" @click="showEditView(scope.row)">编辑</el-button>-->
+              <el-button type="text" size="mini" @click="showEditView(scope.row)">
+                <i class="el-icon-edit">编辑</i>
+              </el-button>
+<!--              <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteTrain(scope.row.id)">删除</el-button>-->
+              <el-button type="text" size="mini" @click="deleteTrain(scope.row.id)">
+                <i class="el-icon-delete">删除</i>
+              </el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -351,6 +361,7 @@ export default {
         depId: null,
         localDate: null
       };
+      this.initEmpTrains();
     },
     initEmpTrains() {
       let url = '/personnel/train/?currentPage=' + this.currentPage + '&size=' + this.size;

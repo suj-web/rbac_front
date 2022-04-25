@@ -15,20 +15,21 @@
       <el-table
           :data="salaryTables"
           stripe
-          style="width: 100%">
+          style="width: 100%;margin-top: 10px;">
         <el-table-column
             type="selection"
             width="55">
         </el-table-column>
         <el-table-column
+            prop="employee.workId"
+            label="工号"
+            fixed
+            width="120">
+        </el-table-column>
+        <el-table-column
             prop="employee.name"
             label="姓名"
             width="100">
-        </el-table-column>
-        <el-table-column
-            prop="employee.workId"
-            label="工号"
-            width="120">
         </el-table-column>
         <el-table-column
             prop="employee.department.name"
@@ -41,69 +42,70 @@
             width="120">
         </el-table-column>
         <el-table-column
-            prop="salary"
-            label="工资账套"
-            width="200">
-          <template slot-scope="scope">
-            <el-tooltip placement="right" v-if="scope.row.salary">
-              <div slot="content">
-                <table>
-                  <tr>
-                    <td>基本工资</td>
-                    <td>{{scope.row.salary.basicSalary}}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>交通补助</td>
-                    <td>{{scope.row.salary.trafficSalary}}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>午餐补助</td>
-                    <td>{{scope.row.salary.lunchSalary}}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>养老金比率</td>
-                    <td>{{scope.row.salary.pensionPer}}</td>
-                  </tr>
-                  <tr>
-                    <td>养老金基数</td>
-                    <td>{{scope.row.salary.pensionBase}}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>医疗保险比率</td>
-                    <td>{{scope.row.salary.medicalPer}}</td>
-                  </tr>
-                  <tr>
-                    <td>医疗保险基数</td>
-                    <td>{{scope.row.salary.medicalBase}}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>公积金比率</td>
-                    <td>
-                      {{scope.row.salary.accumulationFundPer}}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>公积金基数</td>
-                    <td>
-                      {{scope.row.salary.accumulationFundBase}}
-                    </td>
-                  </tr>
-                </table>
-              </div>
-              <el-tag>{{scope.row.salary.name}}</el-tag>
-            </el-tooltip>
-            <el-tag v-else>暂未设置</el-tag>
-          </template>
+            prop="salary.basicSalary"
+            label="基本工资"
+            width="100">
         </el-table-column>
         <el-table-column
-            prop="date"
-            label="账单月份"
-            width="150">
+            prop="salary.trafficSalary"
+            label="交通补助"
+            width="100">
+        </el-table-column>
+        <el-table-column
+            prop="salary.lunchSalary"
+            label="午餐补助"
+            width="100">
+        </el-table-column>
+        <el-table-column
+            align="center"
+            label="养老金">
+          <el-table-column
+              prop="salary.pensionPer"
+              label="比率"
+              width="70">
+            <template slot-scope="scope">
+              <span>{{scope.row.salary.pensionPer | toFixed}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+              prop="salary.pensionBase"
+              label="基数"
+              width="70">
+          </el-table-column>
+        </el-table-column>
+        <el-table-column
+            align="center"
+            label="医疗保险">
+          <el-table-column
+              prop="salary.medicalPer"
+              label="比率"
+              width="70">
+            <template slot-scope="scope">
+              <span>{{scope.row.salary.medicalPer | toFixed}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+              prop="salary.medicalBase"
+              label="基数"
+              width="70">
+          </el-table-column>
+        </el-table-column>
+        <el-table-column
+            align="center"
+            label="公积金">
+          <el-table-column
+              prop="salary.accumulationFundPer"
+              label="比率"
+              width="70">
+            <template slot-scope="scope">
+              <span>{{scope.row.salary.accumulationFundPer | toFixed}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+              prop="salary.accumulationFundBase"
+              label="基数"
+              width="70">
+          </el-table-column>
         </el-table-column>
         <el-table-column
             prop="bonus"
@@ -114,35 +116,32 @@
           </template>
         </el-table-column>
         <el-table-column
-            prop="allSalary"
-            label="应发工资"
-            width="150">
+            prop="attendanceDeduction"
+            label="考勤扣款"
+            width="100">
           <template slot-scope="scope">
-            {{scope.row.allSalary | toFixed}}
+            {{scope.row.attendanceDeduction | toFixed}}
           </template>
         </el-table-column>
         <el-table-column
-            label="操作">
+            prop="leaveDeduction"
+            label="请假扣款"
+            width="100">
           <template slot-scope="scope">
-            <el-popover
-                placement="left"
-                @show="showPop(scope.row.salary)"
-                @hide="hidePop(scope.row)"
-                title="编辑工资账套"
-                width="200"
-                trigger="click">
-              <div>
-                <el-select v-model="currentSalary" placeholder="请选择" size="mini">
-                  <el-option
-                      v-for="item in salaries"
-                      :key="item.id"
-                      :label="item.name"
-                      :value="item.id">
-                  </el-option>
-                </el-select>
-              </div>
-              <el-button slot="reference" type="danger" icon="el-icon-edit">修改工资账套</el-button>
-            </el-popover>
+            {{scope.row.leaveDeduction | toFixed}}
+          </template>
+        </el-table-column>
+        <el-table-column
+            prop="date"
+            label="账单月份"
+            width="150">
+        </el-table-column>
+        <el-table-column
+            prop="allSalary"
+            label="应发工资"
+            width="120">
+          <template slot-scope="scope">
+            {{scope.row.allSalary | toFixed}}
           </template>
         </el-table-column>
       </el-table>
