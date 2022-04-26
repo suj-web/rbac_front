@@ -1,4 +1,13 @@
 import {request} from "./request";
+import {download} from "./download";
+
+export const downloadRequest = (url, params)=>{
+  return download({
+    url: `${url}`,
+    method: 'get',
+    data: params
+  })
+}
 
 export const postRequest = (url, params)=>{
   return request({

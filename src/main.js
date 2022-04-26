@@ -10,7 +10,7 @@ import {putRequest} from "./network/api"
 import {getRequest} from "./network/api";
 import {deleteRequest} from "./network/api";
 import {initMenu} from "@/network/menu";
-import {downloadRequest} from "@/network/download";
+import {downloadRequest} from "@/network/api";
 import moment from 'vue-moment';
 import mavonEditor from 'mavon-editor'
 import 'mavon-editor/dist/css/index.css'

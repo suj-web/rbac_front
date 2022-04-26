@@ -15,6 +15,10 @@
       <el-table
           :data="salaryTables"
           stripe
+          v-loading="loading"
+          element-loading-text="拼命加载中"
+          element-loading-spinner="el-icon-loading"
+          element-loading-background="rgba(0, 0, 0, 0.8)"
           style="width: 100%;margin-top: 10px;">
         <el-table-column
             type="selection"
@@ -173,7 +177,8 @@ export default {
       total: 0,
       currentSalaryTables: [],
       currentSalary: null,
-      salaries: []
+      salaries: [],
+      loading: false
     }
   },
   mounted() {
@@ -182,23 +187,6 @@ export default {
     this.initSalaries();
   },
   methods: {
-    hidePop(data) {
-      if (!data.salary || this.currentSalary && this.currentSalary !== data.salary.id)
-      {
-        this.$putRequest('/salary/table/?employeeId=' + data.employee.id + '&salaryId=' + this.currentSalary).then(res => {
-          if (res) {
-            this.initSalaryTables();
-          }
-        })
-      }
-    },
-    showPop(data) {
-      if (data) {
-        this.currentSalary = data.id;
-      } else {
-        this.currentSalary = null;
-      }
-    },
     currentChange(val) {
       this.currentPage = val;
       this.initSalaryTables();
@@ -208,13 +196,17 @@ export default {
       this.initSalaryTables();
     },
     initSalaryTables() {
+      this.loading = true;
       let url = '/salary/table/?currentPage='+this.currentPage+"&size="+this.size;
       if(this.searchValue.depId) {
         url += "&depId="+this.searchValue.depId;
       }
       this.$getRequest(url).then(res=>{
-        this.salaryTables = res.data;
-        this.total = res.total;
+        this.loading = false;
+        if(res) {
+          this.salaryTables = res.data;
+          this.total = res.total;
+        }
       })
     },
     initAllDeps() {

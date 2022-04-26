@@ -83,7 +83,7 @@
             label="事假"
             width="100">
           <template slot-scope="scope">
-            <el-tag type="success" size="mini" v-if="!scope.row.personalLeave">未请假</el-tag>
+            <el-tag type="primary" size="mini" v-if="!scope.row.personalLeave">未请假</el-tag>
             <el-tag type="danger" size="mini" v-else>请假</el-tag>
           </template>
         </el-table-column>
@@ -92,7 +92,7 @@
             label="病假"
             width="100">
           <template slot-scope="scope">
-            <el-tag type="success" size="mini" v-if="!scope.row.sickLeave">未请假</el-tag>
+            <el-tag type="primary" size="mini" v-if="!scope.row.sickLeave">未请假</el-tag>
             <el-tag type="danger" size="mini" v-else>请假</el-tag>
           </template>
         </el-table-column>

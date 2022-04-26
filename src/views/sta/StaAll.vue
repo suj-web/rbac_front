@@ -178,13 +178,13 @@
                     property="workAttendanceTime"
                     label="签到打卡时间"
                     :formatter="dateTimeFormat"
-                    width="180">
+                    width="120">
                 </el-table-column>
                 <el-table-column
                     property="offDutyAttendanceTime"
                     label="签退打卡时间"
                     :formatter="dateTimeFormat"
-                    width="180">
+                    width="120">
                 </el-table-column>
                 <el-table-column
                     property="personalLeave"
@@ -388,7 +388,7 @@ export default {
       if (date === undefined) {
         return "";
       }
-      return this.$moment(date).format("YYYY-MM-DD HH:mm:ss");
+      return this.$moment(date).format("HH:mm:ss");
     },
     dateFormat(row, column) {
       var date = row[column.property];
