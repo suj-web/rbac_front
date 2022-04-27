@@ -68,6 +68,7 @@
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item command="userinfo">个人中心</el-dropdown-item>
                 <el-dropdown-item><el-link :underline="false" href="http://localhost:8081/doc.html" style="font-size: 12px;" target="_blank">接口文档</el-link></el-dropdown-item>
+                <el-dropdown-item command="codeGenerator">代码生成器</el-dropdown-item>
                 <el-dropdown-item command="logout">注销登录</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
@@ -343,6 +344,9 @@ import notice from "@/components/notice";
         }
         if (command === 'userinfo') {
           this.$router.push('/userinfo');
+        }
+        if(command === 'codeGenerator') {
+          this.$router.push('/codeGenerator')
         }
       },
       goHome() {

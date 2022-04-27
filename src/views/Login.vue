@@ -34,7 +34,7 @@ export default {
   name: "Login",
   data(){
     return {
-      captchaUrl: '/captcha?time='+new Date(),
+      captchaUrl: '/api/captcha?time='+new Date(),
       loginForm: {
         username: '',
         password: '',
@@ -89,7 +89,7 @@ export default {
       });
     },
     updateCaptcha(){
-      this.captchaUrl = '/captcha?time=' + new Date();
+      this.captchaUrl = '/api/captcha?time=' + new Date();
     },
     init(){
       if(window.localStorage.getItem('userInfo')){

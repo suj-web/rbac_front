@@ -6,6 +6,7 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import 'font-awesome/css/font-awesome.css'
 import {postRequest} from "./network/api";
+import {postRequest2} from "./network/api";
 import {putRequest} from "./network/api"
 import {getRequest} from "./network/api";
 import {deleteRequest} from "./network/api";
@@ -16,6 +17,7 @@ import mavonEditor from 'mavon-editor'
 import 'mavon-editor/dist/css/index.css'
 import iconPicker from 'vue-fontawesome-elementui-icon-picker';
 import * as echarts from "echarts";
+import Plugin from 'v-fit-columns';
 
 Vue.config.productionTip = false
 
@@ -23,8 +25,10 @@ Vue.use(ElementUI,{size: 'small'})
 Vue.use(moment);//格式化时间
 Vue.use(mavonEditor);//注册富文本框
 Vue.use(iconPicker);//注册图标选择器
+Vue.use(Plugin);//el-table-column宽带自适应
 
 Vue.prototype.$postRequest = postRequest;
+Vue.prototype.$postRequest2 = postRequest2;
 Vue.prototype.$getRequest = getRequest;
 Vue.prototype.$putRequest = putRequest;
 Vue.prototype.$deleteRequest = deleteRequest;

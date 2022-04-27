@@ -32,6 +32,11 @@ const routes = [
         component: () => import('../views/AdminInfo')
       },
       {
+        path: '/codeGenerator',
+        name: '代码生成器',
+        component: () => import('../views/CodeGenerator')
+      },
+      {
         path: '/online',
         name: '在线用户',
         component: () => import('../views/home/OnlineUser')
