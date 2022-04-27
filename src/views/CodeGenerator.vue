@@ -37,17 +37,24 @@
     <el-table
         :data="tableData"
         stripe
+        size="mini"
         border
+        @selection-change="handleSelectionChange"
         style="width: 100%">
+      <el-table-column
+          type="selection"
+          fixed
+          width="55">
+      </el-table-column>
       <el-table-column
           prop="tableName"
           label="表名称"
-          width="150">
+          width="140">
       </el-table-column>
       <el-table-column
           prop="pojoName"
           label="实体类名称"
-          width="180">
+          width="150">
         <template slot-scope="scope">
           <el-input v-model="scope.row.pojoName"></el-input>
         </template>
@@ -92,8 +99,8 @@
         </template>
       </el-table-column>
     </el-table>
-    <div>
-      <el-button :disabled="tableData==null || tableData.length===0" @click="generateCode" type="success">生成代码</el-button>
+    <div style="margin-top: 10px;">
+      <el-button :disabled="multipleSelection.length===0" @click="generateCode" type="success">生成代码</el-button>
       <div>{{codePath}}</div>
     </div>
   </div>
@@ -121,12 +128,16 @@ export default {
         tablePrefix: 't_',
       },
       tableData: [],
-      codePath: ''
+      codePath: '',
+      multipleSelection: []
     }
   },
   methods: {
+    handleSelectionChange(val) {
+      this.multipleSelection = val;
+    },
     generateCode() {
-      this.$postRequest2('/generateCode',this.tableData).then(res=>{
+      this.$postRequest2('/generateCode',this.multipleSelection).then(res=>{
         if(res) {
           this.codePath = res.obj;
         }
@@ -139,7 +150,7 @@ export default {
             this.tableData = res.obj;
             this.$notify({
               message: res.message,
-              type: res.code==200 ? 'success':'danger'
+              type: res.code==200 ? 'success':'error'
             });
           }
         })
@@ -156,7 +167,7 @@ export default {
           if (res) {
             this.$notify({
               message: res.message,
-              type: res.code==200? 'success':'danger'
+              type: res.code===200 ? 'success':'error'
             });
             this.code = '';
             this.msg = '数据库未连接';

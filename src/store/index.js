@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import {getRequest} from "../network/api";
+import {postRequest} from "../network/api";
 import SockJS from 'sockjs-client'
 import Stomp from 'stompjs'
 import {Notification} from "element-ui";
@@ -33,28 +34,41 @@ const store = new Vuex.Store({
       state.currentSession = currentSession;
       if(currentSession) {
         // Vue.set(state.isDot,state.currentAdmin.username+'#'+state.currentSession.username,false);
-        Vue.set(state.isDot, state.currentAdmin.username+'#'+state.currentSession.username, 0);
+        Vue.set(state.isDot, state.currentAdmin.username+'$'+state.currentSession.username, 0);
       }
     },
     addMessage (state,msg) {//{'zhangsan#lis:[{},{}]'}
-      let mss = state.sessions[state.currentAdmin.username+'#'+msg.to];
+      let mss = state.sessions[state.currentAdmin.username+'$'+msg.to];
       if(!mss){
         // state.sessions[state.currentAdmin.username+'#'+msg.to] = [];
-        Vue.set(state.sessions,state.currentAdmin.username+'#'+msg.to,[]);
+        Vue.set(state.sessions,state.currentAdmin.username+'$'+msg.to,[]);
       }
-      state.sessions[state.currentAdmin.username+'#'+msg.to].push({
+      state.sessions[state.currentAdmin.username+'$'+msg.to].push({
         content:msg.content,
         date: new Date(),
         self: !msg.notSelf
       })
+      let chatContent = {
+        content:msg.content,
+        date: new Date(),
+        self: !msg.notSelf,
+        chat: {
+          chatObj: state.currentAdmin.username+'$'+msg.to
+        }
+      }
+      postRequest('/chat/',chatContent).then(res=>{
+
+      })
     },
     INIT_DATA (state) {
       //浏览器本地的历史聊天记录
-      let data = localStorage.getItem('vue-chat-session');
-      //console.log(data)
-      if (data) {
-        state.sessions = JSON.parse(data);
-      }
+      // let data = localStorage.getItem('vue-chat-session');
+      getRequest('/chat/contents').then(res=>{
+        if (res) {
+          state.sessions = res;
+        }
+      })
+
     },
     INIT_ADMINS(state, data){
       state.admins = data;
@@ -76,11 +90,11 @@ const store = new Vuex.Store({
               position: 'bottom-right'
             })
             // Vue.set(context.state.isDot,context.state.currentAdmin.username+'#'+receiveMsg.from,true);
-            let msgNums = context.state.isDot[context.state.currentAdmin.username+'#'+receiveMsg.from];
+            let msgNums = context.state.isDot[context.state.currentAdmin.username+'$'+receiveMsg.from];
             if(!msgNums) {
               msgNums = 0;
             }
-            Vue.set(context.state.isDot, context.state.currentAdmin.username+'#'+receiveMsg.from, msgNums + 1);
+            Vue.set(context.state.isDot, context.state.currentAdmin.username+'$'+receiveMsg.from, msgNums + 1);
           }
           receiveMsg.notSelf = true;
           receiveMsg.to = receiveMsg.from;

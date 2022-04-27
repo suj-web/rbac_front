@@ -4,7 +4,7 @@
   		<li v-for="item in admins" :class="{ active: currentSession ? item.username === currentSession.username : false }"
           @click="changeCurrentSession(item)"><!--   :class="[item.id === currentSession ? 'active':'']" -->
   			<img class="avatar" :src="item.userFace" :alt="item.name">
-        <el-badge :max="10" :value="isDot[user.username+'#'+item.username] > 0? isDot[user.username+'#'+item.username]: null"><p class="name">{{item.name}}</p></el-badge>
+        <el-badge :max="10" :value="isDot[user.username+'$'+item.username] > 0? isDot[user.username+'$'+item.username]: null"><p class="name">{{item.name}}</p></el-badge>
   		</li>
   	</ul>
   </div>

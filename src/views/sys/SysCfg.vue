@@ -14,7 +14,7 @@
               prop="sessionId"
               label="会话编号"
               align="left"
-              width="260">
+              width="280">
           </el-table-column>
           <el-table-column
               prop="loginName"
@@ -37,7 +37,7 @@
               prop="browser"
               label="浏览器"
               align="left"
-              width="200">
+              width="190">
           </el-table-column>
           <el-table-column
               prop="os"
