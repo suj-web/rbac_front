@@ -25,10 +25,9 @@ export default {
           msgObj.to = this.currentSession.username;
           msgObj.content = this.content;
           this.$store.state.stomp.send('/ws/chat',{},JSON.stringify(msgObj));
-
           this.$store.commit('addMessage',msgObj);
           this.content='';
-
+          this.$emit('scroll');
         } else{
   		    this.$message.info("请选择发送对象");
         }

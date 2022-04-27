@@ -50,7 +50,6 @@ const store = new Vuex.Store({
       })
       let chatContent = {
         content:msg.content,
-        date: new Date(),
         self: !msg.notSelf,
         chat: {
           chatObj: state.currentAdmin.username+'$'+msg.to

@@ -11,10 +11,10 @@
           <el-button style="color: #ccc" type="text" size="mini" icon="el-icon-close" @click="closeChat"></el-button>
         </div>
       </div>
-      <el-scrollbar class="scrollbar">
+      <el-scrollbar ref="myScrollbar" class="scrollbar">
         <message></message>
       </el-scrollbar>
-      <usertext></usertext>
+      <usertext @scroll="scrollDown()"></usertext>
     </div>
   </div>
 </template>
@@ -36,7 +36,7 @@ export default {
   computed: mapState([
     'currentSession'
   ]),
-  mounted:function() {
+  mounted(){
     this.$store.dispatch('initData');
   },
   components:{
@@ -45,7 +45,15 @@ export default {
     message,
     usertext
   },
+  updated() {
+    this.scrollDown();
+  },
   methods: {
+    scrollDown() {
+      this.$nextTick(() => {
+        this.$refs['myScrollbar'].wrap.scrollTop = this.$refs['myScrollbar'].wrap.scrollHeight;
+      })
+    },
     closeChat() {
       this.$router.push('/home');
     }

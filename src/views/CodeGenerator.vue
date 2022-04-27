@@ -99,7 +99,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <div style="margin-top: 10px;">
+    <div style="margin-top: 5px;">
       <el-button :disabled="multipleSelection.length===0" @click="generateCode" type="success">生成代码</el-button>
       <div>{{codePath}}</div>
     </div>

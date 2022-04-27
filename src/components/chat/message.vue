@@ -31,10 +31,48 @@ export default {
   ]),
   filters:{
   	time (date) {
+      let weekDay = ["星期天", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
+      let returnTime = '';
       if (date) {
         date = new Date(date);
       }
-  		return `${date.getHours()}:${date.getMinutes()}`;
+      console.log(date);
+      let year = date.getFullYear();
+      let month = date.getMonth();
+      if(month > 0 && month < 10) {
+        month = '0' + month;
+      }
+      let day = date.getDate();
+      if(day > 0 && day < 10) {
+        day = '0' + day;
+      }
+      let hour = date.getHours();
+      if(hour > 0 && hour < 10) {
+        hour = '0' + hour;
+      } else if(hour===0) {
+        hour = '00';
+      }
+      let minute = date.getMinutes();
+      if(minute > 0 && minute < 10) {
+        minute = '0' + minute;
+      } else if(minute === 0) {
+        minute = '00';
+      }
+      let today = new Date();
+      let subDay = today.getDate() - date.getDate();
+      let subYear = today.getFullYear() - date.getFullYear();
+      if(subDay === 0) {
+        returnTime = hour + ':' + minute;
+      } else if(subDay === 1) {
+        returnTime = '昨天 ' + hour + ':' + minute;
+      } else if(subDay >= 2 && subDay < 7) {
+        returnTime = weekDay[date.getDay()] + ' ' + hour + ':' + minute;
+      } else if(subDay >= 8 && subYear === 0) {
+        returnTime = month + '-' + day + ' ' + hour + ':' + minute;
+      } else {
+        returnTime = year + '-' + month + '-' + day + ' ' + hour + ':' + minute;
+      }
+  		return returnTime;
   	}
   },
   directives: {/*这个是vue的自定义指令,官方文档有详细说明*/
