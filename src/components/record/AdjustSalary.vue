@@ -22,11 +22,11 @@
             </el-select>
           </div>
           <el-button-group>
-            <el-tooltip effect="dark" content="显示列表视图" placement="top">
-              <el-button size="small" icon="fa fa-list" @click="showListView = !showListView"></el-button>
+            <el-tooltip effect="dark" content="显示列表视图" placement="top" popper-class="myPopper">
+              <el-button icon="fa fa-list" @click="showListView = !showListView"></el-button>
             </el-tooltip>
-            <el-tooltip effect="dark" content="刷新" placement="top">
-              <el-button style="height: 34px" size="small" icon="el-icon-refresh" @click="initAdjustSalaryRecords"></el-button>
+            <el-tooltip effect="dark" content="刷新" placement="top" popper-class="myPopper">
+              <el-button style="height: 34px" icon="el-icon-refresh" @click="initAdjustSalaryRecords"></el-button>
             </el-tooltip>
           </el-button-group>
         </div>

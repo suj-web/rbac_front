@@ -59,11 +59,11 @@
     </transition>
     <el-card style="margin-top: 20px">
       <el-button-group style="display: flex;justify-content: flex-end">
-        <el-tooltip effect="dark" content="隐藏/显示搜索" placement="top">
-          <el-button size="default" icon="fa fa-search" @click="showSearchView = !showSearchView"></el-button>
+        <el-tooltip effect="dark" content="隐藏/显示搜索" placement="top" popper-class="myPopper">
+          <el-button icon="fa fa-search" @click="showSearchView = !showSearchView"></el-button>
         </el-tooltip>
-        <el-tooltip effect="dark" content="刷新" placement="top">
-          <el-button size="default" icon="el-icon-refresh" @click="initEmpRemoveRecords"></el-button>
+        <el-tooltip effect="dark" content="刷新" placement="top" popper-class="myPopper">
+          <el-button  icon="el-icon-refresh" @click="initEmpRemoveRecords"></el-button>
         </el-tooltip>
       </el-button-group>
       <div v-if="empRemoveRecords.length>0">

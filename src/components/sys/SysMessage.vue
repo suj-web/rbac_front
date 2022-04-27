@@ -35,7 +35,7 @@
             <el-button size="mini"  icon="fa fa-plus" type="primary" style="padding: 8px 8px" @click="showAddView">&nbsp;添加</el-button>
             <el-button size="mini" icon="fa fa-trash-o" type="danger" style="padding: 8px 8px" :disabled="this.multipleSelection.length===0">&nbsp;删除</el-button>
           </div>
-          <el-tooltip effect="dark" content="刷新" placement="top">
+          <el-tooltip effect="dark" content="刷新" placement="top" popper-class="myPopper">
             <el-button size="mini" icon="el-icon-refresh" @click="initSysMsg"></el-button>
           </el-tooltip>
         </div>

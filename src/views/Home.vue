@@ -44,19 +44,19 @@
           <div style="display: flex;align-items: center">
             <div class="full" @click="full" style="margin-right: 20px;font-size: 14px">
               <!-- 全屏 -->
-              <el-tooltip class="item" effect="dark" content="全屏" placement="bottom">
+              <el-tooltip class="item" effect="dark" content="全屏" placement="bottom" popper-class="myPopper">
                 <span class="el el-icon-full-screen" v-show="!isFull"></span>
               </el-tooltip>
               <!-- 不是全屏 -->
-              <el-tooltip class="item" effect="dark" content="退出全屏" placement="bottom">
-                <span class="el el-icon-aim" v-show="isFull"></span>
+              <el-tooltip class="item" effect="dark" content="退出全屏" placement="bottom" popper-class="myPopper">
+                <span class="el el-icon-full-screen" v-show="isFull"></span>
               </el-tooltip>
             </div>
-            <el-tooltip class="item" effect="dark" content="聊天框" placement="bottom">
-              <el-button icon="el-icon-bell" type="text" size="normal"
-                         style="color: black;margin-right: 20px" @click="goChat">
-              </el-button>
-            </el-tooltip>
+            <div style="margin-right: 20px;">
+              <el-tooltip class="item" effect="dark" content="聊天框" placement="bottom" popper-class="myPopper">
+                <span class="el-icon-bell" @click="goChat"></span>
+              </el-tooltip>
+            </div>
             <el-dropdown trigger="hover" @command="commandHandler">
               <span class="el-dropdown-link">
                 <span style="display: flex;align-items: center">
@@ -66,10 +66,10 @@
                 </span>
               </span>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item command="userinfo">个人中心</el-dropdown-item>
-                <el-dropdown-item><el-link :underline="false" href="http://localhost:8081/doc.html" style="font-size: 12px;" target="_blank">接口文档</el-link></el-dropdown-item>
-                <el-dropdown-item command="codeGenerator">代码生成器</el-dropdown-item>
-                <el-dropdown-item command="logout">注销登录</el-dropdown-item>
+                <el-dropdown-item command="userinfo">&nbsp;<i class="fa fa-user-o"  aria-hidden="true"></i>个人中心</el-dropdown-item>
+                <el-dropdown-item><el-link :underline="false" href="http://localhost:8081/doc.html" style="font-size: 12px;" target="_blank"><i class="fa fa-gg fa-fw" aria-hidden="true"></i>系统接口</el-link></el-dropdown-item>
+                <el-dropdown-item command="codeGenerator"><i class="fa fa-code fa-fw"  aria-hidden="true"></i>代码生成</el-dropdown-item>
+                <el-dropdown-item command="logout">&nbsp;<i class="fa fa-sign-out" aria-hidden="true"></i>注销登录</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
           </div>
@@ -78,121 +78,7 @@
           <el-main>
             <notice :message="message" style="margin-bottom: 10px"></notice>
             <div v-if="this.$route.path==='/home'">
-              <div style="display: flex;justify-content: space-around">
-                <el-card class="homeCard" shadow="always">
-                  <span class="info-box-icon"
-                        style="background-color: #00c0ef !important; color: white;">
-						            <i class="fa fa-child" ></i>
-                  </span>
-                  <div class="info-box-content" @click="goOnline">
-                    <span class="info-box-text"><el-link :underline="false" style="font-weight: bolder;font-size: 16px">在线人数</el-link></span>
-                    <span class="info-box-number">{{this.onlineUserCount}}</span>
-                  </div>
-                </el-card>
-                <el-card class="homeCard" shadow="always">
-                  <span class="info-box-icon"
-                        style="background-color: #00a65a !important; color: white;">
-                    <i class="fa fa-users" aria-hidden="true"></i>
-                  </span>
-                  <div class="info-box-content" @click="goEmp">
-                    <span class="info-box-text"><el-link :underline="false" style="font-weight: bolder;font-size: 16px">员工人数</el-link></span>
-                    <span class="info-box-number">{{this.employeeCount}}</span>
-                  </div>
-                </el-card>
-                <el-card class="homeCard" shadow="always">
-                  <span class="info-box-icon" style="background-color: #f39c12 !important; color: white;">
-                    <i class="fa fa-users" aria-hidden="true"></i></span>
-                  <div class="info-box-content" @click="goContract">
-                    <span class="info-box-text"><el-link :underline="false" style="font-weight: bolder;font-size: 16px">合同到期</el-link></span>
-                    <span class="info-box-number">{{this.contractExpireCount}}</span>
-                  </div>
-                </el-card>
-                <el-card class="homeCard" shadow="always">
-                  <span class="info-box-icon"
-                        style="background-color: darkmagenta !important; color: white;">
-						            <i class="fa fa-volume-control-phone" ></i>
-                  </span>
-                  <div class="info-box-content" @click="goConversion()">
-                    <span class="info-box-text"><el-link :underline="false" style="font-weight: bolder;font-size: 16px">转正提醒</el-link></span>
-                    <span class="info-box-number">{{this.conversionCount}}</span>
-                  </div>
-                </el-card>
-                <el-card class="homeCard" shadow="always">
-                  <span class="info-box-icon" style="background-color: #dd4b39 !important; color: white;">
-                    <i class="fa fa-birthday-cake" aria-hidden="true"></i>
-                  </span>
-                  <div class="info-box-content" @click="goBirthday">
-                    <span class="info-box-text"><el-link :underline="false" style="font-weight: bolder;font-size: 16px">生日提醒</el-link></span>
-                    <span class="info-box-number">{{this.birthdayCount}}</span>
-                  </div>
-                </el-card>
-              </div>
-              <div class="loginLog">
-                <span>登录日志</span>
-              </div>
-              <div class="loginLogContainer">
-                <el-table
-                    :data="loginLogs"
-                    stripe
-                    border>
-                  <el-table-column
-                      prop="sessionId"
-                      label="会话编号"
-                      width="280">
-                  </el-table-column>
-                  <el-table-column
-                      prop="name"
-                      label="登录名称"
-                      width="80">
-                  </el-table-column>
-                  <el-table-column
-                      prop="ip"
-                      label="登录地址"
-                      width="100">
-                  </el-table-column>
-                  <el-table-column
-                      prop="address"
-                      label="登录地点"
-                      width="100">
-                  </el-table-column>
-                  <el-table-column
-                      prop="browser"
-                      label="浏览器"
-                      width="180">
-                  </el-table-column>
-                  <el-table-column
-                      prop="os"
-                      label="操作系统"
-                      width="120">
-                  </el-table-column>
-                  <el-table-column
-                      label="登录状态"
-                      width="70">
-                    <template slot-scope="scope">
-                      <el-tag type="success" size="mini" v-if="scope.row.type">成功</el-tag>
-                      <el-tag type="danger" size="mini" v-else>失败</el-tag>
-                    </template>
-                  </el-table-column>
-                  <el-table-column
-                      prop="operInfo"
-                      label="操作信息"
-                      width="200">
-                  </el-table-column>
-                  <el-table-column
-                      prop="gmtCreate"
-                      label="登录时间">
-                  </el-table-column>
-                </el-table>
-                <div style="display: flex;justify-content: flex-end;margin-top: 10px">
-                  <el-pagination
-                      background
-                      @current-change="currentChange"
-                      @size-change="sizeChange"
-                      layout="sizes, prev, pager, next, jumper, ->, total"
-                      :total="total">
-                  </el-pagination>
-                </div>
-              </div>
+              <HomeMain></HomeMain>
             </div>
             <router-view/>
           </el-main>
@@ -208,12 +94,15 @@
 
 <script>
 import screenfull from "screenfull";
-import {getRequest} from "@/network/api";
+// import {getRequest} from "@/network/api";
 import notice from "@/components/notice";
+import HomeMain from "../components/home/HomeMain";
+import MyPopper from "../components/utils/MyPopper";
   export default {
     name: "Home",
     components: {
-      notice
+      notice,
+      HomeMain,
     },
     data() {
       return {
@@ -223,14 +112,6 @@ import notice from "@/components/notice";
         isFull: false, //是否全屏
         isCollapse: false,//是否折叠菜单
         loginLogs: [], //登录日志
-        currentPage: 1,
-        size: 10,
-        total: 0,
-        onlineUserCount: 0,
-        employeeCount: 0,
-        contractExpireCount: 0,
-        birthdayCount: 0,
-        conversionCount: 0
       }
     },
     computed: {
@@ -247,73 +128,9 @@ import notice from "@/components/notice";
     mounted() {
       this.getUserInfo();
       this.initHeight();
-      this.initLoginLogs();
-      this.initOnlineUserCount();
-      this.initEmployeeCount();
-      this.initContractExpireCount();
-      this.initBirthdayCount();
-      this.initConversionCount();
       this.initCircleSysMsg();
     },
     methods: {
-      goConversion() {
-        this.$router.push('/conversion');
-      },
-      goOnline() {
-        this.$router.push('/online');
-      },
-      goEmp() {
-        this.$router.push('/emp/basic');
-      },
-      goContract() {
-        this.$router.push('/contract');
-      },
-      goBirthday() {
-        this.$router.push('/birthday');
-      },
-      initBirthdayCount() {
-        this.$getRequest('/home/remind/birthday/remind/count').then(res=>{
-          if(res) {
-            this.birthdayCount = res;
-          }
-        })
-      },
-      initContractExpireCount() {
-        this.$getRequest('/home/remind/contract/expire/count').then(res=>{
-          if(res) {
-            this.contractExpireCount = res;
-          }
-        })
-      },
-      initEmployeeCount(){
-        this.$getRequest('/home/remind/employee/count').then(res=>{
-          if(res) {
-            this.employeeCount = res;
-          }
-        })
-      },
-      initOnlineUserCount() {
-        this.$getRequest('/home/remind/online/count').then(res=>{
-          if(res) {
-            this.onlineUserCount = res;
-          }
-        })
-      },
-      initConversionCount() {
-        this.$getRequest('/home/remind/conversion/remind/count').then(res=>{
-          if(res) {
-            this.conversionCount = res;
-          }
-        })
-      },
-      sizeChange(size){
-        this.size = size;
-        this.initLoginLogs();
-      },
-      currentChange(currentPage){
-        this.currentPage = currentPage;
-        this.initLoginLogs();
-      },
       goChat() {
         this.active = '';
         this.opened = [];
@@ -367,7 +184,7 @@ import notice from "@/components/notice";
         this.isCollapse = !this.isCollapse;
       },
       getUserInfo() {
-        getRequest("/admin/info").then(res=> {
+        this.$getRequest("/admin/info").then(res=> {
           if (res) {
             //存入用户信息
             // this.user = res;
@@ -385,14 +202,6 @@ import notice from "@/components/notice";
           })();
         };
       },
-      initLoginLogs() {
-        this.$getRequest('/home/remind/login/log?currentPage='+this.currentPage+"&size="+this.size).then(res=>{
-          if(res) {
-            this.loginLogs = res.data;
-            this.total = res.total;
-          }
-        })
-      },
       initCircleSysMsg() {
         this.$getRequest('/system/cfg/system/message').then(res=>{
           if(res) {
@@ -409,58 +218,15 @@ import notice from "@/components/notice";
         })
       }
     },
-    watch: {
-      height(val) {        //在watch中监听height,浏览器窗口大小变动时自适应高度。
-        this.height = val;
-      }
-    }
+    // watch: {
+    //   height(val) {        //在watch中监听height,浏览器窗口大小变动时自适应高度。
+    //     this.height = val;
+    //   }
+    // }
   }
 </script>
 
 <style lang="scss" scoped>
-  .loginLog {
-    display: flex;
-    justify-content: center;
-    font-size: 20px;
-    font-weight: bold;
-    margin-top: 20px;
-    margin-bottom: 10px
-  }
-  .info-box-number {
-    display: block;
-  }
-  .info-box-text {
-    display: block;
-  }
-  .info-box-content {
-    display: block;
-    margin-left: 10px;
-    font-weight: bold;
-  }
-  ::v-deep .homeCard > .el-card__body {
-    display: flex;
-    align-items: center;
-    padding: 0!important;
-  }
-  ::v-deep .homeCard {
-    margin-left: 10px;
-    margin-right: 10px;
-  }
-  .info-box-icon {
-    display: block;
-    float: left;
-    height: 80px;
-    width: 80px;
-    text-align: center;
-    font-size: 40px;
-    line-height: 80px;
-    background: rgba(0, 0, 0, 0.2);
-  }
-  .homeCard {
-    width: 300px;
-    height: 80px;
-  }
-
   .page-component__scroll {
     overflow-y: hidden;
   }
@@ -533,5 +299,4 @@ import notice from "@/components/notice";
     height: 32px;
     border-radius: 50%;
   }
-
 </style>

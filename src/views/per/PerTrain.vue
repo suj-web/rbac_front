@@ -42,18 +42,18 @@
             <el-button style="padding: 6px 8px" type="danger" icon="el-icon-delete" :disabled="this.multipleSelection.length===0" @click="deleteMany">批量删除</el-button>
           </div>
           <el-button-group>
-            <el-tooltip effect="dark" content="隐藏/显示搜索" placement="top">
+            <el-tooltip effect="dark" content="隐藏/显示搜索" placement="top" popper-class="myPopper">
               <el-button class="group_button" icon="fa fa-search" @click="showSearchView = !showSearchView"></el-button>
             </el-tooltip>
-            <el-tooltip effect="dark" content="刷新" placement="top">
+            <el-tooltip effect="dark" content="刷新" placement="top" popper-class="myPopper">
               <el-button class="group_button" icon="el-icon-refresh" @click="initEmpTrains"></el-button>
             </el-tooltip>
-            <el-tooltip effect="dark" content="列" placement="top">
+            <el-tooltip effect="dark" content="列" placement="top" popper-class="myPopper">
               <el-popover
                   placement="bottom"
                   trigger="click"
                   popper-class="my-popover"
-                  :width="120">
+                  :width="100">
                 <div>
                   <el-checkbox v-model="showField.name">员工姓名</el-checkbox>
                   <el-checkbox v-model="showField.workId">工号</el-checkbox>
@@ -425,5 +425,10 @@ export default {
 }
 .el-popover.my-popover{
   min-width: 100px;
+}
+
+.el-tooltip__popper[x-placement^="top"] .popper__arrow:after, .el-tooltip__popper[x-placement^="top"] .popper__arrow {
+  border-top-color: #6c6c6c;
+  opacity: 1;
 }
 </style>
