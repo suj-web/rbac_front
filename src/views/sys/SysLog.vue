@@ -314,8 +314,25 @@ export default {
   }
 }
 </script>
-
 <style>
+.el-popover.my-popover{
+  min-width: 100px;
+}
+.myPopper.el-tooltip__popper {
+  background: #6c6c6c;
+  padding: 3px 6px;
+  height: 15px;
+  line-height: 15px;
+}
+.myPopper.el-tooltip__popper.is-dark {
+  background: #6c6c6c;
+}
+.el-tooltip__popper[x-placement^="top"] .popper__arrow:after, .el-tooltip__popper[x-placement^="top"] .popper__arrow {
+  border-top-color: #6c6c6c;
+  opacity: 1;
+}
+</style>
+<style scoped>
   .el-col .el-input,.el-select{
     margin-left: 10px;
   }
@@ -345,7 +362,5 @@ export default {
     height: 34px;
     width: 46px;
   }
-  .el-popover.my-popover{
-    min-width: 100px;
-  }
+
 </style>

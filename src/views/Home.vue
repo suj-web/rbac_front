@@ -76,11 +76,13 @@
         </el-header>
         <el-scrollbar class="scrollbar">
           <el-main>
-            <notice :message="message" style="margin-bottom: 10px"></notice>
-            <div v-if="this.$route.path==='/home'">
-              <HomeMain></HomeMain>
+            <notice :message="message" style="margin-bottom: 10px;"></notice>
+            <div style="margin-top: 40px;">
+              <div v-if="this.$route.path==='/home'">
+                <HomeMain></HomeMain>
+              </div>
+              <router-view/>
             </div>
-            <router-view/>
           </el-main>
         </el-scrollbar>
         <el-backtop
@@ -94,10 +96,8 @@
 
 <script>
 import screenfull from "screenfull";
-// import {getRequest} from "@/network/api";
 import notice from "@/components/notice";
 import HomeMain from "../components/home/HomeMain";
-import MyPopper from "../components/utils/MyPopper";
   export default {
     name: "Home",
     components: {
@@ -111,7 +111,7 @@ import MyPopper from "../components/utils/MyPopper";
         opened: [],//当前打开的目录
         isFull: false, //是否全屏
         isCollapse: false,//是否折叠菜单
-        loginLogs: [], //登录日志
+        loginLogs: [] //登录日志
       }
     },
     computed: {
@@ -225,7 +225,21 @@ import MyPopper from "../components/utils/MyPopper";
     // }
   }
 </script>
-
+<style>
+.myPopper.el-tooltip__popper {
+  background: #6c6c6c;
+  padding: 3px 6px;
+  height: 15px;
+  line-height: 15px;
+}
+.myPopper.el-tooltip__popper.is-dark {
+  background: #6c6c6c;
+}
+.el-tooltip__popper[x-placement^="bottom"] .popper__arrow:after, .el-tooltip__popper[x-placement^="bottom"] .popper__arrow {
+  border-bottom-color: #6c6c6c;
+  opacity: 1;
+}
+</style>
 <style lang="scss" scoped>
   .page-component__scroll {
     overflow-y: hidden;

@@ -8,7 +8,8 @@
         <el-button
             class="emotionSelect"
             slot="reference"
-        ><i class="fa fa-smile-o" style="font-size: 20px;"></i></el-button>
+            type="text"
+        ><i class="fa fa-smile-o" style="font-size: 20px;color: #9C9898"></i></el-button>
       </el-popover>
     </div>
     <textarea id="textarea" placeholder="按 Ctrl + Enter 发送" v-model="content" v-on:keyup="addMessage"></<textarea name="" id="" cols="30" rows="10"></textarea>>
@@ -102,6 +103,9 @@ export default {
   	border: none;
   	outline: none;
   }
+}
+.chatIcon {
+  margin-left: 10px;
 }
 .emotionList{
   display: flex;

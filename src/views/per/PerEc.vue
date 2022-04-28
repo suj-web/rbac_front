@@ -426,8 +426,16 @@ export default {
   }
 }
 </script>
-
 <style>
+.el-tooltip__popper[x-placement^="top"] .popper__arrow:after, .el-tooltip__popper[x-placement^="top"] .popper__arrow {
+  border-top-color: #6c6c6c;
+  opacity: 1;
+}
+.el-popover.my-popover{
+  min-width: 100px;
+}
+</style>
+<style scoped>
 .el-col .el-input,.el-select{
   margin-left: 10px;
 }
@@ -457,9 +465,6 @@ export default {
   padding: 6px 12px;
   height: 34px;
   width: 46px;
-}
-.el-popover.my-popover{
-  min-width: 100px;
 }
 .el-select {
   margin-left: -1px;
