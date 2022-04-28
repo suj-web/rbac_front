@@ -5,9 +5,9 @@
   			<p class="time">
   				<span>{{entry.date | time}}</span>
   			</p>
-  			<div class="main" :class="{self:entry.self}">
+  			<div class="main" :class="{self:entry.self,noself:!entry.self}">
   				<img class="avatar" :src="entry.self ? user.userFace : currentSession.userFace" alt="">
-  				<p class="text" style="border: 1px solid #ddd">{{entry.content}}</p>
+  				<div :class="{chatBox_left:!entry.self,chatBox_right:entry.self}" style="border: 1px solid #ddd">{{entry.content}}</div>
   			</div>
   		</li>
   	</ul>
@@ -120,14 +120,6 @@ export default {
   		height: 30px;
 
   	}
-  	.text {
-  		display: inline-block;
-  		padding: 0 10px;
-  		max-width: 80%;
-  		background-color: #fafafa;
-      border-radius: 4px;
-      line-height: 30px;
-  	}
   }
   .self {
     text-align: right;
@@ -138,15 +130,48 @@ export default {
       width: 30px;
       height: 30px;
     }
-    .text {
-      border: 1px solid #ccc;
-      display: inline-block;
-      padding: 0 10px;
-      max-width: 80%;
-      background-color: #b2e281;
-      border-radius: 4px;
-      line-height: 30px;
-    }
   }
+}
+.chatBox_right::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 0;
+  right: -20px;
+  top:5px;
+  border: 10px solid;
+  border-color: transparent transparent transparent #b2e281;
+}
+.chatBox_right {
+  border: 1px solid #b2e281;
+  position: relative;
+  padding: 0 10px;
+  max-width: 80%;
+  background-color: #b2e281;
+  border-radius: 4px;
+  line-height: 30px;
+  margin: 12px;
+  display: inline-block;
+}
+.chatBox_left::before{
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 0;
+  left: -20px;
+  top:5px;
+  border: 10px solid;
+  border-color: transparent white transparent transparent ;
+}
+.chatBox_left{
+  border: 1px solid white!important;
+  position: relative;
+  padding: 0 10px;
+  max-width: 80%;
+  background-color: white;
+  border-radius: 4px;
+  line-height: 30px;
+  margin: 12px;
+  display: inline-block;
 }
 </style>
