@@ -44,16 +44,16 @@
           <div style="display: flex;align-items: center">
             <div class="full" @click="full" style="margin-right: 20px;font-size: 14px">
               <!-- 全屏 -->
-              <el-tooltip class="item" effect="dark" content="全屏" placement="bottom" popper-class="myPopper">
+              <el-tooltip class="item" effect="dark" content="全屏" placement="bottom" popper-class="headPopper">
                 <span class="el el-icon-full-screen" v-show="!isFull"></span>
               </el-tooltip>
               <!-- 不是全屏 -->
-              <el-tooltip class="item" effect="dark" content="退出全屏" placement="bottom" popper-class="myPopper">
+              <el-tooltip class="item" effect="dark" content="退出全屏" placement="bottom" popper-class="headPopper">
                 <span class="el el-icon-full-screen" v-show="isFull"></span>
               </el-tooltip>
             </div>
             <div style="margin-right: 20px;">
-              <el-tooltip class="item" effect="dark" content="聊天框" placement="bottom" popper-class="myPopper">
+              <el-tooltip class="item" effect="dark" content="聊天框" placement="bottom" popper-class="headPopper">
                 <span class="el-icon-bell" @click="goChat"></span>
               </el-tooltip>
             </div>
@@ -226,16 +226,16 @@ import HomeMain from "../components/home/HomeMain";
   }
 </script>
 <style>
-.myPopper.el-tooltip__popper {
+.headPopper.el-tooltip__popper {
   background: #6c6c6c;
   padding: 3px 6px;
   height: 15px;
   line-height: 15px;
 }
-.myPopper.el-tooltip__popper.is-dark {
+.headPopper.el-tooltip__popper.is-dark {
   background: #6c6c6c;
 }
-.el-tooltip__popper[x-placement^="bottom"] .popper__arrow:after, .el-tooltip__popper[x-placement^="bottom"] .popper__arrow {
+.headPopper.el-tooltip__popper[x-placement^="bottom"] .popper__arrow:after, .headPopper.el-tooltip__popper[x-placement^="bottom"] .popper__arrow {
   border-bottom-color: #6c6c6c;
   opacity: 1;
 }

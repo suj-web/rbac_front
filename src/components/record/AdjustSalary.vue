@@ -22,10 +22,10 @@
             </el-select>
           </div>
           <el-button-group>
-            <el-tooltip effect="dark" content="显示列表视图" placement="top" popper-class="myPopper">
+            <el-tooltip effect="dark" content="显示列表视图" placement="top" popper-class="adjustPopper">
               <el-button icon="fa fa-list" @click="showListView = !showListView"></el-button>
             </el-tooltip>
-            <el-tooltip effect="dark" content="刷新" placement="top" popper-class="myPopper">
+            <el-tooltip effect="dark" content="刷新" placement="top" popper-class="adjustPopper">
               <el-button style="height: 34px" icon="el-icon-refresh" @click="initAdjustSalaryRecords"></el-button>
             </el-tooltip>
           </el-button-group>
@@ -476,7 +476,21 @@ export default {
   }
 }
 </script>
-
+<style>
+.adjustPopper.el-tooltip__popper {
+  background: #6c6c6c;
+  padding: 3px 6px;
+  height: 15px;
+  line-height: 15px;
+}
+.adjustPopper.el-tooltip__popper.is-dark {
+  background: #6c6c6c;
+}
+.adjustPopper.el-tooltip__popper[x-placement^="top"] .popper__arrow:after, .adjustPopper.el-tooltip__popper[x-placement^="top"] .popper__arrow {
+  border-top-color: #6c6c6c;
+  opacity: 1;
+}
+</style>
 <style scoped>
   .margin-top {
     margin-top: 20px;
