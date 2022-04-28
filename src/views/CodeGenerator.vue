@@ -14,7 +14,7 @@
         </el-input>
       </el-form-item>
       <el-form-item>
-        <el-row>
+        <el-row style="width:100%">
           <el-col :span="4" :offset="2">
             <el-button size="mini" type="primary" @click="onConnect">连接数据库</el-button>
             <span style="margin-left:10px;color: #ff0114;font-weight: bold" v-if="code===500">*{{msg}}*</span>

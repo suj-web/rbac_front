@@ -77,7 +77,7 @@
         <el-scrollbar class="scrollbar">
           <el-main>
             <notice :message="message" style="margin-bottom: 10px;"></notice>
-            <div style="margin-top: 40px;">
+            <div style="margin-top: 10px;">
               <div v-if="this.$route.path==='/home'">
                 <HomeMain></HomeMain>
               </div>
@@ -93,7 +93,6 @@
     </el-container>
   </div>
 </template>
-
 <script>
 import screenfull from "screenfull";
 import notice from "@/components/notice";
@@ -106,6 +105,7 @@ import HomeMain from "../components/home/HomeMain";
     },
     data() {
       return {
+        // user: null,
         height: document.documentElement.clientHeight,
         active: this.$route.path,//当前激活菜单
         opened: [],//当前打开的目录
@@ -239,6 +239,7 @@ import HomeMain from "../components/home/HomeMain";
   border-bottom-color: #6c6c6c;
   opacity: 1;
 }
+
 </style>
 <style lang="scss" scoped>
   .page-component__scroll {
