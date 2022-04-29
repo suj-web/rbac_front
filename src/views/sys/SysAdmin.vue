@@ -1,7 +1,7 @@
 <template>
   <div>
     <div style="display: flex;justify-content: center;margin-top: 10px">
-      <el-input v-model="keywords" size="small" placeholder="通过用户名搜索用户..." prefix-icon="el-icon-search"
+      <el-input clearable v-model="keywords" size="small" placeholder="通过用户名搜索用户..." prefix-icon="el-icon-search"
                 style="width: 400px;margin-right: 10px" @keydown.enter.native="doSearch"></el-input>
       <el-button size="small" type="primary" icon="el-icon-search" @click="doSearch">搜索</el-button>
     </div>

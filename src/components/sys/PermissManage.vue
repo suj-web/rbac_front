@@ -1,15 +1,15 @@
 <template>
   <div>
     <div class="permissManaTool">
-      <el-input size="small" placeholder="请输入角色英文名" v-model="role.name">
+      <el-input clearable size="small" placeholder="请输入角色英文名" v-model="role.name">
         <template slot="prepend">ROLE_</template>
       </el-input>
-      <el-input size="small" v-model="role.nameZh" placeholder="请输入角色中文名"></el-input>
+      <el-input clearable size="small" v-model="role.nameZh" placeholder="请输入角色中文名"></el-input>
       <el-button size="small" type="primary" icon="el-icon-plus" @click="addRole">添加角色</el-button>
     </div>
     <div class="permissManaMain">
-      <el-collapse accordion @change="change" v-model="activeName">
-        <el-collapse-item :title="r.nameZh" :name="r.id" v-for="(r, index) in roles">
+      <el-collapse accordion @change="doChange" v-model="activeName">
+        <el-collapse-item :title="r.nameZh" :name="r.id" v-for="(r, index) in roles" :key="index">
           <el-card class="box-card">
             <div slot="header" class="clearfix">
               <span style="margin-right: 20px">数据权限:</span>
@@ -21,10 +21,9 @@
               <el-tree :data="allMenus"
                        :props="defaultProps"
                        show-checkbox
-                       :check-strictly="true"
                        :default-checked-keys="selectedMenus"
-                       @check-change="select"
                        node-key="id"
+                       :default-expand-all="false"
                        ref="tree"
                        :key="index"></el-tree>
               <div style="display: flex; justify-content: flex-end">
@@ -56,50 +55,52 @@
           label: 'name'
         },
         selectedMenus: [],
-        allRoleSelectedMenus: [],//所有角色对应的资源id
+        // allRoleSelectedMenus: [],//所有角色对应的资源id
         expandAll: false,//是否展开
         checked: false,//是否全选
         allMenuIds: [],//用于设置全选
-        parentMenus: [],//父级资源
-        currentIndex: -1,//当前展开面板的index
-        tempSelected: []//中间变量
+        // parentMenus: [],//父级资源
+        // currentIndex: -1,//当前展开面板的index
+        // tempSelected: []//中间变量
       }
     },
     mounted() {
       this.initRoles();
       this.initAllMenuIds();
-      this.initParentMenus();
+      // this.initParentMenus();
+      this.initAllMenus();
       this.initSelectedMenus();
     },
     methods: {
-      select(data, check, child){//选中子节点时,父结点全选,最顶层父结点不选时,子节点全都不选
-        if(check) {
-          this.tempSelected = [];
-          Object.assign(this.tempSelected, this.selectedMenus);
-          this.parentMenus.forEach(item=>{
-            if(item.id === data.id) {
-              while (item) {
-                this.tempSelected.push(item.id);
-                item = item.parent;
-              }
-            }
-          })
-          this.$refs.tree[this.currentIndex].setCheckedKeys(Array.from(new Set(this.tempSelected)));
-          this.selectedMenus = [];
-          Object.assign(this.selectedMenus, Array.from(new Set(this.tempSelected)));
-        } else {
-          if(data.parentId === -1) {
-            this.tempSelected = [];
-            this.selectedMenus = [];
-            this.$refs.tree[this.currentIndex].setCheckedKeys([]);
-          } else {
-            this.selectedMenus.splice(this.selectedMenus.indexOf(data.id),1);
-          }
-        }
-      },
+      // select(data, check, child){//选中子节点时,父结点全选,最顶层父结点不选时,子节点全都不选
+      //   if(check) {
+      //     this.tempSelected = [];
+      //     Object.assign(this.tempSelected, this.selectedMenus);
+      //     this.parentMenus.forEach(item=>{
+      //       if(item.id === data.id) {
+      //         while (item) {
+      //           this.tempSelected.push(item.id);
+      //           item = item.parent;
+      //         }
+      //       }
+      //     })
+      //     this.$refs.tree[this.currentIndex].setCheckedKeys(Array.from(new Set(this.tempSelected)));
+      //     this.selectedMenus = [];
+      //     Object.assign(this.selectedMenus, Array.from(new Set(this.tempSelected)));
+      //   } else {
+      //     if(data.parentId === -1) {
+      //       this.tempSelected = [];
+      //       this.selectedMenus = [];
+      //       this.$refs.tree[this.currentIndex].setCheckedKeys([]);
+      //     } else {
+      //       this.selectedMenus.splice(this.selectedMenus.indexOf(data.id),1);
+      //     }
+      //   }
+      // },
       onSelectedAll(index){
         this.checked = !this.checked;
         if(this.checked) {
+          console.log(this.allMenuIds);
           this.$refs.tree[index].setCheckedKeys(this.allMenuIds);
         } else {
           this.$refs.tree[index].setCheckedKeys([]);
@@ -134,6 +135,8 @@
           this.$postRequest('/system/basic/permission/role',this.role).then(res=>{
             if(res) {
               this.initRoles();
+              this.role.nameZh='';
+              this.role.name='';
             }
           })
         }
@@ -144,14 +147,21 @@
       doUpdate(rid, index) {
         let tree = this.$refs.tree[index];
         let selectedKeys = tree.getCheckedKeys(false);
+        let halfSelectedKeys = tree.getHalfCheckedKeys(false);
+        console.log(selectedKeys);
+        console.log(halfSelectedKeys);
         let url = '/system/basic/permission/?roleId=' + rid;
         selectedKeys.forEach(item=>{
+          url += '&ids=' + item;
+        })
+        halfSelectedKeys.forEach(item=>{
           url += '&ids=' + item;
         })
         this.$putRequest(url).then(res=>{
           if(res) {
             this.initRoles();
             this.activeName = -1;
+            this.initSelectedMenus();
           }
         })
       },
@@ -162,30 +172,20 @@
           }
         })
       },
-      change(rid){
+      doChange(rid){
+        console.log('change');
         this.selectedMenus = [];
-        this.tempSelected = [];
+        // this.tempSelected = [];
         this.checked = false;
         this.expandAll = false;
         if(rid) {
           this.initAllMenus();
-          // this.initSelectedMenus(rid);
           for(let i = 0; i < this.allRoleSelectedMenus.length; i++) {
             if(rid === this.allRoleSelectedMenus[i].roleId) {
               this.selectedMenus = this.allRoleSelectedMenus[i].resIds;
               break;
             }
           }
-          //获取当前展开面板的index
-          for(let i = 0; i < this.roles.length; i++) {
-            if(rid === this.roles[i].id) {
-              this.currentIndex = i;
-            }
-          }
-        } else {
-          this.currentIndex = -1;
-          this.checked = false;
-          this.expandAll = false;
         }
       },
       initAllMenus() {
@@ -206,13 +206,6 @@
         this.$getRequest('/system/basic/permission/resId/list').then(res=>{
           if(res) {
             this.allMenuIds = res;
-          }
-        })
-      },
-      initParentMenus() {
-        this.$getRequest('/system/basic/permission/parent/').then(res=>{
-          if(res) {
-            this.parentMenus = res;
           }
         })
       }

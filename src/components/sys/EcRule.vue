@@ -1,9 +1,9 @@
 <template>
   <div>
     <div>
-      <el-input size="small" v-model="ecRule.ecReason" placeholder="添加奖惩原因" prefix-icon="el-icon-plus"
+      <el-input clearable size="small" v-model="ecRule.ecReason" placeholder="添加奖惩原因" prefix-icon="el-icon-plus"
                 style="width: 300px;"></el-input>
-      <el-input size="small" v-model="ecRule.score" placeholder="奖惩得分" style="margin-right: 8px;margin-left: 8px;width: 300px;"></el-input>
+      <el-input clearable size="small" v-model="ecRule.score" placeholder="奖惩得分" style="margin-right: 8px;margin-left: 8px;width: 300px;"></el-input>
       <el-button size="small" type="primary" icon="el-icon-plus" @click="addJobLevel">添加</el-button>
     </div>
     <div style="margin-top: 10px">

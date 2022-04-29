@@ -2,6 +2,7 @@
   <div>
     <div style="width: 500px;">
       <el-input
+          clearable
           size="small"
           placeholder="输入部门进行过滤.."
           prefix-icon="el-icon-search"

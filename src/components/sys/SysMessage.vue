@@ -5,15 +5,15 @@
         <el-row>
           <el-col :span="6">
             公告标题:
-            <el-input v-model="searchValue.title" style="width: 200px"></el-input>
+            <el-input clearable v-model="searchValue.title" style="width: 200px"></el-input>
           </el-col>
           <el-col :span="6">
             操作人员:
-            <el-input v-model="searchValue.creator" style="width: 200px"></el-input>
+            <el-input clearable v-model="searchValue.creator" style="width: 200px"></el-input>
           </el-col>
           <el-col :span="6">
             公告类型:
-            <el-select v-model="searchValue.type">
+            <el-select clearable v-model="searchValue.type">
               <el-option v-for="item in types"
                          :key="item.value"
                          :label="item.label"

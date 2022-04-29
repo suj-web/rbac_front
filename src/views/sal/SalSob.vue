@@ -112,7 +112,7 @@
         <el-steps :active="activeItemIndex" direction="vertical">
           <el-step :title="itemName" v-for="(itemName,index) in salaryItemName" :key="index"></el-step>
         </el-steps>
-        <el-input v-model="salary[title]" :placeholder="'请输入'+salaryItemName[index]+'...'"
+        <el-input clearable v-model="salary[title]" :placeholder="'请输入'+salaryItemName[index]+'...'"
                   v-for="(value,title,index) in salary" :key="index"
                   v-show="activeItemIndex===index" style="width: 200px">
         </el-input>
@@ -149,15 +149,15 @@ export default {
       ],
       salary: {
         name: '',
-        basicSalary: 0,
-        trafficSalary: 0,
-        lunchSalary: 0,
-        pensionPer: 0,
-        pensionBase: 0,
-        medicalPer: 0,
-        medicalBase: 0,
-        accumulationFundPer: 0,
-        accumulationFundBase: 0
+        basicSalary: null,
+        trafficSalary: null,
+        lunchSalary: null,
+        pensionPer: null,
+        pensionBase: null,
+        medicalPer: null,
+        medicalBase: null,
+        accumulationFundPer: null,
+        accumulationFundBase: null
       }
     }
   },
@@ -166,22 +166,31 @@ export default {
   },
   methods: {
     showEditSalaryView(data) {
+      if(!this.$store.getters.checkPermissionFlag('SalSobEdit')) {
+        this.$message.error('权限不足,请联系管理员');
+        return;
+      }
       this.dialogTitle = '编辑工资账套';
       this.dialogVisible = true;
       this.activeItemIndex = 0;
-      this.salary.id = data.id;
-      this.salary.name = data.name;
-      this.salary.basicSalary = data.basicSalary;
-      this.salary.trafficSalary = data.trafficSalary;
-      this.salary.lunchSalary = data.lunchSalary;
-      this.salary.pensionPer = data.pensionPer;
-      this.salary.pensionBase = data.pensionBase;
-      this.salary.medicalPer = data.medicalPer;
-      this.salary.medicalBase = data.medicalBase;
-      this.salary.accumulationFundPer = data.accumulationFundPer;
-      this.salary.accumulationFundBase = data.accumulationFundBase;
+      Object.assign(this.salary, data)
+      // this.salary.id = data.id;
+      // this.salary.name = data.name;
+      // this.salary.basicSalary = data.basicSalary;
+      // this.salary.trafficSalary = data.trafficSalary;
+      // this.salary.lunchSalary = data.lunchSalary;
+      // this.salary.pensionPer = data.pensionPer;
+      // this.salary.pensionBase = data.pensionBase;
+      // this.salary.medicalPer = data.medicalPer;
+      // this.salary.medicalBase = data.medicalBase;
+      // this.salary.accumulationFundPer = data.accumulationFundPer;
+      // this.salary.accumulationFundBase = data.accumulationFundBase;
     },
     deleteSalary(data) {
+      if(!this.$store.getters.checkPermissionFlag('SalSobDelete')) {
+        this.$message.error('权限不足,请联系管理员');
+        return;
+      }
       this.$confirm('此操作将永久删除该【' + data.name + '】, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -231,18 +240,22 @@ export default {
       this.activeItemIndex++;
     },
     showAddSalaryView() {
+      if(!this.$store.getters.checkPermissionFlag('SalSobAdd')) {
+        this.$message.error('权限不足,请联系管理员');
+        return;
+      }
       //数据初始化
       this.salary = {
         name: '',
-        basicSalary: 0,
-        trafficSalary: 0,
-        lunchSalary: 0,
-        pensionPer: 0,
-        pensionBase: 0,
-        medicalPer: 0,
-        medicalBase: 0,
-        accumulationFundPer: 0,
-        accumulationFundBase: 0
+        basicSalary: null,
+        trafficSalary: null,
+        lunchSalary: null,
+        pensionPer: null,
+        pensionBase: null,
+        medicalPer: null,
+        medicalBase: null,
+        accumulationFundPer: null,
+        accumulationFundBase: null
       };
       this.activeItemIndex = 0;
       this.dialogTitle = '添加工资账套';

@@ -2,7 +2,7 @@
   <div>
     <div style="display: flex;justify-content: space-between;align-items: center">
       <div>
-        <el-upload action="/salary/attendance/import"
+        <el-upload action="/api/salary/attendance/import"
                    :headers="headers"
                    :show-file-list="false"
                    :before-upload="beforeUpload"
@@ -133,12 +133,12 @@
             <el-row>
               <el-col :span="12">
                 <el-form-item label="姓名:">
-                  <el-input v-model="attendance.employee.name" prefix-icon="el-icon-edit" placeholder="请输入员工姓名" style="width: 200px"></el-input>
+                  <el-input clearable v-model="attendance.employee.name" prefix-icon="el-icon-edit" placeholder="请输入员工姓名" style="width: 200px"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="12">
                 <el-form-item label="工号:">
-                  <el-input v-model="attendance.employee.workId" prefix-icon="el-icon-edit" placeholder="请输入工号" style="width: 200px"></el-input>
+                  <el-input clearable v-model="attendance.employee.workId" prefix-icon="el-icon-edit" placeholder="请输入工号" style="width: 200px"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -170,29 +170,29 @@
             </el-row>
             <el-row>
               <el-col :span="8">
-                <el-form-item label="事假:">
+                <el-form-item label="是否事假:">
                   <el-switch
                       v-model="attendance.personalLeave"
-                      active-text="是"
-                      inactive-text="否">
+                      active-color="#13ce66"
+                      inactive-color="#ff4949">
                   </el-switch>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
-                <el-form-item label="病假:">
+                <el-form-item label="是否病假:">
                   <el-switch
                       v-model="attendance.sickLeave"
-                      active-text="是"
-                      inactive-text="否">
+                      active-color="#13ce66"
+                      inactive-color="#ff4949">
                   </el-switch>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
-                <el-form-item label="状态:">
+                <el-form-item label="是否缺勤:">
                   <el-switch
                       v-model="attendance.absenteeism"
-                      active-text="缺勤"
-                      inactive-text="正常">
+                      active-color="#13ce66"
+                      inactive-color="#ff4949">
                   </el-switch>
                 </el-form-item>
               </el-col>
@@ -251,6 +251,10 @@ export default {
   },
   methods: {
     showEditView(data) {
+      if(!this.$store.getters.checkPermissionFlag('SalAttEdit')) {
+        this.$message.error('权限不足,请联系管理员');
+        return;
+      }
       this.title = '编辑打卡信息';
       Object.assign(this.attendance, data);
       this.attendance.employee.workId = data.employee.workId;
@@ -283,6 +287,10 @@ export default {
       }
     },
     showAddView() {
+      if(!this.$store.getters.checkPermissionFlag('SalAttAdd')) {
+        this.$message.error('权限不足,请联系管理员');
+        return;
+      }
       this.title = "添加打卡信息";
       this.attendance = {
         id: null,
@@ -299,6 +307,10 @@ export default {
       this.dialogVisible = !this.dialogVisible;
     },
     deleteAttendance(data) {
+      if(!this.$store.getters.checkPermissionFlag('SalAttDelete')) {
+        this.$message.error('权限不足,请联系管理员');
+        return;
+      }
       this.$confirm('此操作将彻底删除该条打卡记录, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -317,6 +329,10 @@ export default {
       });
     },
     deleteMany() {
+      if(!this.$store.getters.checkPermissionFlag('SalAttDeleteMany')) {
+        this.$message.error('权限不足,请联系管理员');
+        return;
+      }
       this.$confirm('此操作将永久删除[' + this.multipleSelection.length + ']条打卡记录, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -350,22 +366,38 @@ export default {
       this.multipleSelection = val;
     },
     onSuccess(){
+      this.$notify({
+        message: '导入成功',
+        type: 'success'
+      });
       this.importDataBtnIcon = 'fa fa-upload';
       this.importDataBtnText = '导入数据';
       this.importDataDisabled = false;
       this.initAttendanceRecords();
     },
     onError(){
+      this.$notify({
+        message: '导入失败',
+        type: 'error'
+      });
       this.importDataBtnIcon = 'fa fa-upload';
       this.importDataBtnText = '导入数据';
       this.importDataDisabled = false;
     },
     beforeUpload(){
+      if(!this.$store.getters.checkPermissionFlag('SalAttUpload')) {
+        this.$message.error('权限不足,请联系管理员');
+        return;
+      }
       this.importDataBtnIcon = 'el-icon-loading';
       this.importDataBtnText = '正在导入';
       this.importDataDisabled = true;
     },
     exportAttendanceRecord(){
+      if(!this.$store.getters.checkPermissionFlag('SalAttExport')) {
+        this.$message.error('权限不足,请联系管理员');
+        return;
+      }
       let url = '/salary/attendance/export';
       if(this.searchValue.beginDateScope) {
         url += '?dateScope=' + this.searchValue.beginDateScope;

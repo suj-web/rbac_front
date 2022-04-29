@@ -386,8 +386,16 @@ export default {
   },
   methods:{
     updateEmp(data, tag) {
+      if(1 === tag && !this.$store.getters.checkPermissionFlag('PerEmpPositive')) {
+        this.$message.error('权限不足,请联系管理员');
+        return;
+      }
+      if(2 === tag && !this.$store.getters.checkPermissionFlag('PerEmpResion')) {
+        this.$message.error('权限不足,请联系管理员');
+        return;
+      }
       let emp = {};
-      if(data.workState==='离职' || data.status==='正式'){
+      if((data.workState==='离职' || data.status==='正式') && 1 === tag){
         this.$message.warning('该员工不可操作');
         return;
       }

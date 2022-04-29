@@ -6,15 +6,15 @@
         <el-row style="font-size: 13px!important;">
           <el-col :span="6">
             系统模块:
-            <el-input v-model="searchValue.model" size="small" placeholder="系统模块" style="width: 200px"></el-input>
+            <el-input clearable v-model="searchValue.model" size="small" placeholder="系统模块" style="width: 200px"></el-input>
           </el-col>
           <el-col :span="6">
             操作人员:
-            <el-input v-model="searchValue.operator" placeholder="操作人员" style="width: 200px"></el-input>
+            <el-input clearable v-model="searchValue.operator" placeholder="操作人员" style="width: 200px"></el-input>
           </el-col>
           <el-col :span="6">
             操作类型:
-            <el-select v-model="searchValue.type" placeholder="请选择" style="width: 200px;margin-left: 10px">
+            <el-select clearable v-model="searchValue.type" placeholder="请选择" style="width: 200px;margin-left: 10px">
               <el-option
                   v-for="item in operTypes"
                   :key="item"
@@ -25,7 +25,7 @@
           </el-col>
           <el-col :span="6">
             操作状态:
-            <el-select v-model="searchValue.result" placeholder="请选择" style="width: 200px">
+            <el-select clearable v-model="searchValue.result" placeholder="请选择" style="width: 200px">
               <el-option
                   v-for="item in results"
                   :key="item.value"
@@ -61,7 +61,7 @@
       <el-card style="margin-top: 10px">
         <div style="display: flex;justify-content: space-between;">
           <div>
-            <el-button style="padding:6px 8px" type="danger" icon="el-icon-delete" :disabled="this.multipleSelection.length===0" @click="deleteMany">删除</el-button>
+            <el-button style="padding:6px 8px" type="danger" icon="el-icon-delete" :disabled="this.multipleSelection.length===0" @click="deleteMany">批量删除</el-button>
             <el-button style="padding:6px 8px" type="warning" @click="exportData" icon="fa fa-download">&nbsp;导出</el-button>
           </div>
           <el-button-group>

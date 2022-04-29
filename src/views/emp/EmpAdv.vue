@@ -10,7 +10,7 @@
                     @keydown.enter.native="initEmpData"
                     @clear="initEmpData"
                     placeholder="请输入员工姓名进行搜索..."></el-input>
-          <el-select @clear="initEmpData" clearable @change="initEmpData" size="mini" style="width: 240px;margin-right: 10px;" v-model="searchValue.depId" placeholder="所属部门">
+          <el-select @clear="initEmpData" clearable @change="initEmpData" style="width: 240px;margin-right: 10px;" v-model="searchValue.depId" placeholder="所属部门">
             <el-option v-for="item in allDeps"
                        :key="item.id"
                        :label="item.name"

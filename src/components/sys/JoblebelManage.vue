@@ -1,9 +1,9 @@
 <template>
   <div>
     <div>
-      <el-input size="small" v-model="jl.name" placeholder="添加职称等级" prefix-icon="el-icon-plus"
+      <el-input clearable size="small" v-model="jl.name" placeholder="添加职称名称" prefix-icon="el-icon-plus"
                 style="width: 300px;"></el-input>
-      <el-select size="small" v-model="jl.titleLevel" placeholder="职称等级" style="margin-right: 8px;margin-left: 8px">
+      <el-select clearable size="small" v-model="jl.titleLevel" placeholder="职称等级" style="margin-right: 8px;margin-left: 8px">
         <el-option
             v-for="item in titleLevels"
             :key="item"

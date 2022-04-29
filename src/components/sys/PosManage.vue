@@ -4,6 +4,7 @@
       <el-input
           style="width: 300px;margin-right: 20px"
           size="small"
+          clearable
           placeholder="添加职位..."
           suffix-icon="el-icon-plus"
           @keydown.enter.native="addPosition"

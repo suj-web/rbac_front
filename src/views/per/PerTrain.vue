@@ -6,11 +6,11 @@
           <el-row>
             <el-col :span="6">
               员工姓名:
-              <el-input v-model="searchValue.name" size="small" placeholder="员工姓名" style="width: 200px"></el-input>
+              <el-input clearable v-model="searchValue.name" size="small" placeholder="员工姓名" style="width: 200px"></el-input>
             </el-col>
             <el-col :span="6">
               所属部门:
-              <el-select v-model="searchValue.depId" clearable placeholder="选择部门">
+              <el-select v-model="searchValue.depId" style="width: 200px;" clearable placeholder="选择部门">
                 <el-option v-for="item in allDeps"
                            :label="item.name"
                            :value="item.id"
@@ -21,6 +21,7 @@
             <el-col :span="6">
               培训月份:
               <el-date-picker
+                  style="width: 200px;"
                   v-model="searchValue.localDate"
                   type="month"
                   placeholder="选择月">
@@ -72,7 +73,6 @@
         </div>
         <el-table
             :data="empTrains"
-            border
             stripe
             style="width: 100%;margin-top: 10px"
             @selection-change="handleSelectionChange">
@@ -163,12 +163,12 @@
           <el-row>
             <el-col :span="12">
               <el-form-item label="员工姓名" prop="employee.name">
-                <el-input style="width: 240px;" v-model="trainForm.employee.name"></el-input>
+                <el-input clearable style="width: 240px;" v-model="trainForm.employee.name"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="工号" prop="employee.workId">
-                <el-input style="width: 240px;" v-model="trainForm.employee.workId"></el-input>
+                <el-input clearable style="width: 240px;" v-model="trainForm.employee.workId"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -185,7 +185,7 @@
             </el-col>
             <el-col :span="12">
               <el-form-item label="培训内容" prop="trainContent">
-                <el-input style="width: 240px;" v-model="trainForm.trainContent"></el-input>
+                <el-input clearable style="width: 240px;" v-model="trainForm.trainContent"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -284,6 +284,10 @@ export default {
       }
     },
     showAddView() {
+      if(!this.$store.getters.checkPermissionFlag('PerTrainAdd')) {
+        this.$message.error('权限不足,请联系管理员');
+        return;
+      }
       this.title = '添加员工培训信息';
       this.trainForm = {
         id: null,
@@ -298,6 +302,10 @@ export default {
       this.dialogVisible = true;
     },
     showEditView(data) {
+      if(!this.$store.getters.checkPermissionFlag('PerTrainEdit')) {
+        this.$message.error('权限不足,请联系管理员');
+        return;
+      }
       this.title = '编辑员工培训信息';
       Object.assign(this.trainForm, data);
       this.trainForm.employee.name = data.employee.name;
@@ -305,6 +313,10 @@ export default {
       this.dialogVisible = true;
     },
     deleteMany() {
+      if(!this.$store.getters.checkPermissionFlag('PerTrainDeleteMany')) {
+        this.$message.error('权限不足,请联系管理员');
+        return;
+      }
       this.$confirm('此操作将永久删除【' + this.multipleSelection.length + '】条奖惩记录, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -327,6 +339,10 @@ export default {
       });
     },
     deleteTrain(id) {
+      if(!this.$store.getters.checkPermissionFlag('PerTrainDelete')) {
+        this.$message.error('权限不足,请联系管理员');
+        return;
+      }
       this.$confirm('此操作将永久删除【' + id + '】培训记录, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',

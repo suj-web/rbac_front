@@ -4,7 +4,7 @@
         <el-tab-pane label="数据备份" name="backup">
           <div style="display: flex;justify-content: flex-end;align-items: center">
             备份文件路径:
-            <el-input size="small" v-model="savePath" style="width: 200px;margin-left: 15px;margin-right: 10px" placeholder="如F:/data.sql"></el-input>
+            <el-input clearable size="small" v-model="savePath" style="width: 200px;margin-left: 15px;margin-right: 10px" placeholder="如F:/data.sql"></el-input>
             <el-button type="primary" @click="backup" :icon="backupBtnIcon">{{backupBtnText}}</el-button>
           </div>
           <el-table

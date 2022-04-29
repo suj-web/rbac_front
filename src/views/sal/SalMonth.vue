@@ -229,6 +229,10 @@ export default {
   },
   methods: {
     updateSalTable(data) {
+      if(!this.$store.getters.checkPermissionFlag('SalMonthPay')) {
+        this.$message.error('权限不足,请联系管理员');
+        return;
+      }
       if(!data.enabled) {
         let salTab = {};
         Object.assign(salTab, data);
@@ -243,9 +247,17 @@ export default {
       }
     },
     exportSalaryTable(){
+      if(!this.$store.getters.checkPermissionFlag('SalMonthExport')) {
+        this.$message.error('权限不足,请联系管理员');
+        return;
+      }
       this.$downloadRequest('/salary/month/export');
     },
     doUnLock() {
+      if(!this.$store.getters.checkPermissionFlag('SalMonthUnLock')) {
+        this.$message.error('权限不足,请联系管理员');
+        return;
+      }
       this.unLockIcon = 'el-icon-loading';
       let ids = '?';
       this.multipleSelection.forEach(item=>{
@@ -259,6 +271,10 @@ export default {
       })
     },
     doLock() {
+      if(!this.$store.getters.checkPermissionFlag('SalMonthLock')) {
+        this.$message.error('权限不足,请联系管理员');
+        return;
+      }
       this.lockIcon = 'el-icon-loading';
       let ids = '?';
       this.multipleSelection.forEach(item=>{

@@ -42,7 +42,7 @@
         <el-row>
           <el-col :span="5">
             政治面貌:
-            <el-select v-model="searchValue.politicId" size="mini" style="width: 130px" placeholder="政治面貌">
+            <el-select clearable v-model="searchValue.politicId" size="mini" style="width: 130px" placeholder="政治面貌">
               <el-option
                   v-for="item in politicsstatus"
                   :key="item.id"
@@ -53,7 +53,7 @@
           </el-col>
           <el-col :span="4">
             民族:
-            <el-select v-model="searchValue.nationId" size="mini" style="width: 130px" placeholder="民族">
+            <el-select clearable v-model="searchValue.nationId" size="mini" style="width: 130px" placeholder="民族">
               <el-option
                   v-for="item in nations"
                   :key="item.id"
@@ -64,7 +64,7 @@
           </el-col>
           <el-col :span="4">
             职位:
-            <el-select v-model="searchValue.positionId" size="mini" style="width: 130px" placeholder="职位">
+            <el-select clearable v-model="searchValue.positionId" size="mini" style="width: 130px" placeholder="职位">
               <el-option
                   v-for="item in positions"
                   :key="item.id"
@@ -75,7 +75,7 @@
           </el-col>
           <el-col :span="4">
             职称:
-            <el-select v-model="searchValue.jobLevelId" size="mini" style="width: 150px" placeholder="职位">
+            <el-select clearable v-model="searchValue.jobLevelId" size="mini" style="width: 150px" placeholder="职位">
               <el-option
                   v-for="item in joblevels"
                   :key="item.id"
@@ -92,10 +92,10 @@
           </el-col>
         </el-row>
         <el-row style="margin-top: 10px;">
-          <el-col :span="7" style="display: inline-flex;align-items: center;">
+          <el-col :span="6" style="display: inline-flex;align-items: center;">
             所属部门:&nbsp;
 <!--            <treeselect v-model="searchValue.departmentId" placeholder="所属部门" :normalizer="normalizer" style="width: 240px;margin-left: 5px;" :show-count="true" :options="allDeps" />-->
-            <el-select clearable size="mini" style="width: 240px" v-model="emp.departmentId" placeholder="所属部门">
+            <el-select clearable size="mini" style="width: 160px" v-model="searchValue.departmentId" placeholder="所属部门">
               <el-option v-for="item in allDeps"
                          :key="item.id"
                          :label="item.name"
@@ -103,11 +103,12 @@
               </el-option>
             </el-select>
           </el-col>
-          <el-col :span="10">
+          <el-col :span="8">
             入职日期:
             <el-date-picker
                 v-model="searchValue.beginDateScope"
                 size="mini"
+                clearable
                 type="daterange"
                 value-format="yyyy-MM-dd"
                 unlink-panels
@@ -286,7 +287,7 @@
             width="250">
           <template slot-scope="scope">
             <el-button style="padding: 3px" icon="el-icon-edit" size="mini" @click="showEditEmpView(scope.row)">编辑</el-button>
-            <el-button style="padding: 3px" type="primary" icon="el-icon-view" size="mini">查看高级资料</el-button>
+            <el-button style="padding: 3px" type="primary" icon="el-icon-view" size="mini" @click="showAdvInfo">查看高级资料</el-button>
             <el-button style="padding: 3px" type="danger" icon="el-icon-delete" size="mini" @click="deleteEmp(scope.row)">删除</el-button>
           </template>
         </el-table-column>
@@ -635,6 +636,13 @@
       this.initPositions();
     },
     methods:{
+      showAdvInfo() {
+        if(!this.$store.getters.checkPermissionFlag('empAdvList')) {
+          this.$message.error('权限不足,请联系管理员');
+          return;
+        }
+        this.$router.push('/emp/adv');
+      },
       normalizer(node) {
         return {
           label: node.name
@@ -652,12 +660,20 @@
         };
       },
       onSuccess(){
+        this.$notify({
+          message: '导入成功',
+          type: 'success'
+        });
         this.importDataBtnIcon = 'fa fa-upload';
         this.importDataBtnText = '导入数据';
         this.importDataDisabled = false;
         this.initEmps();
       },
       onError(){
+        this.$notify({
+          message: '导入失败',
+          type: 'error'
+        });
         this.importDataBtnIcon = 'fa fa-upload';
         this.importDataBtnText = '导入数据';
         this.importDataDisabled = false;
@@ -680,7 +696,7 @@
         console.log("download");
       },
       showEditEmpView(data){
-        if(this.$store.getters.checkPermissionFlag('empBasicEdit')) {
+        if(!this.$store.getters.checkPermissionFlag('empBasicEdit')) {
           this.$message.error('权限不足,请联系管理员');
           return;
         }
@@ -690,7 +706,7 @@
         this.dialogVisible = true;
       },
       deleteEmp(data){
-        if(this.$store.getters.checkPermissionFlag('empBasicDelete')) {
+        if(!this.$store.getters.checkPermissionFlag('empBasicDelete')) {
           this.$message.error('权限不足,请联系管理员');
           return;
         }
@@ -712,7 +728,7 @@
         });
       },
       doAddEmp(){
-        if(this.$store.getters.checkPermissionFlag('empBasicAdd')) {
+        if(!this.$store.getters.checkPermissionFlag('empBasicAdd')) {
           this.$message.error('权限不足,请联系管理员');
           return;
         }
@@ -760,17 +776,6 @@
           }
         })
       },
-      // // 处理树形结构
-      // treeChange (arr) {
-      //   return arr.map(item => {
-      //     if (item.children && item.children.length > 0) {
-      //       this.treeChange(item.children);
-      //     } else {
-      //       delete item.children;
-      //     }
-      //     return item;
-      //   })
-      // },
       initData(){
         if(!window.sessionStorage.getItem('nations')){
           this.$getRequest('/employee/basic/nations').then(res=>{
@@ -882,9 +887,11 @@
           }
           if(this.searchValue.engageForm){
             url += '&engageForm='+this.searchValue.engageForm;
-          }if(this.searchValue.departmentId){
+          }
+          if(this.searchValue.departmentId){
             url += '&departmentId='+this.searchValue.departmentId;
-          }if(this.searchValue.beginDateScope){
+          }
+          if(this.searchValue.beginDateScope){
             url += '&beginDateScope='+this.searchValue.beginDateScope;
           }
         } else {

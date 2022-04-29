@@ -104,7 +104,7 @@
               v-if="showField.beforeSalary"
               width="140">
             <template slot-scope="scope">
-              <el-tooltip placement="right">
+              <el-tooltip v-if="scope.row.beforeSalary" placement="right">
                 <div slot="content">
                   <table>
                     <tr>
@@ -156,6 +156,7 @@
                 </div>
                 <el-tag>{{scope.row.beforeSalary.name}}</el-tag>
               </el-tooltip>
+              <el-tag type="warning" v-else>暂未设置</el-tag>
             </template>
           </el-table-column>
           <el-table-column
@@ -163,7 +164,7 @@
               v-if="showField.beforeComputeSalary"
               width="100">
             <template slot-scope="scope">
-              <span>{{scope.row.beforeSalary | computeSalary}}</span>
+              <span v-if="scope.row.beforeSalary">{{scope.row.beforeSalary | computeSalary}}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -301,21 +302,21 @@
           <el-row>
             <el-col :span="12">
               <el-form-item label="工号" prop="employee.workId">
-                <el-input @blur="getEmpByWorkId" @keydown.enter.native="getEmpByWorkId" placeholder="请输入员工工号" style="width: 240px;" v-model="adjustSalaryForm.employee.workId">
+                <el-input clearable @blur="getEmpByWorkId" @keydown.enter.native="getEmpByWorkId" placeholder="请输入员工工号" style="width: 240px;" v-model="adjustSalaryForm.employee.workId">
                   <el-button slot="append" icon="el-icon-search" @click="getEmpByWorkId"></el-button>
                 </el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="员工姓名" prop="employee.name">
-                <el-input style="width: 240px;" v-model="adjustSalaryForm.employee.name" placeholder="请输入员工姓名"></el-input>
+                <el-input clearable style="width: 240px;" v-model="adjustSalaryForm.employee.name" placeholder="请输入员工姓名"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="12">
               <el-form-item label="调整账套" prop="afterSalaryId">
-                <el-select style="width: 240px;margin-left: -1px" v-model="adjustSalaryForm.afterSalaryId" clearable placeholder="选择工资账套">
+                <el-select style="width: 240px;" v-model="adjustSalaryForm.afterSalaryId" clearable placeholder="选择工资账套">
                   <el-option v-for="item in allSals"
                              :label="item.name"
                              :value="item.id"
@@ -326,7 +327,7 @@
             </el-col>
             <el-col :span="12">
               <el-form-item label="调薪原因">
-                <el-input style="width: 240px;" v-model="adjustSalaryForm.reason" placeholder="请输入调薪原因"></el-input>
+                <el-input clearable style="width: 240px;" v-model="adjustSalaryForm.reason" placeholder="请输入调薪原因"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -429,6 +430,10 @@ export default {
       })
     },
     showAddView(data) {
+      if(!this.$store.getters.checkPermissionFlag('PerSalaryApply')) {
+        this.$message.error('权限不足,请联系管理员');
+        return;
+      }
       this.title = '申请调薪';
       this.adjustSalaryForm = {
         employee: {
@@ -456,6 +461,10 @@ export default {
       }
     },
     deleteMany() {
+      if(!this.$store.getters.checkPermissionFlag('PerSalaryDeleteMany')) {
+        this.$message.error('权限不足,请联系管理员');
+        return;
+      }
       this.$confirm('此操作将永久删除【' + this.multipleSelection.length + '】条调薪记录, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -478,6 +487,10 @@ export default {
       });
     },
     deleteAdjustSalary(id) {
+      if(!this.$store.getters.checkPermissionFlag('PerSalaryDelete')) {
+        this.$message.error('权限不足,请联系管理员');
+        return;
+      }
       this.$confirm('此操作将永久删除【' + id + '】调薪记录, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -602,8 +615,5 @@ export default {
   padding: 6px 12px;
   height: 34px;
   width: 46px;
-}
-.el-select {
-  margin-left: -1px;
 }
 </style>

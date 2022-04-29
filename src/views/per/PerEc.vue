@@ -6,11 +6,11 @@
           <el-row>
         <el-col :span="6">
           员工姓名:
-          <el-input v-model="searchValue.name" size="small" placeholder="员工姓名" style="width: 200px"></el-input>
+          <el-input clearable v-model="searchValue.name" size="small" placeholder="员工姓名" style="width: 200px"></el-input>
         </el-col>
         <el-col :span="6">
           所属部门:
-          <el-select v-model="searchValue.depId" clearable placeholder="选择部门">
+          <el-select style="width: 200px;" v-model="searchValue.depId" clearable placeholder="选择部门">
             <el-option v-for="item in allDeps"
                        :label="item.name"
                        :value="item.id"
@@ -23,6 +23,7 @@
           <el-date-picker
               v-model="searchValue.localDate"
               type="month"
+              style="width: 200px;"
               placeholder="选择月">
           </el-date-picker>
         </el-col>
@@ -168,12 +169,12 @@
           <el-row>
             <el-col :span="12">
               <el-form-item label="员工姓名" prop="employee.name">
-                <el-input style="width: 240px;" v-model="ec.employee.name"></el-input>
+                <el-input clearable style="width: 240px;" v-model="ec.employee.name"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="工号" prop="employee.workId">
-                <el-input style="width: 240px;" v-model="ec.employee.workId"></el-input>
+                <el-input clearable style="width: 240px;" v-model="ec.employee.workId"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -190,7 +191,7 @@
             </el-col>
             <el-col :span="12">
               <el-form-item label="奖惩原因" prop="ecId">
-                <el-select v-model="ec.ecId" style="margin-left: -1px;width: 240px;" clearable placeholder="选择奖惩原因">
+                <el-select v-model="ec.ecId" style="width: 240px;" clearable placeholder="选择奖惩原因">
                   <el-option v-for="item in ecRules"
                              :label="item.ecReason"
                              :value="item.id"
@@ -298,6 +299,10 @@ export default {
       }
     },
     showEditView(data) {
+      if(!this.$store.getters.checkPermissionFlag('PerEcEdit')) {
+        this.$message.error('权限不足,请联系管理员');
+        return;
+      }
       this.title = '编辑员工奖惩信息';
       Object.assign(this.ec,data);
       this.ec.employee.name = data.employee.name;
@@ -305,6 +310,10 @@ export default {
       this.dialogVisible = true;
     },
     showAddView() {
+      if(!this.$store.getters.checkPermissionFlag('PerEcAdd')) {
+        this.$message.error('权限不足,请联系管理员');
+        return;
+      }
       this.title = '添加员工奖惩信息';
       this.ec = {
         id: null,
@@ -319,6 +328,10 @@ export default {
       this.dialogVisible = true;
     },
     deleteMany() {
+      if(!this.$store.getters.checkPermissionFlag('PerEcDeleteMany')) {
+        this.$message.error('权限不足,请联系管理员');
+        return;
+      }
       this.$confirm('此操作将永久删除【' + this.multipleSelection.length + '】条奖惩记录, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -341,6 +354,10 @@ export default {
       });
     },
     deleteEc(id) {
+      if(!this.$store.getters.checkPermissionFlag('PerEcDelete')) {
+        this.$message.error('权限不足,请联系管理员');
+        return;
+      }
       this.$confirm('此操作将永久删除【' + id + '】奖惩记录, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -475,9 +492,9 @@ export default {
   height: 34px;
   width: 46px;
 }
-.el-select {
-  margin-left: -1px;
-}
+/*.el-select {*/
+/*  margin-left: -1px;*/
+/*}*/
 
 
 </style>

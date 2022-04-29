@@ -1,22 +1,25 @@
 <template>
   <div style="width: 96%;margin: 1% 2%">
-    <div style="display: flex;justify-content: flex-end;align-items: center">
-      时间:
-      <el-date-picker
-          v-model="searchValue.localDate"
-          @change="initEmpTurnOverRecords"
-          style="margin-left: 5px; margin-right: 20px"
-          type="month"
-          placeholder="选择月份">
-      </el-date-picker>
-      部门:
-      <el-select style="margin-left: 5px;width: 220px;" @change="initEmpTurnOverRecords" v-model="searchValue.depId" clearable placeholder="选择部门">
-        <el-option v-for="item in allDeps"
-                   :label="item.name"
-                   :value="item.id"
-                   :key="item.id">
-        </el-option>
-      </el-select>
+    <div style="display: flex;justify-content: space-between;align-items: center">
+      <el-button type="primary" @click="exportTurnOverTable" icon="fa fa-download">&nbsp;导出账单</el-button>
+      <div>
+        时间:
+        <el-date-picker
+            v-model="searchValue.localDate"
+            @change="initEmpTurnOverRecords"
+            style="margin-left: 5px; margin-right: 20px"
+            type="month"
+            placeholder="选择月份">
+        </el-date-picker>
+        部门:
+        <el-select style="margin-left: 5px;width: 220px;" @change="initEmpTurnOverRecords" v-model="searchValue.depId" clearable placeholder="选择部门">
+          <el-option v-for="item in allDeps"
+                     :label="item.name"
+                     :value="item.id"
+                     :key="item.id">
+          </el-option>
+        </el-select>
+      </div>
     </div>
     <el-table
       :data="empTurnOverRecords"
@@ -113,6 +116,9 @@ export default {
     this.initEmpTurnOverRecords();
   },
   methods: {
+    exportTurnOverTable() {
+      this.$downloadRequest('/statistics/record/export');
+    },
     initEmpTurnOverRecords() {
       let url = '/statistics/record/?';
       if(this.searchValue.localDate) {
