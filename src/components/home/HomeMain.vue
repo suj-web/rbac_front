@@ -70,12 +70,12 @@
         <el-table-column
             prop="ip"
             label="登录地址"
-            width="100">
+            width="120">
         </el-table-column>
         <el-table-column
             prop="address"
             label="登录地点"
-            width="100">
+            width="120">
         </el-table-column>
         <el-table-column
             prop="browser"
@@ -98,7 +98,7 @@
         <el-table-column
             prop="operInfo"
             label="操作信息"
-            width="200">
+            width="170">
         </el-table-column>
         <el-table-column
             prop="gmtCreate"

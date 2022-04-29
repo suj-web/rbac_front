@@ -9,19 +9,19 @@
           prop="sessionId"
           label="会话编号"
           align="left"
-          width="280">
+          width="270">
       </el-table-column>
       <el-table-column
           prop="loginName"
           label="登录名称"
           align="left"
-          width="90">
+          width="80">
       </el-table-column>
       <el-table-column
           prop="ip"
           label="主机"
           align="left"
-          width="80">
+          width="120">
       </el-table-column>
       <el-table-column
           prop="address"
@@ -32,7 +32,7 @@
           prop="browser"
           label="浏览器"
           align="left"
-          width="180">
+          width="170">
       </el-table-column>
       <el-table-column
           prop="os"

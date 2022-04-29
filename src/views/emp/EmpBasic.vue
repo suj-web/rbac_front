@@ -18,7 +18,7 @@
           </el-button>
         </div>
         <div>
-          <el-upload action="/employee/basic/import"
+          <el-upload action="/api/employee/basic/import"
                      :headers="headers"
                      :show-file-list="false"
                      :before-upload="beforeUpload"

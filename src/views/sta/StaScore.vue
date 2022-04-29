@@ -138,7 +138,7 @@ export default {
       this.initEmpScoreRank();
     },
     initEmpScoreRank() {
-      let url = '/statistics/score/score/rank?currentPage='+this.currentPage+"&size="+this.size;
+      let url = '/statistics/score/rank?currentPage='+this.currentPage+"&size="+this.size;
       if(this.searchValue.localDate) {
         let year = this.searchValue.localDate.getFullYear();
         let month = this.searchValue.localDate.getMonth() + 1;
@@ -158,7 +158,7 @@ export default {
       })
     },
     initEmpScore() {
-      let url = '/statistics/score/score/statistic?currentPage='+this.currentPage+"&size="+this.size;
+      let url = '/statistics/score/statistic?currentPage='+this.currentPage+"&size="+this.size;
       if(this.searchValue.localDate) {
         let year = this.searchValue.localDate.getFullYear();
         let month = this.searchValue.localDate.getMonth() + 1;

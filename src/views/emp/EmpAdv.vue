@@ -421,22 +421,22 @@ export default {
   },
   computed: {
     idCard() {
-      return '/employee/advanced/idCard/upload?id='+this.currentEmp.id;
+      return '/api/employee/advanced/idCard/upload?id='+this.currentEmp.id;
     },
     contract() {
-      return '/employee/advanced/contract/upload?id='+this.currentEmp.id;
+      return '/api/employee/advanced/contract/upload?id='+this.currentEmp.id;
     },
     medicalReport() {
-      return '/employee/advanced/medicalReport/upload?id='+this.currentEmp.id;
+      return '/api/employee/advanced/medicalReport/upload?id='+this.currentEmp.id;
     },
     degreeCertificate() {
-      return '/employee/advanced/degreeCertificate/upload?id='+this.currentEmp.id;
+      return '/api/employee/advanced/degreeCertificate/upload?id='+this.currentEmp.id;
     },
     offer() {
-      return '/employee/advanced/offer/upload?id='+this.currentEmp.id;
+      return '/api/employee/advanced/offer/upload?id='+this.currentEmp.id;
     },
     resume() {
-      return '/employee/advanced/resume/upload?id='+this.currentEmp.id;
+      return '/api/employee/advanced/resume/upload?id='+this.currentEmp.id;
     }
   },
   mounted() {
