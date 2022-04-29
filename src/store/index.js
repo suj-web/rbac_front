@@ -11,6 +11,7 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
   state: {
     routes: [],
+    actions: [],
     sessions: {},
     admins: [],
     currentAdmin: JSON.parse(window.sessionStorage.getItem('user')),
@@ -21,11 +22,14 @@ const store = new Vuex.Store({
     message: "暂无公告"
   },
   mutations: {
-    initCircleSysMsgs(state, data) {
-      state.message = data;
-    },
     initRoutes(state, data){
       state.routes = data;
+    },
+    initActions(state, data) {
+      state.actions = data;
+    },
+    initCircleSysMsgs(state, data) {
+      state.message = data;
     },
     initAdmin(state,admin){
       state.currentAdmin = admin;
@@ -55,9 +59,7 @@ const store = new Vuex.Store({
           chatObj: state.currentAdmin.username+'$'+msg.to
         }
       }
-      postRequest('/chat/',chatContent).then(res=>{
-
-      })
+      postRequest('/chat/',chatContent);
     },
     INIT_DATA (state) {
       //浏览器本地的历史聊天记录
@@ -67,7 +69,14 @@ const store = new Vuex.Store({
           state.sessions = res;
         }
       })
-
+      //初始化未读信息数量
+      getRequest('/chat/unread/count').then(res=>{
+        if(res) {
+          for(let key in res) {
+            Vue.set(state.isDot, key, res[key]);
+          }
+        }
+      })
     },
     INIT_ADMINS(state, data){
       state.admins = data;
@@ -110,6 +119,18 @@ const store = new Vuex.Store({
           context.commit('INIT_ADMINS',res);
         }
       })
+    }
+  },
+  getters: {
+    checkPermissionFlag(state) {
+      return function (flag) {
+        for(let i = 0; i < state.actions.length; i++) {
+          if(state.actions[i] === flag) {
+            return true;
+          }
+        }
+        return false;
+      }
     }
   },
   modules: {

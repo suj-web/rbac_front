@@ -663,21 +663,37 @@
         this.importDataDisabled = false;
       },
       beforeUpload(){
+        if(!this.$store.getters.checkPermissionFlag('empBasicUpload')) {
+          this.$message.error('权限不足,请联系管理员');
+          return;
+        }
         this.importDataBtnIcon = 'el-icon-loading';
         this.importDataBtnText = '正在导入';
         this.importDataDisabled = true;
       },
       exportData(){
+        if(!this.$store.getters.checkPermissionFlag('empBasicExport')) {
+          this.$message.error('权限不足,请联系管理员');
+          return;
+        }
         this.$downloadRequest('/employee/basic/export');
         console.log("download");
       },
       showEditEmpView(data){
+        if(this.$store.getters.checkPermissionFlag('empBasicEdit')) {
+          this.$message.error('权限不足,请联系管理员');
+          return;
+        }
         this.title = '编辑员工信息';
         this.emp = data;
         this.initPositions();
         this.dialogVisible = true;
       },
       deleteEmp(data){
+        if(this.$store.getters.checkPermissionFlag('empBasicDelete')) {
+          this.$message.error('权限不足,请联系管理员');
+          return;
+        }
         this.$confirm('此操作将永久删除员工['+data.name+'], 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -696,6 +712,10 @@
         });
       },
       doAddEmp(){
+        if(this.$store.getters.checkPermissionFlag('empBasicAdd')) {
+          this.$message.error('权限不足,请联系管理员');
+          return;
+        }
         if(this.emp.id){
           this.$refs['empForm'].validate(valid=>{
             if(valid){
@@ -795,6 +815,10 @@
         }
       },
       showAddEmpView(){
+        if(!this.$store.getters.checkPermissionFlag('empBasicAdd')) {
+          this.$message.error('权限不足,请联系管理员');
+          return;
+        }
         this.title = '添加员工';
         this.emp = {
           id: null,

@@ -825,6 +825,10 @@ export default {
       this.showFile.idCardFileVisible = true;
     },
     showView(data) {
+      if(!this.$store.getters.checkPermissionFlag('empAdvEdit')) {
+        this.$message.error('权限不足,请联系管理员');
+        return;
+      }
       Object.assign(this.currentEmp, data);
       if(this.currentEmp.idCardPath) {
         this.showFile.idCardFileVisible = true;

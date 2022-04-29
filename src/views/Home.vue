@@ -150,6 +150,8 @@ import HomeMain from "../components/home/HomeMain";
             window.sessionStorage.removeItem('user');
             //清空菜单
             this.$store.commit('initRoutes', []);
+            //清空按钮权限标识
+            this.$store.commit('initActions', []);
             //跳转登录页面
             this.$router.replace('/');
           }).catch(() => {

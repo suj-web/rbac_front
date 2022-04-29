@@ -147,6 +147,7 @@
                 window.sessionStorage.removeItem('user');
                 window.sessionStorage.removeItem('tokenStr');
                 this.$store.commit('initRoutes',[]);
+                this.$store.commit('initActions', []);
                 this.$router.replace('/');
               }
             })

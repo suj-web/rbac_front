@@ -27,6 +27,8 @@ export function request(config)
           window.sessionStorage.removeItem('user');
           //清空菜单
           store.commit('initRoutes', []);
+          //清空按钮权限标识
+          store.commit('initActions', []);
           //跳转登录页面
           router.replace('/');
         }

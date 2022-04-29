@@ -18,6 +18,7 @@ import 'mavon-editor/dist/css/index.css'
 import iconPicker from 'vue-fontawesome-elementui-icon-picker';
 import * as echarts from "echarts";
 import Plugin from 'v-fit-columns';
+import {initAction} from "./network/action";
 
 Vue.config.productionTip = false
 
@@ -38,6 +39,7 @@ Vue.prototype.$echarts = echarts;
 router.beforeEach((to, from, next) => {
   if(window.sessionStorage.getItem('tokenStr')) {
     initMenu(router, store);
+    initAction(router, store);
     if(to.path === '/') {//用户已登录,直接挑转到home页面
       next('/home');
     }

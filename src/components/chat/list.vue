@@ -27,7 +27,8 @@ export default {
 	]),
   methods:{
   	changeCurrentSession(currentSession) {
-  		this.$store.commit('changeCurrentSession',currentSession)
+  		this.$store.commit('changeCurrentSession',currentSession);
+  		this.$putRequest('/chat/message/?chatObj='+this.user.username+'$'+currentSession.username);
   	}
   }
 }
