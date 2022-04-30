@@ -39,11 +39,11 @@
                 placement="right"
                 title="角色列表"
                 popper-class="admin-popover"
-                width="300"
+                width="220"
                 trigger="click"
                 @show="showPop(admin)"
                 @hide="hidePop(admin)">
-              <el-select style="width: 300px" v-model="selectedRoles" multiple placeholder="请选择">
+              <el-select style="width: 220px" v-model="selectedRoles" multiple placeholder="请选择">
                 <el-option
                     v-for="(r, index) in allRoles"
                     :key="index"

@@ -24,7 +24,7 @@
 }
 
 .el-popover.admin-popover {
-  min-width: 300px!important;
+  min-width: 220px!important;
   overflow: hidden!important;
   height: auto!important;
 }
