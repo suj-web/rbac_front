@@ -90,26 +90,26 @@
               prop="employee.name"
               label="姓名"
               v-if="showField.name"
-              width="100"
+              width="120"
               show-overflow-tooltip>
           </el-table-column>
           <el-table-column
               prop="employee.workId"
               label="工号"
               v-if="showField.workId"
-              width="100">
+              width="120">
           </el-table-column>
           <el-table-column
               prop="employee.department.name"
               label="所属部门"
               v-if="showField.depName"
-              width="120">
+              width="150">
           </el-table-column>
           <el-table-column
               prop="trainDate"
               label="培训时间"
               v-if="showField.trainDate"
-              width="100">
+              width="150">
           </el-table-column>
           <el-table-column
               prop="trainContent"

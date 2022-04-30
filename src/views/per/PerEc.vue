@@ -125,6 +125,7 @@
           <el-table-column
               prop="ecRule.ecReason"
               label="奖罚原因"
+              show-overflow-tooltip
               v-if="showField.ecReason"
               width="200">
           </el-table-column>
@@ -132,7 +133,7 @@
               prop="remark"
               label="备注"
               v-if="showField.remark"
-              :show-overflow-tooltip="true"
+              show-overflow-tooltip
               width="200">
           </el-table-column>
           <el-table-column

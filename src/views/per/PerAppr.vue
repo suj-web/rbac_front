@@ -84,7 +84,7 @@
               prop="employee.name"
               label="姓名"
               v-if="showField.name"
-              width="100">
+              width="120">
           </el-table-column>
           <el-table-column
               prop="employee.workId"
@@ -101,6 +101,7 @@
           <el-table-column
               prop="appContent"
               label="考评内容"
+              show-overflow-tooltip
               v-if="showField.appContent"
               width="200">
           </el-table-column>
@@ -108,19 +109,19 @@
               prop="appResult"
               label="考评得分"
               v-if="showField.appResult"
-              width="100">
+              width="120">
           </el-table-column>
           <el-table-column
               prop="appDate"
               label="考评日期"
               v-if="showField.appDate"
-              width="100">
+              width="120">
           </el-table-column>
           <el-table-column
               property="remark"
               label="备注"
               v-if="showField.remark"
-              :show-overflow-tooltip="true"
+              show-overflow-tooltip
               width="200">
             <template slot-scope="scope">
               <span v-if="''!==scope.row.remark && null !==scope.row.remark">{{scope.row.remark}}</span>

@@ -157,14 +157,14 @@
               property="reason"
               label="调动原因"
               v-if="showField.reason"
-              :show-overflow-tooltip="true"
+              show-overflow-tooltip
               width="150">
           </el-table-column>
           <el-table-column
               property="remark"
               label="备注"
               v-if="showField.remark"
-              :show-overflow-tooltip="true"
+              show-overflow-tooltip
               width="150">
             <template slot-scope="scope">
               <span v-if="''!==scope.row.remark && null !==scope.row.remark">{{scope.row.remark}}</span>

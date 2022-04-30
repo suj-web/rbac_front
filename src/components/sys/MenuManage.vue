@@ -84,7 +84,7 @@
         <el-row>
           <el-col>
             <el-form-item label="上级菜单">
-              <treeselect placeholder="选择上级菜单" :normalizer="normalizer" :label="label" v-model="menuForm.parentId" :show-count="true" :options="allMenus" />
+              <treeselect placeholder="选择上级菜单" @select="selectParentMenu" :normalizer="normalizer" :label="label" v-model="menuForm.parentId" :show-count="true" :options="allMenus" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -170,6 +170,7 @@ export default {
         component: '',
         enabled: true
       },
+      selectedParentMenu: null,
       dialogVisible: false,
       title: '',
       rules: {
@@ -185,10 +186,17 @@ export default {
     this.initMenus();
   },
   methods: {
+    selectParentMenu(node){
+      this.selectedParentMenu = node;
+    },
     addMenu() {
       if(this.menuForm.id) {
         this.$refs['menuForm'].validate(valid=>{
           if(valid){
+            if(this.selectedParentMenu.type>=this.menuForm.type) {
+              this.$message.warning('菜单类型有误');
+              return;
+            }
             if(this.menuForm.type === 0) {
               this.menuForm.url = '/';
               this.menuForm.path = '/home';
@@ -208,6 +216,10 @@ export default {
       } else {
         this.$refs.menuForm.validate(valid=>{
           if(valid){
+            if(this.selectedParentMenu.type>=this.menuForm.type) {
+              this.$message.warning('菜单类型有误');
+              return;
+            }
             if(this.menuForm.type === 0) {
               this.menuForm.url = '/';
               this.menuForm.path = '/home';

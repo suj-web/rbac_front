@@ -150,18 +150,38 @@ export default {
   },
   methods: {
     goConversion() {
+      if(!this.$store.getters.checkPermissionFlag('HomeConversion')) {
+        this.$message.error('权限不足,请联系管理员');
+        return;
+      }
       this.$router.push('/conversion');
     },
     goOnline() {
+      if(!this.$store.getters.checkPermissionFlag('HomeOnlineUser')) {
+        this.$message.error('权限不足,请联系管理员');
+        return;
+      }
       this.$router.push('/online');
     },
     goEmp() {
+      if(!this.$store.getters.checkPermissionFlag('HomeEmpCount')) {
+        this.$message.error('权限不足,请联系管理员');
+        return;
+      }
       this.$router.push('/emp/basic');
     },
     goContract() {
+      if(!this.$store.getters.checkPermissionFlag('HomeContractExpired')) {
+        this.$message.error('权限不足,请联系管理员');
+        return;
+      }
       this.$router.push('/contract');
     },
     goBirthday() {
+      if(!this.$store.getters.checkPermissionFlag('HomeBirthday')) {
+        this.$message.error('权限不足,请联系管理员');
+        return;
+      }
       this.$router.push('/birthday');
     },
     initBirthdayCount() {

@@ -67,7 +67,11 @@
               </span>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item command="userinfo">&nbsp;<i class="fa fa-user-o"  aria-hidden="true"></i>个人中心</el-dropdown-item>
-                <el-dropdown-item><el-link :underline="false" href="http://localhost:8081/doc.html" style="font-size: 12px;" target="_blank"><i class="fa fa-gg fa-fw" aria-hidden="true"></i>系统接口</el-link></el-dropdown-item>
+                <el-dropdown-item>
+                  <el-link :underline="false" :href="apiHref" style="font-size: 12px;" :target="apiTarget">
+                    <span @click="apiClick"><i class="fa fa-gg fa-fw" aria-hidden="true"></i>系统接口</span>
+                  </el-link>
+                </el-dropdown-item>
                 <el-dropdown-item command="codeGenerator"><i class="fa fa-code fa-fw"  aria-hidden="true"></i>代码生成</el-dropdown-item>
                 <el-dropdown-item command="logout">&nbsp;<i class="fa fa-sign-out" aria-hidden="true"></i>注销登录</el-dropdown-item>
               </el-dropdown-menu>
@@ -105,13 +109,13 @@ import HomeMain from "../components/home/HomeMain";
     },
     data() {
       return {
-        // user: null,
         height: document.documentElement.clientHeight,
         active: this.$route.path,//当前激活菜单
         opened: [],//当前打开的目录
         isFull: false, //是否全屏
         isCollapse: false,//是否折叠菜单
-        loginLogs: [] //登录日志
+        apiHref: '/api/doc.html', //接口文档地址
+        apiTarget: '_blank'
       }
     },
     computed: {
@@ -131,6 +135,14 @@ import HomeMain from "../components/home/HomeMain";
       this.initCircleSysMsg();
     },
     methods: {
+      apiClick() {
+        if(!this.$store.getters.checkPermissionFlag('SystemApi')) {
+          this.apiTarget = '_self';
+          this.apiHref = 'javascript:void(0)';
+          this.$message.error('权限不足,请联系管理员');
+          return;
+        }
+      },
       goChat() {
         this.active = '';
         this.opened = [];
@@ -165,6 +177,10 @@ import HomeMain from "../components/home/HomeMain";
           this.$router.push('/userinfo');
         }
         if(command === 'codeGenerator') {
+          if(!this.$store.getters.checkPermissionFlag('SystemGenerateCode')) {
+            this.$message.error('权限不足,请联系管理员');
+            return;
+          }
           this.$router.push('/codeGenerator')
         }
       },

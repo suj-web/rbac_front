@@ -241,15 +241,15 @@
               property="reason"
               label="调薪原因"
               v-if="showField.reason"
-              :show-overflow-tooltip="true"
-              width="150">
+              show-overflow-tooltip
+              width="100">
           </el-table-column>
           <el-table-column
               property="remark"
               label="备注"
               v-if="showField.remark"
-              :show-overflow-tooltip="true"
-              width="150">
+              show-overflow-tooltip
+              width="100">
             <template slot-scope="scope">
               <span v-if="''!==scope.row.remark && null !==scope.row.remark">{{scope.row.remark}}</span>
               <span v-else>暂无</span>

@@ -21,17 +21,20 @@
           prop="ip"
           label="主机"
           align="left"
+          show-overflow-tooltip
           width="120">
       </el-table-column>
       <el-table-column
           prop="address"
           label="登录地点"
+          show-overflow-tooltip
           width="120">
       </el-table-column>
       <el-table-column
           prop="browser"
           label="浏览器"
           align="left"
+          show-overflow-tooltip
           width="170">
       </el-table-column>
       <el-table-column
