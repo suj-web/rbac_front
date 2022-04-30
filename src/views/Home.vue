@@ -114,7 +114,7 @@ import HomeMain from "../components/home/HomeMain";
         opened: [],//当前打开的目录
         isFull: false, //是否全屏
         isCollapse: false,//是否折叠菜单
-        apiHref: '/api/doc.html', //接口文档地址
+        apiHref: 'http://47.100.78.245:8081/doc.html', //接口文档地址
         apiTarget: '_blank'
       }
     },

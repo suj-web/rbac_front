@@ -60,6 +60,7 @@
         <el-table-column
             prop="sessionId"
             label="会话编号"
+            show-overflow-tooltip
             width="280">
         </el-table-column>
         <el-table-column
@@ -75,16 +76,19 @@
         <el-table-column
             prop="address"
             label="登录地点"
+            show-overflow-tooltip
             width="120">
         </el-table-column>
         <el-table-column
             prop="browser"
             label="浏览器"
+            show-overflow-tooltip
             width="180">
         </el-table-column>
         <el-table-column
             prop="os"
             label="操作系统"
+            show-overflow-tooltip
             width="120">
         </el-table-column>
         <el-table-column

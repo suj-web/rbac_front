@@ -6,7 +6,7 @@
       </div>
       <div>
         <div style="display: flex;justify-content: center">
-          <el-upload action="/admin/userface"
+          <el-upload action="/api/admin/userface"
                      :show-file-list="false"
                      :headers="headers"
                      :data="admin"
