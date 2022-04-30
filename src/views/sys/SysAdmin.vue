@@ -38,6 +38,7 @@
             <el-popover
                 placement="right"
                 title="角色列表"
+                popper-class="admin-popover"
                 width="300"
                 trigger="click"
                 @show="showPop(admin)"
@@ -183,7 +184,7 @@
     justify-content: space-around;
     flex-wrap: wrap;
     margin-top: 20px;
-    overflow-y: hidden;
+    /*overflow-y: hidden;*/
   }
   .userface-img {
     width: 72px;

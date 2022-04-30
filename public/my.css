@@ -1,0 +1,30 @@
+.my-popper.el-tooltip__popper {
+  background: #6c6c6c;
+  padding: 3px 6px;
+  height: 15px;
+  line-height: 15px;
+}
+.my-popper.el-tooltip__popper.is-dark {
+  background: #6c6c6c;
+}
+.my-popper.el-tooltip__popper[x-placement^="top"] .popper__arrow:after, .my-popper.el-tooltip__popper[x-placement^="top"] .popper__arrow {
+  border-top-color: #6c6c6c;
+  opacity: 1;
+}
+
+.my-popper.el-tooltip__popper[x-placement^="bottom"] .popper__arrow:after, .my-popper.el-tooltip__popper[x-placement^="bottom"] .popper__arrow {
+  border-bottom-color: #6c6c6c;
+  opacity: 1;
+}
+
+.el-popover.my-popover{
+  min-width: 100px!important;
+  overflow: hidden!important;
+  height: auto!important;
+}
+
+.el-popover.admin-popover {
+  min-width: 300px!important;
+  overflow: hidden!important;
+  height: auto!important;
+}

@@ -43,17 +43,17 @@
             <el-button style="padding: 6px 8px" type="danger" icon="el-icon-delete" :disabled="this.multipleSelection.length===0" @click="deleteMany">批量删除</el-button>
           </div>
           <el-button-group>
-            <el-tooltip effect="dark" content="隐藏/显示搜索" placement="top" popper-class="trainPopper">
+            <el-tooltip effect="dark" content="隐藏/显示搜索" placement="top" popper-class="my-popper">
               <el-button class="group_button" icon="fa fa-search" @click="showSearchView = !showSearchView"></el-button>
             </el-tooltip>
-            <el-tooltip effect="dark" content="刷新" placement="top" popper-class="trainPopper">
+            <el-tooltip effect="dark" content="刷新" placement="top" popper-class="my-popper">
               <el-button class="group_button" icon="el-icon-refresh" @click="initEmpTrains"></el-button>
             </el-tooltip>
-            <el-tooltip effect="dark" content="列" placement="top" popper-class="trainPopper">
+            <el-tooltip effect="dark" content="列" placement="top" popper-class="my-popper">
               <el-popover
                   placement="bottom"
                   trigger="click"
-                  popper-class="train-popover"
+                  popper-class="my-popover"
                   :width="100">
                 <div>
                   <el-checkbox v-model="showField.name">员工姓名</el-checkbox>
@@ -412,24 +412,6 @@ export default {
   }
 }
 </script>
-<style>
-.trainPopper.el-tooltip__popper {
-  background: #6c6c6c;
-  padding: 3px 6px;
-  height: 15px;
-  line-height: 15px;
-}
-.trainPopper.el-tooltip__popper.is-dark {
-  background: #6c6c6c;
-}
-.trainPopper.el-tooltip__popper[x-placement^="top"] .popper__arrow:after, .trainPopper.el-tooltip__popper[x-placement^="top"] .popper__arrow {
-  border-top-color: #6c6c6c;
-  opacity: 1;
-}
-.el-popover.train-popover{
-  min-width: 100px;
-}
-</style>
 <style scoped>
 .el-col .el-input,.el-select{
   margin-left: 10px;
