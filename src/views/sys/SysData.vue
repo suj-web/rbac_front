@@ -56,17 +56,19 @@
       <el-tab-pane label="数据恢复" name="recover">
         <el-upload
             ref="upload"
-            action="/system/data/recover"
+            action="/api/system/data/recover"
             :headers="headers"
             :before-upload="beforeUpload"
             :on-success="onSuccess"
             :on-error="onError"
             :limit="1"
+            accept=".sql"
+            :on-progress="uploadProgress"
             :file-list="fileList"
             :auto-upload="false">
           <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
-          <el-button style="margin-left: 10px" type="success" :icon="importDataBtnIcon" :disabled="importDataDisabled" @click="submitUpload">
-            {{importDataBtnText}}
+          <el-button style="margin-left: 10px" type="success" :icon="uploadDataBtnIcon" :disabled="uploadDataDisabled" @click="submitUpload">
+            {{uploadDataBtnText}}
           </el-button>
           <div class="el-upload__tip" slot="tip">只能上传sql文件，限制1个文件，大小不超过100MB</div>
         </el-upload>
@@ -87,9 +89,9 @@ export default {
       headers:{
         Authorization: window.sessionStorage.getItem('tokenStr')
       },
-      importDataDisabled: false,
-      importDataBtnText: '恢复数据',
-      importDataBtnIcon: 'fa fa-upload',
+      uploadDataDisabled: false,
+      uploadDataBtnText: '恢复数据',
+      uploadDataBtnIcon: 'fa fa-upload',
       savePath: '',
       backupBtnText: '备份数据库',
       backupBtnIcon: ''
@@ -99,6 +101,12 @@ export default {
     this.initBackupFiles();
   },
   methods: {
+    uploadProgress(event, file, fileList) {
+      let progress = parseInt(event.percent);
+      if(progress >= 100) {
+        this.uploadDataBtnText = '正在恢复';
+      }
+    },
     backup() {
       this.backupBtnText = '备份中';
       this.backupBtnIcon = 'el-icon-loading';
@@ -112,20 +120,20 @@ export default {
     },
     onSuccess(){
       this.$message.success("恢复成功");
-      this.importDataBtnIcon = 'fa fa-upload';
-      this.importDataBtnText = '恢复数据';
-      this.importDataDisabled = false;
+      this.uploadDataBtnIcon = 'fa fa-upload';
+      this.uploadDataBtnText = '恢复数据';
+      this.uploadDataDisabled = false;
     },
     onError(){
       this.$message.error("恢复失败");
-      this.importDataBtnIcon = 'fa fa-upload';
-      this.importDataBtnText = '恢复数据';
-      this.importDataDisabled = false;
+      this.uploadDataBtnIcon = 'fa fa-upload';
+      this.uploadDataBtnText = '恢复数据';
+      this.uploadDataDisabled = false;
     },
     beforeUpload(){
-      this.importDataBtnIcon = 'el-icon-loading';
-      this.importDataBtnText = '正在恢复';
-      this.importDataDisabled = true;
+      this.uploadDataBtnIcon = 'el-icon-loading';
+      this.uploadDataBtnText = '正在上传';
+      this.uploadDataDisabled = true;
     },
     submitUpload() {
       this.$refs.upload.submit();
@@ -186,7 +194,7 @@ export default {
   },
   filters: {
     toNumberFixed(val) {
-      return val.toFixed(1)+"M";
+      return val.toFixed(1)+"KB";
     }
   }
 }

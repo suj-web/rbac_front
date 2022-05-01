@@ -825,7 +825,7 @@ export default {
       this.showFile.idCardFileVisible = true;
     },
     showView(data) {
-      if(!this.$store.getters.checkPermissionFlag('empAdvEdit')) {
+      if(!this.$store.getters.checkPermissionFlag('EmpAdvEdit')) {
         this.$message.error('权限不足,请联系管理员');
         return;
       }

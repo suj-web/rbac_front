@@ -9,7 +9,7 @@ export function request(config)
 {
   const instance = axios.create({
       baseURL: "/api",
-      timeout: 40000
+      timeout: 400000
     });
 
   // let loadingInstance = null;

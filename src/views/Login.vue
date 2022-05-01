@@ -105,7 +105,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
   .background {
     width: 100%;
     height: 100%;
@@ -123,6 +123,10 @@ export default {
     background: #fff;
     border: 1px solid #eaeaea;
     box-shadow: 0 0 25px #cac6c6;
+    ::v-deep .el-form-item__content {
+      display: flex;
+      align-items: center;
+    }
   }
 
   .loginTitle{
@@ -135,8 +139,5 @@ export default {
     margin: 0 0 15px 0;
   }
 
-  .el-form-item__content {
-    display: flex;
-    align-items: center;
-  }
+
 </style>

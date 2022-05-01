@@ -637,7 +637,7 @@
     },
     methods:{
       showAdvInfo() {
-        if(!this.$store.getters.checkPermissionFlag('empAdvList')) {
+        if(!this.$store.getters.checkPermissionFlag('EmpAdvList')) {
           this.$message.error('权限不足,请联系管理员');
           return;
         }
@@ -679,7 +679,7 @@
         this.importDataDisabled = false;
       },
       beforeUpload(){
-        if(!this.$store.getters.checkPermissionFlag('empBasicUpload')) {
+        if(!this.$store.getters.checkPermissionFlag('EmpBasicUpload')) {
           this.$message.error('权限不足,请联系管理员');
           return;
         }
@@ -688,7 +688,7 @@
         this.importDataDisabled = true;
       },
       exportData(){
-        if(!this.$store.getters.checkPermissionFlag('empBasicExport')) {
+        if(!this.$store.getters.checkPermissionFlag('EmpBasicExport')) {
           this.$message.error('权限不足,请联系管理员');
           return;
         }
@@ -696,7 +696,7 @@
         console.log("download");
       },
       showEditEmpView(data){
-        if(!this.$store.getters.checkPermissionFlag('empBasicEdit')) {
+        if(!this.$store.getters.checkPermissionFlag('EmpBasicEdit')) {
           this.$message.error('权限不足,请联系管理员');
           return;
         }
@@ -706,7 +706,7 @@
         this.dialogVisible = true;
       },
       deleteEmp(data){
-        if(!this.$store.getters.checkPermissionFlag('empBasicDelete')) {
+        if(!this.$store.getters.checkPermissionFlag('EmpBasicDelete')) {
           this.$message.error('权限不足,请联系管理员');
           return;
         }
@@ -728,7 +728,7 @@
         });
       },
       doAddEmp(){
-        if(!this.$store.getters.checkPermissionFlag('empBasicAdd')) {
+        if(!this.$store.getters.checkPermissionFlag('EmpBasicAdd')) {
           this.$message.error('权限不足,请联系管理员');
           return;
         }
@@ -820,7 +820,7 @@
         }
       },
       showAddEmpView(){
-        if(!this.$store.getters.checkPermissionFlag('empBasicAdd')) {
+        if(!this.$store.getters.checkPermissionFlag('EmpBasicAdd')) {
           this.$message.error('权限不足,请联系管理员');
           return;
         }
