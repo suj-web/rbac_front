@@ -412,10 +412,10 @@ export default {
 }
 </script>
 
-<style>
-.el-col .el-input,.el-select{
-  margin-left: 10px;
-}
+<style scoped>
+/*.el-col .el-input,.el-select{*/
+/*  margin-left: 10px;*/
+/*}*/
 .el-card__body .el-row {
   margin-top: 10px;
 }

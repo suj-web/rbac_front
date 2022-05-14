@@ -111,6 +111,7 @@
                 @hide="hidePop(scope.row)"
                 title="编辑工资账套"
                 width="200"
+                popper-class="my-popover"
                 trigger="click">
               <div>
                 <el-select v-model="currentSalary" placeholder="请选择" size="mini">

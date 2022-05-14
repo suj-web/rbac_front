@@ -189,16 +189,26 @@
             </template>
           </el-table-column>
           <el-table-column
+              property="status"
+              width="100"
+              label="是否通过">
+            <template slot-scope="scope">
+              <el-tag v-if="scope.row.status===0" type="primary" size="mini">待审核</el-tag>
+              <el-tag v-else-if="scope.row.status===1" type="success" size="mini">已通过</el-tag>
+              <el-tag v-else type="danger" size="mini">未通过</el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column
               property="reason"
               label="调薪原因"
               :show-overflow-tooltip="true"
-              width="150">
+              width="100">
           </el-table-column>
           <el-table-column
               property="remark"
               label="备注"
               :show-overflow-tooltip="true"
-              width="150">
+              width="100">
             <template slot-scope="scope">
               <span v-if="''!==scope.row.remark && null !==scope.row.remark">{{scope.row.remark}}</span>
               <span v-else>暂无</span>

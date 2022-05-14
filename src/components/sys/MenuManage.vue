@@ -193,7 +193,7 @@ export default {
       if(this.menuForm.id) {
         this.$refs['menuForm'].validate(valid=>{
           if(valid){
-            if(this.selectedParentMenu.type>=this.menuForm.type) {
+            if(this.selectedParentMenu && this.selectedParentMenu.type>=this.menuForm.type) {
               this.$message.warning('菜单类型有误');
               return;
             }
@@ -216,7 +216,7 @@ export default {
       } else {
         this.$refs.menuForm.validate(valid=>{
           if(valid){
-            if(this.selectedParentMenu.type>=this.menuForm.type) {
+            if(this.selectedParentMenu && this.selectedParentMenu.type>=this.menuForm.type) {
               this.$message.warning('菜单类型有误');
               return;
             }

@@ -39,7 +39,9 @@
 </template>
 
 <script>
-  export default {
+import {initMenu} from "../../network/menu";
+import {initAction} from "../../network/action";
+export default {
     name: "PermissManage",
     data() {
       return {
@@ -159,6 +161,12 @@
         })
         this.$putRequest(url).then(res=>{
           if(res) {
+            //清空菜单
+            this.$store.commit('initRoutes', []);
+            //清空按钮权限标识
+            this.$store.commit('initActions', []);
+            initMenu(this.$router, this.$store);
+            initAction(this.$router, this.$store);
             this.initRoles();
             this.activeName = -1;
             this.initSelectedMenus();

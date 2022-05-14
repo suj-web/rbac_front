@@ -52,14 +52,10 @@ const store = new Vuex.Store({
         date: new Date(),
         self: !msg.notSelf
       })
-      let chatContent = {
-        content:msg.content,
-        self: !msg.notSelf,
-        chat: {
-          chatObj: state.currentAdmin.username+'$'+msg.to
-        }
+
+      if(msg.notSelf && state.currentSession.username === msg.to) {
+        this.$putRequest('/chat/message/?chatObj='+state.currentAdmin.username+'$'+msg.to);
       }
-      postRequest('/chat/',chatContent);
     },
     INIT_DATA (state) {
       //浏览器本地的历史聊天记录
@@ -107,6 +103,23 @@ const store = new Vuex.Store({
           receiveMsg.notSelf = true;
           receiveMsg.to = receiveMsg.from;
           context.commit('addMessage',receiveMsg);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         })
       },error=>{
 

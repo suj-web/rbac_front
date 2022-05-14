@@ -333,9 +333,9 @@ export default {
 }
 </style>
 <style scoped>
-  .el-col .el-input,.el-select{
-    margin-left: 10px;
-  }
+  /*.el-col .el-input,.el-select{*/
+  /*  margin-left: 10px;*/
+  /*}*/
   .el-card__body .el-row {
     margin-top: 10px;
   }

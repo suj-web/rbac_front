@@ -70,6 +70,16 @@ export default {
           this.$store.commit('addMessage',msgObj);
           this.content='';
           this.$emit('scroll');
+
+          let chatContent = {
+            content:msgObj.content,
+            self: true,
+            chat: {
+              chatObj: this.$store.state.currentAdmin.username+'$'+msgObj.to
+            },
+            status: true
+          }
+          this.$postRequest('/chat/',chatContent);
         } else{
   		    this.$message.info("请选择发送对象");
         }

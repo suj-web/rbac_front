@@ -1,7 +1,7 @@
 <template>
   <div style="width: 96%;margin: 1% 2%">
     <div style="display: flex;justify-content: space-between;align-items: center">
-      <el-button type="primary" @click="exportTurnOverTable" icon="fa fa-download">&nbsp;导出账单</el-button>
+      <el-button type="primary" @click="exportTurnOverTable" icon="fa fa-download">&nbsp;导出记录</el-button>
       <div>
         时间:
         <el-date-picker

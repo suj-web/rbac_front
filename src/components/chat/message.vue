@@ -65,9 +65,9 @@ export default {
         returnTime = hour + ':' + minute;
       } else if(subDay === 1) {
         returnTime = '昨天 ' + hour + ':' + minute;
-      } else if(subDay >= 2 && subDay < 7) {
+      } else if(subDay >= 2 && subDay <= 7) {
         returnTime = weekDay[date.getDay()] + ' ' + hour + ':' + minute;
-      } else if(subDay >= 8 && subYear === 0) {
+      } else if(subDay > 7 && subYear === 0) {
         returnTime = month + '-' + day + ' ' + hour + ':' + minute;
       } else {
         returnTime = year + '-' + month + '-' + day + ' ' + hour + ':' + minute;
