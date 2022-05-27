@@ -33,6 +33,13 @@
             width="55">
         </el-table-column>
         <el-table-column
+            prop="id"
+            label="编号"
+            sortable
+            fixed
+            width="80">
+        </el-table-column>
+        <el-table-column
             prop="employee.workId"
             label="工号"
             fixed

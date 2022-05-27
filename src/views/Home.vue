@@ -221,7 +221,7 @@ import HomeMain from "../components/home/HomeMain";
         };
       },
       initCircleSysMsg() {
-        this.$getRequest('/system/cfg/system/message').then(res=>{
+        this.$getRequest('/home/remind/system/message').then(res=>{
           if(res) {
             let message = "";
             res.forEach(item=>{

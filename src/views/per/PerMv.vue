@@ -111,10 +111,16 @@
               width="55">
           </el-table-column>
           <el-table-column
+              prop="id"
+              label="编号"
+              sortable
+              fixed
+              width="80">
+          </el-table-column>
+          <el-table-column
               property="employee.workId"
               label="工号"
               v-if="showField.workId"
-              fixed
               width="100">
           </el-table-column>
           <el-table-column

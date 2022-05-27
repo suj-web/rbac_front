@@ -19,8 +19,13 @@
                 width="55">
             </el-table-column>
             <el-table-column
-                prop="name"
+                prop="id"
+                label="编号"
                 fixed
+                width="80">
+            </el-table-column>
+            <el-table-column
+                prop="name"
                 label="文件名称"
                 width="300">
             </el-table-column>

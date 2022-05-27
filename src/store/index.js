@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import {getRequest} from "../network/api";
-import {postRequest} from "../network/api";
+import {putRequest} from "../network/api";
 import SockJS from 'sockjs-client'
 import Stomp from 'stompjs'
 import {Notification} from "element-ui";
@@ -54,7 +54,8 @@ const store = new Vuex.Store({
       })
 
       if(msg.notSelf && state.currentSession.username === msg.to) {
-        this.$putRequest('/chat/message/?chatObj='+state.currentAdmin.username+'$'+msg.to);
+        Vue.set(state.isDot, state.currentAdmin.username+'$'+state.currentSession.username, 0);
+        putRequest('/chat/message/?chatObj='+state.currentAdmin.username+'$'+msg.to);
       }
     },
     INIT_DATA (state) {
@@ -103,23 +104,6 @@ const store = new Vuex.Store({
           receiveMsg.notSelf = true;
           receiveMsg.to = receiveMsg.from;
           context.commit('addMessage',receiveMsg);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         })
       },error=>{
 

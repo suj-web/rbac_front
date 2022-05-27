@@ -57,7 +57,7 @@ export default {
           label: 'name'
         },
         selectedMenus: [],
-        // allRoleSelectedMenus: [],//所有角色对应的资源id
+        allRoleSelectedMenus: [],//所有角色对应的资源id
         expandAll: false,//是否展开
         checked: false,//是否全选
         allMenuIds: [],//用于设置全选

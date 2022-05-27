@@ -96,9 +96,15 @@
     },
     methods:{
       addDep2Deps(deps, dep){
+        if(!deps) {
+          return;
+        }
         for(let i=0; i<deps.length;i++){
           let d = deps[i];
           if(d.id === dep.parentId){
+            if(!d.children){
+              d.children = [];
+            }
             d.children.push(dep);
             if(d.children.length>0){
               d.isParent = true;
@@ -131,6 +137,9 @@
         this.dialogVisible = true;
       },
       removeDepFromDeps(p,deps, id){
+        if(!deps) {
+          return;
+        }
         for(let i=0;i<deps.length;i++){
           let d = deps[i];
           if(d.id === id){

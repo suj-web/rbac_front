@@ -11,12 +11,23 @@
           width="55">
       </el-table-column>
       <el-table-column
+          prop="id"
+          label="编号"
+          width="80">
+      </el-table-column>
+      <el-table-column
           prop="name"
+          width="250"
           label="名称">
       </el-table-column>
       <el-table-column
           prop="tableName"
+          width="250"
           label="表名">
+      </el-table-column>
+      <el-table-column
+          prop="gmtModified"
+          label="最后初始化时间">
       </el-table-column>
     </el-table>
     <el-button style="padding-right: 8px;padding-left: 8px;margin-top: 10px" type="danger" icon="fa fa-trash-o" :disabled="this.multipleSelection.length===0" @click="init">&nbsp;清除数据</el-button>

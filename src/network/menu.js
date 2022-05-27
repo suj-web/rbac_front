@@ -6,7 +6,7 @@ export const initMenu = (router, store) =>{
     return;
   }
 
-  getRequest('/system/cfg/resource').then(data=>{
+  getRequest('/menu/resource').then(data=>{
     if(data) {
       //格式化Router
       let fmtRoutes = formatRoutes(data);

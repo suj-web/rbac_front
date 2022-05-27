@@ -77,10 +77,15 @@
               width="55">
           </el-table-column>
           <el-table-column
+              prop="id"
+              label="编号"
+              sortable
+              width="80">
+          </el-table-column>
+          <el-table-column
               property="employee.workId"
               label="工号"
               v-if="showField.workId"
-              fixed
               width="100">
           </el-table-column>
           <el-table-column
@@ -341,7 +346,7 @@ export default {
   methods: {
     updateAdjustSal(data, status) {
       data.status = status;
-      this.$putRequest('/personnel/salary/',data).then(res=>{
+      this.$putRequest('/salary/sobcfg/adjust/apply',data).then(res=>{
         if(res) {
           this.initAdjustSalarys();
         }
@@ -366,7 +371,7 @@ export default {
       this.initAdjustSalarys();
     },
     initAdjustSalarys() {
-      let url = '/personnel/salary/?currentPage='+this.currentPage+"&size="+this.size;
+      let url = '/salary/sobcfg/adjust/apply?currentPage='+this.currentPage+"&size="+this.size;
       if(this.searchValue.localDate) {
         let year = this.searchValue.localDate.getFullYear();
         let month = this.searchValue.localDate.getMonth() + 1;
@@ -386,14 +391,14 @@ export default {
       })
     },
     initAllDeps() {
-      this.$getRequest('/personnel/salary/department/list').then(res=>{
+      this.$getRequest('/salary/sobcfg/department/list').then(res=>{
         if(res) {
           this.allDeps = res;
         }
       })
     },
     initAllSals() {
-      this.$getRequest('/personnel/salary/salary/list').then(res=>{
+      this.$getRequest('/salary/sobcfg/salaries').then(res=>{
         if(res) {
           this.allSals = res;
         }

@@ -80,10 +80,15 @@
               width="55">
           </el-table-column>
           <el-table-column
+              prop="id"
+              label="编号"
+              sortable
+              width="80">
+          </el-table-column>
+          <el-table-column
               property="employee.workId"
               label="工号"
               v-if="showField.workId"
-              fixed
               width="100">
           </el-table-column>
           <el-table-column
@@ -247,9 +252,9 @@
               width="100"
               label="审核状态">
             <template slot-scope="scope">
-              <el-tag v-if="scope.row.status===0" type="primary" size="mini">待审核</el-tag>
-              <el-tag v-else-if="scope.row.status===1" type="success" size="mini">已通过</el-tag>
-              <el-tag v-else type="danger" size="mini">未通过</el-tag>
+              <el-tag v-if="scope.row.status===0 || scope.row.status===1 && !scope.row.isAdjust" type="primary" size="mini">待审核</el-tag>
+              <el-tag v-else-if="scope.row.status===1 && scope.row.isAdjust" type="success" size="mini">已通过</el-tag>
+              <el-tag v-else-if="scope.row.status===2" type="danger" size="mini">未通过</el-tag>
             </template>
           </el-table-column>
           <el-table-column

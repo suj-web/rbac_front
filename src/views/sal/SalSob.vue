@@ -20,7 +20,7 @@
         <el-table-column
             prop="name"
             label="账套名称"
-            width="120">
+            width="150">
         </el-table-column>
         <el-table-column
             prop="basicSalary"

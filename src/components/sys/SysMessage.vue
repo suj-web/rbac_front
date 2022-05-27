@@ -95,7 +95,7 @@
               label="操作">
             <template slot-scope="scope">
               <el-button size="mini" type="primary" @click="showEditView(scope.row)" icon="fa fa-edit" style="padding: 4px 5px">&nbsp;编辑</el-button>
-              <el-button size="mini" type="danger" @click="deleteSysMsg" icon="fa fa-remove" style="padding: 4px 5px">&nbsp;删除</el-button>
+              <el-button size="mini" type="danger" @click="deleteSysMsg(scope.row)" icon="fa fa-remove" style="padding: 4px 5px">&nbsp;删除</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -266,6 +266,8 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
+          console.log("))))))))))))))")
+          console.log(data);
           this.$deleteRequest('/system/cfg/system/message/'+data.id).then(res=>{
             if(res){
               this.initSysMsg();
@@ -313,7 +315,7 @@
             this.total = res.total;
           }
         });
-        this.$getRequest('/system/cfg/system/message').then(res=>{
+        this.$getRequest('/home/remind/system/message').then(res=>{
           if(res) {
             let message = "";
             res.forEach(item=>{

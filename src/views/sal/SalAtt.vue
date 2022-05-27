@@ -49,6 +49,12 @@
             width="55">
         </el-table-column>
         <el-table-column
+            prop="id"
+            label="编号"
+            sortable
+            width="80">
+        </el-table-column>
+        <el-table-column
             property="employee.workId"
             label="工号"
             width="120">
@@ -106,7 +112,8 @@
           </template>
         </el-table-column>
         <el-table-column
-            label="操作">
+            label="操作"
+            width="200">
           <template slot-scope="scope">
             <el-button size="mini" icon="el-icon-edit" type="primary" @click="showEditView(scope.row)">编辑</el-button>
             <el-button size="mini" icon="el-icon-delete" type="danger" @click="deleteAttendance(scope.row)">删除</el-button>

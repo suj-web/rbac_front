@@ -138,11 +138,11 @@ export default {
       conversionCount: 0
     }
   },
-  computed: {
-    message() {
-      return this.$store.state.message;
-    }
-  },
+  // computed: {
+  //   message() {
+  //     return this.$store.state.message;
+  //   }
+  // },
   mounted() {
     this.initLoginLogs();
     this.initOnlineUserCount();
@@ -150,7 +150,7 @@ export default {
     this.initContractExpireCount();
     this.initBirthdayCount();
     this.initConversionCount();
-    this.initCircleSysMsg();
+    // this.initCircleSysMsg();
   },
   methods: {
     goConversion() {
@@ -239,21 +239,21 @@ export default {
         }
       })
     },
-    initCircleSysMsg() {
-      this.$getRequest('/system/cfg/system/message').then(res=>{
-        if(res) {
-          let message = "";
-          res.forEach(item=>{
-            if(!item.type) {
-              message += "&nbsp;&nbsp;&nbsp;<span style='color: red'>系统公告:</span>" + "&nbsp;&nbsp;" + item.title + "&nbsp;&nbsp;" + item.content + "&nbsp;&nbsp;&nbsp;";
-            } else {
-              message += "&nbsp;&nbsp;&nbsp;<span style='color: #E6A23C'>系统通知:</span>" + "&nbsp;&nbsp;" + item.title + "&nbsp;&nbsp;" + item.content + "&nbsp;&nbsp;&nbsp;";
-            }
-          })
-          this.$store.commit('initCircleSysMsgs', message === "" ? "<span style='color:black'>暂无公告</span>": message);
-        }
-      })
-    }
+    // initCircleSysMsg() {
+    //   this.$getRequest('/home/remind/system/message').then(res=>{
+    //     if(res) {
+    //       let message = "";
+    //       res.forEach(item=>{
+    //         if(!item.type) {
+    //           message += "&nbsp;&nbsp;&nbsp;<span style='color: red'>系统公告:</span>" + "&nbsp;&nbsp;" + item.title + "&nbsp;&nbsp;" + item.content + "&nbsp;&nbsp;&nbsp;";
+    //         } else {
+    //           message += "&nbsp;&nbsp;&nbsp;<span style='color: #E6A23C'>系统通知:</span>" + "&nbsp;&nbsp;" + item.title + "&nbsp;&nbsp;" + item.content + "&nbsp;&nbsp;&nbsp;";
+    //         }
+    //       })
+    //       this.$store.commit('initCircleSysMsgs', message === "" ? "<span style='color:black'>暂无公告</span>": message);
+    //     }
+    //   })
+    // }
   }
 }
 </script>
